@@ -40,14 +40,14 @@ end
 
 R = size(p, 1);
 if param.gen_only_fft_op
-    [A, At, ~, ~] = op_nufft([0, 0], N, Nn, No, Ns, kernel);
+    [A, At, ~, ~] = op_nufft_irt([0, 0], N, Nn, No, Ns, kernel);
     G = [];
     W = [];
     Gw = [];
 else
     if ~param.use_nufft_blocks
         %% compute the overall gridding matrix and its associated kernels
-        [A, At, Gw, ~] = op_nufft(cell2mat(p), N, Nn, No, Ns, kernel);
+        [A, At, Gw, ~] = op_nufft_irt(cell2mat(p), N, Nn, No, Ns, kernel);
 
         %% compute small gridding matrices associated with each parallel block
         G = cell(R, 1);
@@ -105,7 +105,7 @@ else
 
 
             %% compute the small gridding matrix and its associated kernels
-            [~, ~, Gb, ~] = op_nufft([p{q, 1} p{q, 2}], N, Nn, No, Ns, kernel);
+            [~, ~, Gb, ~] = op_nufft_irt([p{q, 1} p{q, 2}], N, Nn, No, Ns, kernel);
 
             %% now trim the zero rows and store a mask in W
 
@@ -132,7 +132,7 @@ else
             fprintf('Block matrix %d: %ds \n', q, ceil(tend));
         end
 
-        [A, At, ~, ~] = op_nufft([0, 0], N, Nn, No, Ns, kernel);
+        [A, At, ~, ~] = op_nufft_irt([0, 0], N, Nn, No, Ns, kernel);
     end
 end
 
