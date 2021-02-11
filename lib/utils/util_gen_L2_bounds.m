@@ -45,24 +45,24 @@ end
 if strcmp(l2_ball_definition, 'sigma')
     s1 = param.sigma_ball;
     % estimate L2 ball parameter
-    epsilon = sqrt(Nm + s1*sqrt(2*Nm)) * sigma_noise;
+    epsilon = sqrt(Nm + s1*sqrt(Nm)) * sigma_noise;
     epsilont = cell(R,1);
     for q = 1:R
         % this produces a global bound which is greater than the mean by
         % ~sqrt(mean(length(y{:})) (if equal length)
-        epsilont{q} = sqrt(size(y0{q}, 1) + s1*sqrt(2*size(y0{q}, 1))) * sigma_noise;
+        epsilont{q} = sqrt(size(y0{q}, 1) + s1*sqrt(size(y0{q}, 1))) * sigma_noise;
     end
 end
 
 if strcmp(stopping_criterion, 'sigma')
     s2 = param.sigma_stop;
     % estimate L2 ball parameter
-    epsilons = sqrt(Nm + s2*sqrt(2*Nm)) * sigma_noise;
+    epsilons = sqrt(Nm + s2*sqrt(Nm)) * sigma_noise;
     epsilonts = cell(R,1);
     for q = 1:R
         % this produces a global bound which is greater than the mean by
         % ~sqrt(mean(length(y{:})) (if equal length)
-        epsilonts{q} = sqrt(size(y0{q}, 1) + s2*sqrt(2*size(y0{q}, 1))) * sigma_noise;
+        epsilonts{q} = sqrt(size(y0{q}, 1) + s2*sqrt(size(y0{q}, 1))) * sigma_noise;
     end
 end
 
