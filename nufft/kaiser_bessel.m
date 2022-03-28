@@ -1,21 +1,48 @@
- function [kb, alpha, kb_m] = kaiser_bessel(x, J, alpha, kb_m, K_N)
-%function [kb, alpha, kb_m] = kaiser_bessel(x, J, alpha, kb_m)
-%function [kb, alpha, kb_m] = kaiser_bessel(x, J, 'best', 0, K_N)
-%|
-%| generalized Kaiser-Bessel function for x in support [-J/2,J/2]
-%| shape parameter "alpha" (default 2.34 J)
-%| order parameter "kb_m" (default 0)
-%| see (A1) in lewitt:90:mdi, JOSA-A, Oct. 1990
-%| in
-%|	x	[M,1]	arguments
-%|
-%| out
-%|	kb	[M,1]	KB function values, if x is numbers
-%|			or string for kernel(k,J), if x is 'string'
-%|			or inline function, if x is 'inline'
-%|	alpha
-%|	kb_m
-%|
+function [kb, alpha, kb_m] = kaiser_bessel(x, J, alpha, kb_m, K_N)
+% Generalized Kaiser-Bessel function for ``x`` in support [-J/2,J/2]
+% shape parameter "alpha" (default 2.34 J)
+% order parameter "kb_m" (default 0)
+% see (A1) in lewitt:90:mdi, JOSA-A, Oct. 1990
+%
+% Parameters
+% ----------
+% x : double[M, 1]
+% 	Arguments.
+% J : int[:]
+% 	Number of neighbors.
+% alpha :
+% 	Parameters of the interpolation kernel.
+% kb_m :
+% 	Parameters of the interpolation kernel.
+% K_N :
+% 	Parameters of the interpolation kernel.
+%
+% Returns
+% -------
+% kb : [M, 1]
+% 	KB function values, if ``x`` is numbers, or ``string`` for 
+%   ``kernel(k,J)``,  if ``x`` is a ``string``, or inline function, if 
+%   ``x`` is ``inline``.
+% alpha
+% 	Parameters of the interpolation kernel.
+% kb_m
+% 	Parameters of the interpolation kernel.
+%
+
+% Example
+% -------
+% >>> [kb, alpha, kb_m] = kaiser_bessel(x, J, alpha, kb_m)
+% >>> [kb, alpha, kb_m] = kaiser_bessel(x, J, 'best', 0, K_N)
+%
+% Note
+% ----
+% Original code taken from :cite:p:`Fessler2003`, available at https://github.com/JeffFessler/mirt.
+%
+
+% Author: Jeff Fessler, University of Michigan
+%
+
+%%
 %| Copyright 2001-3-30, Jeff Fessler, University of Michigan
 
 % Modification 2002-10-29 by Samuel Matej
@@ -65,8 +92,8 @@
 % end
 
 if ~isvarname('J'), J = 6; end
-if ~isvarname('alpha') || isempty('alpha'), alpha = 2.34 * J; end
-if ~isvarname('kb_m') || isempty('kb_m'), kb_m = 0; end
+if ~exist('alpha', 'var') || isempty(alpha), alpha = 2.34 * J; end
+if ~exist('kb_m', 'var') || isempty(kb_m), kb_m = 0; end
 
 if ischar(alpha)
 	[alpha kb_m] = kaiser_bessel_params(alpha, J, K_N); % ok

@@ -28,4 +28,4 @@ list = {
 % 'unwrap_sps test' % no, this is a routine for unwrap_example
 };
 
-run_mfile_local(list)
+run_mfile_local(list);

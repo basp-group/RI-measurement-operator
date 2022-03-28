@@ -1,5 +1,5 @@
 function [xyz] = baseline2xyz(d, az, elev, lat)
-%%code to simulate continuous uv coverage with tracking from
+%% code to simulate continuous uv coverage with tracking from
 % http://www.astro.umd.edu/~cychen/MATLAB/ASTR410/uvAndBeams.html#5
 
 % Function computes transformation from baseline to x, y, z coordinates
@@ -14,7 +14,6 @@ function [xyz] = baseline2xyz(d, az, elev, lat)
 %
 % AH 2010.3.16
 
-xyz = d * [cos(lat)*sin(elev) - sin(lat)*cos(elev)*cos(az);
-           cos(elev)*sin(az);
-           sin(lat)*sin(elev) + cos(lat)*cos(elev)*cos(az)];
-       
+xyz = d * [cos(lat) * sin(elev) - sin(lat) * cos(elev) * cos(az)
+           cos(elev) * sin(az)
+           sin(lat) * sin(elev) + cos(lat) * cos(elev) * cos(az)];

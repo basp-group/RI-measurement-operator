@@ -5,4 +5,4 @@ CAARR = ptemp.CAA + lamcurr * ptemp.RR; % Eig.vals of the circ.matrix CAA + nu *
 mxE = max(CAARR(:));
 mnE = min(CAARR(:));
 
-measval = mxE/mnE; % Condition number
+measval = mxE / mnE; % Condition number

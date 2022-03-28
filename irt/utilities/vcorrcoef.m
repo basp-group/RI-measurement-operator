@@ -1,5 +1,5 @@
  function c = vcorrcoef(u, v)
-%function c = vcorrcoef(u, v)
+% function c = vcorrcoef(u, v)
 % correlation coefficient between two vectors
 
 normu = norm(u(:));

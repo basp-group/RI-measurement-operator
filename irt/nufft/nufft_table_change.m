@@ -2,7 +2,7 @@
 % change to a new set of frequencies
 
 if ~isvar(st, 'phase_shift')
-	error 'only done for "table" version'
+    error 'only done for "table" version';
 end
 
 st.om = om;

@@ -7,11 +7,11 @@ ob = full(ob);
 
 switch nargout
 case 1
-	varargout = {diag(s)};
+    varargout = {diag(s)};
 case 2
-	varargout = {u, s};
+    varargout = {u, s};
 case 3
-	varargout = {u, s, v};
+    varargout = {u, s, v};
 otherwise
-	fail 'eig bug'
+    fail 'eig bug';
 end

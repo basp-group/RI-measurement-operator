@@ -1,31 +1,48 @@
- function T = nufft_T(N, J, K, tol, alpha, beta, use_true_diric)
-%function T = nufft_T(N, J, K, tol, alpha, beta, use_true_diric)
-%|
-%| Precompute the matrix T = [C' S S' C]\inv used in NUFFT.
-%| This can be precomputed, being independent of frequency location.
-%|
-%| in
-%|	N		# signal length
-%|	J		# of neighbors
-%|	K		# FFT length
-%|	tol		tolerance for smallest eigenvalue
-%|	alpha	[L+1]	Fourier coefficient vector for scaling
-%|	beta		scale gamma=2*pi/K by this for Fourier series
-%|
-%| out
-%|	T	[J J]	precomputed matrix
-%|
-%| Copyright 2000-1-9, Jeff Fessler, University of Michigan
+function T = nufft_T(N, J, K, tol, alpha, beta, use_true_diric)
+% Precompute the matrix ``T = [C' S S' C]\inv`` used in NUFFT. This can be 
+% precomputed, being independent of frequency location.
+%
+% Parameters
+% ----------
+% N : int[:]
+% 	Signal length.
+% J : int[:]
+% 	Number of neighbors.
+% K : int[:]
+% 	FFT length.
+% tol : double
+% 	Tolerance for smallest eigenvalue.
+% alpha : double[L+1, 1]
+% 	Fourier coefficient vector for scaling.
+% beta : double[:]
+% 	Scale ``gamma = 2 * pi / K`` by this for Fourier series.
+% use_true_diric : bool
+% 	Use true Diric function (default is to use sinc approximation).
+%
+% Returns
+% -------
+% T : double[J, J]
+%   Precomputed matrix.
+%
+
+% Author: Jeff Fessler, University of Michigan
+% 
+% Note
+% ----
+% Original code taken from :cite:p:`Fessler2003`, available at https://github.com/JeffFessler/mirt.
+%
+
+%%
+%| Copyright 2001-12-8, Jeff Fessler, University of Michigan
 
 % if nargin == 1 && strcmp(N, 'test'), nufft_T_test, return, end
-
-if ~isvarname('tol') || isempty(tol)
+if ~exist('tol', 'var') || isempty(tol)
 	tol = 1e-7;
 end
-if ~isvarname('beta') || isempty(beta)
+if ~exist('beta', 'var') || isempty(beta)
 	beta = 1/2;
 end
-if ~isvarname('use_true_diric') || isempty(use_true_diric)
+if ~exist('use_true_diric', 'var') || isempty(use_true_diric)
 	use_true_diric = false;
 end
 
@@ -35,7 +52,7 @@ if N > K
 end
 
 % default with unity scaling factors
-if ~isvarname('alpha') || isempty(alpha)
+if ~exist('alpha', 'var') || isempty(alpha)
 
 	% compute C'SS'C = C'C
 	[j1 j2] = ndgrid(1:J, 1:J);

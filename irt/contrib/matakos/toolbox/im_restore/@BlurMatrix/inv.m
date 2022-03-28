@@ -5,8 +5,8 @@ function y = inv(a)
 y = a;
 
 switch a.boundarycond
-    case {'cir','refl'}
-        y.eigblurmatrix = (a.eigblurmatrix) .^(-1);
+    case {'cir', 'refl'}
+        y.eigblurmatrix = (a.eigblurmatrix).^(-1);
     otherwise
         disp('Unknow method');
 end

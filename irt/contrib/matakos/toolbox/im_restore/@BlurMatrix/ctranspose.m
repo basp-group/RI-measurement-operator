@@ -2,7 +2,6 @@ function ob = ctranspose(ob)
 % Copyright Jan. 25, 2008, Dr.WEN You-Wei
 % email: wenyouwei@graduate.hku.hk
 
-
 switch ob.boundarycond
     case {'cir', 'refl'}
         ob.eigblurmatrix = conj(ob.eigblurmatrix);
@@ -11,4 +10,3 @@ switch ob.boundarycond
     otherwise
         disp('Unknow method');
 end
-        

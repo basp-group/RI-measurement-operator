@@ -6,4 +6,4 @@ function DT = compute_CostDataTerm_CT2D(data, x, params)
 Ax = params.A * x;
 Ax = data - Ax;
 
-DT = sum( params.W(:) .* abs( Ax(:) ) .^ 2 ) / 2;
+DT = sum(params.W(:) .* abs(Ax(:)).^2) / 2;

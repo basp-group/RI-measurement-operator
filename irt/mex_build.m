@@ -6,6 +6,6 @@
 % in the mex directory.  for unsupported systems, e.g., PCs, the user
 % will have to comiple her own mex files using this script.
 
-mex_build_mri
-mex_build_table
+mex_build_mri;
+mex_build_table;
 % todo: mex_build_penal

@@ -1,34 +1,44 @@
- function y = kaiser_bessel_ft(u, J, alpha, kb_m, d)
-%function y = kaiser_bessel_ft(u, J, alpha, kb_m, d)
-%|
-%| Fourier transform of generalized Kaiser-Bessel function,
-%|	in dimension d (default 1).
-%|	shape parameter "alpha" (default 2.34 J)
-%|	order parameter "kb_m" (default 0)
-%| See (A3) in lewitt:90:mdi, JOSA-A, Oct. 1990.
-%|
-%| in
-%|	u	[M 1]	frequency arguments
-%|			or 'string' to return function string
-%|			or 'handle' to return function handle
-%|
-%| "opt"
-%|	J		default 6
-%|	alpha	default 2.34 * J
-%|	kb_m	default 0
-%|	d		default 1
-%|
-%| out
-%|	y	[M 1]	transform values
-%|
+function y = kaiser_bessel_ft(u, J, alpha, kb_m, d)
+% Fourier transform of generalized Kaiser-Bessel function,
+% in dimension ``d``.
+%
+% Parameters
+% ----------
+% u :
+% 	frequency arguments 
+%   or 'string' to return function string 
+%   or 'handle' to return function handle
+% J : int
+% 	Default 6.
+% alpha : double
+% 	Shape parameter. Default ``2.34 * J``.
+% kb_m : int
+% 	Order parameter. Default 0.
+% d : int
+% 	Number of dimensions considered. Default 1.
+%
+% Returns
+% -------
+% y : complex[M, 1]
+% 	Transform values.
+%
+% Note
+% ----
+% Original code taken from :cite:p:`Fessler2003`, available at https://github.com/JeffFessler/mirt. See (A3) in lewitt:90:mdi, JOSA-A, Oct. 1990.
+%
+
+% Author: Jeff Fessler, University of Michigan
+%
+
+%%
 %| Copyright 2001-3-30, Jeff Fessler, University of Michigan
 
 % if nargin < 1, ir_usage, end
 % if nargin == 1 && streq(u, 'test'), kaiser_bessel_ft_test, return, end
 
 if ~isvarname('J'), J = 6; end
-if ~isvarname('alpha') || isempty('alpha'), alpha = 2.34 * J; end
-if ~isvarname('kb_m') || isempty('kb_m'), kb_m = 0; end
+if ~exist('alpha', 'var') || isempty(alpha), alpha = 2.34 * J; end
+if ~exist('kb_m', 'var') || isempty(kb_m), kb_m = 0; end
 if ~isvarname('d'), d = 1; end
 
 % trick to return functions

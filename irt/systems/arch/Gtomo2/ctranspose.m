@@ -1,6 +1,6 @@
  function ob = ctranspose(ob)
-%function ob = ctranspose(ob)
-%	"ctranspose" method for Gtomo2 class
+% function ob = ctranspose(ob)
+%   "ctranspose" method for Gtomo2 class
 
 ob.is_transpose = ~ob.is_transpose;
 

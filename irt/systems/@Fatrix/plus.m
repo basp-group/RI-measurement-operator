@@ -1,5 +1,5 @@
  function c = plus(a, b)
-%function c = plus(a, b)
+% function c = plus(a, b)
 % "plus" method for this class
 
 % new way, 2008-10-02: return Fatrix

@@ -1,6 +1,6 @@
 function [drho, tE] = rhoP_Log(x, params)
 %
-% Evaluate the derivative of the Logarithmic 'rho' in the paper 
+% Evaluate the derivative of the Logarithmic 'rho' in the paper
 % "Highly Undersampled MRI Reconstruction" by Tryasko et al, IEEE TMI
 %
 % x      ->      Point at which rho needs to be evaluated
@@ -12,5 +12,5 @@ sigma = params.Prior.sigma;
 den = params.Prior.den;
 
 tS = tic;
-drho = 1./((x + sigma)*den);
+drho = 1 ./ ((x + sigma) * den);
 tE = toc(tS);

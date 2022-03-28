@@ -63,7 +63,7 @@
 %   ir_dwt_filters         - |function [coef codes] = ir_odwt1(x, varargin)
 %   ir_fftshift2           - function y = ir_fftshift2(x)
 %   ir_fwrite              - function ir_fwrite(file, array, type, varargin)
-%   ir_has_imfilter        - function out = ir_has_imfilter 
+%   ir_has_imfilter        - function out = ir_has_imfilter
 %   ir_idct2               - function x = ir_idct2(y)
 %   ir_im2col              - function [blocks, idx] = ir_im2col(I, blkSize, stride)
 %   ir_imfill1             - function yy = ir_imfill1(xx)

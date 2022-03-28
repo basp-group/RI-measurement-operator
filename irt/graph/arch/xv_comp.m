@@ -12,7 +12,7 @@ i2 = min(i2, clim(2));
 i1 = uint8(i1);
 i2 = uint8(i2);
 
-im([i1; i2])
-imwrite(i1, 'tmp1.pgm')
-imwrite(i2, 'tmp2.pgm')
-os_run('xv tmp1.pgm tmp2.pgm')
+im([i1; i2]);
+imwrite(i1, 'tmp1.pgm');
+imwrite(i2, 'tmp2.pgm');
+os_run('xv tmp1.pgm tmp2.pgm');

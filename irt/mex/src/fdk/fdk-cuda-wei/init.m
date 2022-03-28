@@ -1,4 +1,4 @@
-function [ ] = init()
+function [] = init()
 
 addpath('/net/escanaba/z/ewwei/testCode/alg');
 addpath('/net/escanaba/z/ewwei/testCode/alg/mex/src/fdk-cuda');

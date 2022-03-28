@@ -7,126 +7,113 @@ clear Y Y2;
 
 I = eye(100);
 
-for i = 1 : 100
-	Y(:, i) = B * I(:, i);
+for i = 1:100
+    Y(:, i) = B * I(:, i);
 end
 
 I2 = eye(2500);
 
-for i = 1 : 2500
-	Y2(:, i) = B' * I2(:, i);
+for i = 1:2500
+    Y2(:, i) = B' * I2(:, i);
 end
 
-printf('Accuracy of differences for B = %d\n'...
-	, max(max(abs(Y2-Y'))) / max(max(abs(Y2))));
+printf('Accuracy of differences for B = %d\n' ...
+    , max(max(abs(Y2 - Y'))) / max(max(abs(Y2))));
 
-for i = 1 : 100
-	Y(:, i) = Bgx * I(:, i);
+for i = 1:100
+    Y(:, i) = Bgx * I(:, i);
 end
 
-for i = 1 : 2500
-	Y2(:, i) = Bgx' * I2(:, i);
+for i = 1:2500
+    Y2(:, i) = Bgx' * I2(:, i);
 end
 
-printf('Accuracy of differences for Bgx = %d\n'...
-	, max(max(abs(Y2-Y'))) / max(max(abs(Y2))));
+printf('Accuracy of differences for Bgx = %d\n' ...
+    , max(max(abs(Y2 - Y'))) / max(max(abs(Y2))));
 
-
-for i = 1 : 100
-	Y(:, i) = Bgy * I(:, i);
+for i = 1:100
+    Y(:, i) = Bgy * I(:, i);
 end
 
-for i = 1 : 2500
-	Y2(:, i) = Bgy' * I2(:, i);
+for i = 1:2500
+    Y2(:, i) = Bgy' * I2(:, i);
 end
 
-printf('Accuracy of differences for Bgy = %d\n'...
-	, max(max(abs(Y2-Y'))) / max(max(abs(Y2))));
+printf('Accuracy of differences for Bgy = %d\n' ...
+    , max(max(abs(Y2 - Y'))) / max(max(abs(Y2))));
 
-
-for i = 1 : 2500
-	Y2(:, i) = Bgy' * I2(:, i);
+for i = 1:2500
+    Y2(:, i) = Bgy' * I2(:, i);
 end
 
-printf('Accuracy of differences for Bgx/Bgy = %d\n'...
-	, max(max(abs(Y2-Y'))) / max(max(abs(Y2))));
+printf('Accuracy of differences for Bgx/Bgy = %d\n' ...
+    , max(max(abs(Y2 - Y'))) / max(max(abs(Y2))));
 
 A1 = single(rand([10 10]));
 A2 = single(rand([10 10]));
 
+[Bw Bwgx Bwgy] = makeB(ig, kg, B * A1, B * A2);
 
-
-[Bw Bwgx Bwgy] = makeB(ig, kg, B*A1, B*A2);
-
-for i = 1 : 100
-	Y(:, i) = Bw * I(:, i);
+for i = 1:100
+    Y(:, i) = Bw * I(:, i);
 end
 
 I2 = eye(2500);
 
-for i = 1 : 2500
-	Y2(:, i) = Bw' * I2(:, i);
+for i = 1:2500
+    Y2(:, i) = Bw' * I2(:, i);
 end
 
-printf('Accuracy of differences for Bw = %d\n'...
-	, max(max(abs(Y2-Y'))) / max(max(abs(Y2))));
+printf('Accuracy of differences for Bw = %d\n' ...
+    , max(max(abs(Y2 - Y'))) / max(max(abs(Y2))));
 
-
-for i = 1 : 100
-	Y(:, i) = Bwgx * I(:, i);
+for i = 1:100
+    Y(:, i) = Bwgx * I(:, i);
 end
 
-for i = 1 : 2500
-	Y2(:, i) = Bwgx' * I2(:, i);
+for i = 1:2500
+    Y2(:, i) = Bwgx' * I2(:, i);
 end
 
 printf('Accuracy of differences for Bwgx = %d\n' ...
-	, max(max(abs(Y2-Y'))) / max(max(abs(Y2))));
+    , max(max(abs(Y2 - Y'))) / max(max(abs(Y2))));
 
-
-
-for i = 1 : 2500
-	Y2(:, i) = Bwgy' * I2(:, i);
+for i = 1:2500
+    Y2(:, i) = Bwgy' * I2(:, i);
 end
 
-printf('Accuracy of differences for Bwgx/Bwgy = %d\n'...
-	, max(max(abs(Y2-Y'))) / max(max(abs(Y2))));
-
-
-
+printf('Accuracy of differences for Bwgx/Bwgy = %d\n' ...
+    , max(max(abs(Y2 - Y'))) / max(max(abs(Y2))));
 
 [W Wgx Wgy] = makeW({B, B}, {A1, A2});
 
 clear Y Y2;
 
-for i = 1 : 2500
-	Y(:, i) = W * I2(:, i);
+for i = 1:2500
+    Y(:, i) = W * I2(:, i);
 end
 
-for i = 1 : 2500
-	Y2(:, i) = W' * I2(:, i);
+for i = 1:2500
+    Y2(:, i) = W' * I2(:, i);
 end
 
-printf('Accuracy of differences for W = %d\n'...
-	, max(max(abs(Y2-Y'))) / max(max(abs(Y2))));
+printf('Accuracy of differences for W = %d\n' ...
+    , max(max(abs(Y2 - Y'))) / max(max(abs(Y2))));
 
-
-for i = 1 : 2500
-	Y(:, i) = Wgx * I2(:, i);
+for i = 1:2500
+    Y(:, i) = Wgx * I2(:, i);
 end
 
-for i = 1 : 2500
-	Y2(:, i) = Wgx' * I2(:, i);
+for i = 1:2500
+    Y2(:, i) = Wgx' * I2(:, i);
 end
 
-printf('Accuracy of differences for Wgx = %d\n'...
-	, max(max(abs(Y2-Y'))) / max(max(abs(Y2))));
+printf('Accuracy of differences for Wgx = %d\n' ...
+    , max(max(abs(Y2 - Y'))) / max(max(abs(Y2))));
 
-
-for i = 1 : 2500
-	Y2(:, i) = Wgy' * I2(:, i);
+for i = 1:2500
+    Y2(:, i) = Wgy' * I2(:, i);
 end
 
-printf('Accuracy of differences for Wgx/Wgy = %d\n'...
-	, max(max(abs(Y2-Y'))) / max(max(abs(Y2))));
-
+printf('Accuracy of differences for Wgx/Wgy = %d\n' ...
+    , max(max(abs(Y2 - Y'))) / max(max(abs(Y2))));

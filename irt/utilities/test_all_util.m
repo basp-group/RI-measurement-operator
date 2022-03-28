@@ -1,19 +1,19 @@
 % test_all_util.m
 
 if 1 % test jf_protected_names methods
-	pn = jf_protected_names;
-	pn.prctile('test');
+    pn = jf_protected_names;
+    pn.prctile('test');
 end
 
 % this list requires mex files so test it second
-list2 = {...
+list2 = { ...
 'bspline_1d_coef test', ...
 'bspline_1d_interp test', ...
 'bspline_1d_synth test'
 };
 
 % test these basic things first
-list1 = {...
+list1 = { ...
 'arg_pair test', ...
 'cpu test', ...
 'dft_sym_check test', ...
@@ -58,11 +58,11 @@ list1 = {...
 'vararg_pair test'
 };
 
-%run_mfile_local(list1, 'pause', false)
-%run_mfile_local(list2)
-run_mfile_local({list1{:}, list2{:}}, 'pause', 0, 'abort', 1)
+% run_mfile_local(list1, 'pause', false)
+% run_mfile_local(list2)
+run_mfile_local({list1{:}, list2{:}}, 'pause', 0, 'abort', 1);
 
 % octave todo:
-%lloyd_max_hist test
-%min_cos_quad test
-%bspline* ... mex (list1)
+% lloyd_max_hist test
+% min_cos_quad test
+% bspline* ... mex (list1)

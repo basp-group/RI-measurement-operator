@@ -1,19 +1,33 @@
- function sn = nufft_scale(Nd, Kd, alpha, beta, Nmid)
-%function sn = nufft_scale(Nd, Kd, alpha, beta, Nmid)
-%|
-%| Compute scaling factors for NUFFT
-%|
-%| in
-%|	Nd,Kd
-%|	alpha	{d}
-%|	beta	{d}
-%|
-%| option
-%|	Nmid	[d]		midpoint: floor(Nd/2) or default (Nd-1)/2
-%|
-%| out
-%|	sn	[[Nd]]		scaling factors
-%|
+function sn = nufft_scale(Nd, Kd, alpha, beta, Nmid)
+% Compute scaling factors for NUFFT.
+%
+% Parameters
+% ----------
+% Nd : int[1, d]
+%   Input size (along each dimension).
+% Kd : int[1, d]
+% 	Fourier size (along each dimension).
+% alpha : cell{d, 1}
+% 	Parameters of the interpolation kernel.
+% beta : cell{d, 1}
+% 	Parameters of the interpolation kernel.
+% Nmid : int[1, d]
+% 	Midpoint: ``floor(Nd/2)`` or default ``(Nd-1)/2``.
+%
+% Returns
+% -------
+% sn : double[Nd]
+% 	Scaling factors.
+%
+% Note
+% ----
+% Original code taken from :cite:p:`Fessler2003`, available at https://github.com/JeffFessler/mirt.
+%
+
+% Author: Jeff Fessler, University of Michigan
+%
+
+%%
 %| Copyright 2004-7-8, Jeff Fessler, University of Michigan
 
 % if nargin == 1 && streq(Nd, 'test'), nufft_scale_test, return, end

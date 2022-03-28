@@ -1,13 +1,36 @@
- function [alphas, beta] = nufft_alpha_kb_fit(N, J, K, varargin)
-%function [alphas, beta] = nufft_alpha_kb_fit(N, J, K, varargin)
-%|
-%| Return the alpha and beta corresponding to LS fit of L components
-%| to optimized Kaiser-Bessel scaling factors (m=0, alpha=2.34J).
-%| This is the best method I know currently for choosing alpha!
-%|
-%| option
-%|	Nmid	[1]	midpoint: floor(N/2) or default (N-1)/2
-%|
+function [alphas, beta] = nufft_alpha_kb_fit(N, J, K, varargin)
+% Return the alpha and beta corresponding to LS fit of L components
+% to optimized Kaiser-Bessel scaling factors (``m=0``, ``alpha=2.34*J``).
+% This is the best method known by J. Fessler currently for choosing alpha.
+%
+% Parameters
+% ----------
+% N : int[:]
+% 	Signal length.
+% J : int[:]
+% 	Number of neighbors.
+% K : int[:]
+% 	FFT length.
+% varargin : option, [1]
+% 	Specify the ``Nmid`` midpoint: ``floor(N/2)`` or default 
+%   ``(N-1)/2``
+%
+% Returns
+% -------
+% alphas : complex[:]
+% 	Parameters of the interpolation kernel.
+% beta : double[:]
+% 	Parameters of the interpolation kernel.
+%
+% Note
+% ----
+% Original code taken from :cite:p:`Fessler2003`, available at https://github.com/JeffFessler/mirt.
+%
+
+% Author: Jeff Fessler, University of Michigan
+%
+
+%%
 %| Copyright 2002-7-16, Jeff Fessler, University of Michigan
 
 % if nargin < 3, ir_usage, end
@@ -43,7 +66,6 @@ if any(isnan(coef(:))) % if any NaN then big problem!
 	coef = (pinv(X) * sn_kaiser)'; % try pinv() istead of mldivide \
 	if any(isnan(coef(:)))
 		error('bug: NaN coefficients.  Ask JF for help!')
-		keyboard
 	end
 end
 alphas = [real(coef(1)) coef(2:end)/2];

@@ -1,29 +1,50 @@
- function [rr, arg] = nufft_r(om, N, J, K, alpha, beta, use_true_diric)
-%function [rr, arg] = nufft_r(om, N, J, K, alpha, beta, use_true_diric)
-%|
-%| make NUFFT "r" vector
-%|
-%| in
-%|	om	[M 1]	digital frequency omega in radians
-%|	N		signal length
-%|	J		# of neighbors used per frequency location
-%|	K		FFT size (should be > N)
-%|	alpha	[0:L]	Fourier series coefficients of scaling factors
-%|	beta		scale gamma=2pi/K by this in Fourier series
-%|				typically is K/N (me) or 0.5 (Liu)
-%| out
-%|	rr	[J M]	r vector for each frequency
-%|	arg	[J M]	dirac argument for t=0
-%|
+function [rr, arg] = nufft_r(om, N, J, K, alpha, beta, use_true_diric)
+% Make NUFFT ``r`` vector.
+% 
+% Parameters
+% ----------
+% om : double[M, d]
+% 	Digital frequency omega in radians.
+% N : int[1, d]
+% 	Signal length.
+% J : int[1, d]
+% 	Number of neighbors used per frequency location.
+% K : int[1, d]
+% 	FFT size (should be ``> N``)
+% alpha : complex[0:L]
+% 	Fourier series coefficients of scaling factors.
+% beta : double[:]
+%   Scale ``gamma=2pi./K`` by this in Fourier series, typically is ``K./N`` 
+%   :cite:p:`Fessler2003` or 0.5 (Liu)
+% use_true_diric : bool
+% 	Optional flag for debugging purposes (defaults to false).
+%
+% Returns
+% -------
+% rr : double[J, M]
+%   ``r`` vector for each frequency
+% arg : double[J, M]
+%   Dirac argument for ``t=0``.
+%
+%
+% Note
+% ----
+% Original code taken from :cite:p:`Fessler2003`, available at https://github.com/JeffFessler/mirt.
+%
+
+% Author: Jeff Fessler, University of Michigan
+%
+
+%%
 %| Copyright 2001-12-13, Jeff Fessler, University of Michigan
 
-if ~isvarname('alpha') || isempty(alpha)
+if ~exist('alpha', 'var') || isempty(alpha)
 	alpha = 1; % default Fourier series coefficients of scaling factors
 end
-if ~isvarname('beta') || isempty(beta)
+if ~exist('beta', 'var') || isempty(beta)
 	beta = 0.5; % default is Liu version for now
 end
-if ~isvarname('use_true_diric') || isempty(use_true_diric)
+if ~exist('use_true_diric', 'var') || isempty(use_true_diric)
 	use_true_diric = false;
 end
 

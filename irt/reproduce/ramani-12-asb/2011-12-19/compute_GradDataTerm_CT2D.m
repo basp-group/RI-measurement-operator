@@ -4,4 +4,4 @@ function [DT Ax] = compute_GradDataTerm_CT2D(x, params)
 
 %% Data Term
 Ax = params.A * x;
-DT = ( params.A )' * ( params.W .* Ax );
+DT = (params.A)' * (params.W .* Ax);

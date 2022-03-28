@@ -27,8 +27,8 @@ list = {
 'rebin_helix test' % helix_example
 'rect_im test'
 'rect_sino test'
-%'sphere_proj test'
+% 'sphere_proj test'
 };
 
-im nan-fail
-run_mfile_local(list)
+im nan-fail;
+run_mfile_local(list);

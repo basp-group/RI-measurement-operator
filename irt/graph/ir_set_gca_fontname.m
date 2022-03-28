@@ -1,5 +1,5 @@
  function ir_set_gca_fontname(type)
-%function ir_set_gca_fontname(type)
+% function ir_set_gca_fontname(type)
 %
 % ideally the following line would just work:
 % set(gca, 'fontname', type)
@@ -9,19 +9,19 @@
 % names first and then fix them up.
 
 ax = get(gcf, 'children');
-for ii=1:length(ax)
-	name{ii} = get(ax(ii), 'fontname');
+for ii = 1:length(ax)
+    name{ii} = get(ax(ii), 'fontname');
 end
-set(gca, 'fontname', type)
-for ii=1:length(ax)
-	if ax(ii) ~= gca
-		if ~streq(name{ii}, get(ax(ii), 'fontname'))
-			persistent warned
-			if isempty(warned)
-				warned = true;
-				warn 'fixing matlab font bug, hopefully!'
-			end
-			set(ax(ii), 'fontname', name{ii})
-		end
-	end
+set(gca, 'fontname', type);
+for ii = 1:length(ax)
+    if ax(ii) ~= gca
+        if ~streq(name{ii}, get(ax(ii), 'fontname'))
+            persistent warned
+            if isempty(warned)
+                warned = true;
+                warn 'fixing matlab font bug, hopefully!';
+            end
+            set(ax(ii), 'fontname', name{ii});
+        end
+    end
 end

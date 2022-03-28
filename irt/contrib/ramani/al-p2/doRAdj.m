@@ -14,22 +14,22 @@ includeApprox = params.Wavelet.includeApprox;
 Operator = params.Operator;
 
 %% Compute v (Refer notes)
-switch(Operator)
-    case{'FD'} % Finite difference
+switch Operator
+    case {'FD'} % Finite difference
         [h, v, tE(1)] = trfd(z(:, :, 1), z(:, :, 2));
         Rz = h + v;
-        
-    case{'W'} % Wavelets
-        switch(redundancy)
-            case{'undecimated'} % Shift-invariant wavelets
-                if(includeApprox)
+
+    case {'W'} % Wavelets
+        switch redundancy
+            case {'undecimated'} % Shift-invariant wavelets
+                if includeApprox
                     tS = tic;
                     z1 = z;
                     tE(1) = toc(tS);
                 else
                     tS = tic;
                     z1 = z;
-                    z1(:, :, end+1) = zeros(rs, cs);
+                    z1(:, :, end + 1) = zeros(rs, cs);
                     tE(1) = toc(tS);
                 end
                 tS = tic;
@@ -38,21 +38,21 @@ switch(Operator)
             otherwise
                 error('Not coded for shift-variant wavelets');
         end
-        
-    case{'WFD'}
+
+    case {'WFD'}
         [h, v, tE(1)] = trfd(z(:, :, 1), z(:, :, 2));
         Rz = h + v;
-        
-        switch(redundancy)
-            case{'undecimated'} % Shift-invariant wavelets
-                if(includeApprox)
+
+        switch redundancy
+            case {'undecimated'} % Shift-invariant wavelets
+                if includeApprox
                     tS = tic;
-                    z1 = z(:, :, 3:3*nlev+3);
+                    z1 = z(:, :, 3:3 * nlev + 3);
                     tE(2) = toc(tS);
                 else
                     tS = tic;
-                    z1 = z(:, :, 3:3*nlev+2);
-                    z1(:, :, end+1) = zeros(rs, cs);
+                    z1 = z(:, :, 3:3 * nlev + 2);
+                    z1(:, :, end + 1) = zeros(rs, cs);
                     tE(2) = toc(tS);
                 end
                 tS = tic;
@@ -61,7 +61,7 @@ switch(Operator)
             otherwise
                 error('Not coded for shift-variant wavelets');
         end
-                
+
     otherwise
         error('Only available options are FD, W, and WFD');
 end

@@ -4,7 +4,7 @@ function y = abs(a)
 
 y = a;
 switch ob.boundarycond
-    case {'cir','refl'}
+    case {'cir', 'refl'}
         y.eigblurmatrix = abs(a.eigblurmatrix);
     otherwise
         disp('Unknow method');

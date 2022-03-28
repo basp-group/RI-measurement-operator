@@ -1,5 +1,5 @@
 function [A] = xyz2uvw(h, delta)
-%%code to simulate continuous uv coverage with tracking from
+%% code to simulate continuous uv coverage with tracking from
 % http://www.astro.umd.edu/~cychen/MATLAB/ASTR410/uvAndBeams.html#5
 
 % Function computes transformation from x, y, z to u, v, w coordinates
@@ -12,6 +12,6 @@ function [A] = xyz2uvw(h, delta)
 %
 % AH 2010.3.16
 
-A = [sin(h),             cos(h),             0;
-    -sin(delta)*cos(h),  sin(delta)*sin(h),  cos(delta);
-     cos(delta)*cos(h), -cos(delta)*sin(h),  sin(delta)];
+A = [sin(h),             cos(h),             0
+    -sin(delta) * cos(h),  sin(delta) * sin(h),  cos(delta)
+     cos(delta) * cos(h), -cos(delta) * sin(h),  sin(delta)];

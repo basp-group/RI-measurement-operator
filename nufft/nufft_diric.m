@@ -1,25 +1,41 @@
- function f = nufft_diric(k, N, K, use_true_diric)
-%function f = nufft_diric(k, N, K, use_true_diric)
-%|
-%| "regular fourier" Dirichlet-function WITHOUT phase
-%| nufft_diric(t) = sin(pi N t / K) / ( N * sin(pi t / K) )
-%|	\approx sinc(t / (K/N))
-%|
-%| caution: matlab's version is different:  sin(N * x / 2) / (N * sin(x / 2))
-%|
-%| caution: nufft_diric() is K-periodic for odd N but 2K-periodic for even N.
-%|
-%| in
-%|	k [...]		sample locations (unitless real numbers)
-%|	N		signal length
-%|	K		DFT length
-%|	use_true_diric	1 = use true Diric function.
-%|			(default is to use sinc approximation)
-%| out
-%|	f [...]		corresponding function values
-%|
-%| Copyright 2001-12-8, Jeff Fessler, University of Michigan
+function f = nufft_diric(k, N, K, use_true_diric)
+% "Regular fourier" Dirichlet-function WITHOUT phase
+% ``nufft_diric(t) = sin(pi N t / K) / ( N * sin(pi t / K) )
+% \approx sinc(t / (K/N))``
+%
+% Parameters
+% ----------
+% k : double[...]
+% 	Sample locations (unitless real numbers)
+% N : int[...]
+% 	Signal length.
+% K : int[...]
+% 	FFT length.
+% use_true_diric : bool
+% 	Use true Diric function (default is to use sinc approximation).
+%
+% Returns
+% -------
+% f : double[...]
+% 	Corresponding function values.
+%
+% Warning
+% -------
+% Caution: 
+% - matlab's version is different: ``sin(N * x / 2) / (N * sin(x / 2))``
+% - ``nufft_diric()`` is ``K``-periodic for odd ``N`` but ``2K``-periodic 
+% for even ``N``.
+%
+% Note
+% ----
+% Original code taken from :cite:p:`Fessler2003`, available at https://github.com/JeffFessler/mirt.
+%
 
+% Author: Jeff Fessler, University of Michigan
+%
+
+%%
+%| Copyright 2001-12-8, Jeff Fessler, University of Michigan
 % if nargin == 1 && strcmp(k, 'test'), nufft_diric_test, return, end
 
 if nargin < 4

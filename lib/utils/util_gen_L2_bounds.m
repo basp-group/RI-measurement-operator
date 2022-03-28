@@ -1,15 +1,16 @@
-function [epsilont, epsilonts, epsilon, epsilons] = util_gen_L2_bounds(y0, input_snr, ...
-    sigma_noise, l2_ball_definition, stopping_criterion, equal_bounds, param)
-%%
-%A. Onose, A. Dabbech, Y. Wiaux - An accelerated splitting algorithm for radio-interferometric %imaging: when natural and uniform weighting meet, MNRAS 2017, arXiv:1701.01748
-%https://github.com/basp-group/SARA-PPD
-%%
-% generates the input data
+function [epsilont, epsilonts, epsilon, epsilons] = util_gen_L2_bounds(y0, ...
+    input_snr, sigma_noise, l2_ball_definition, stopping_criterion, ...
+    equal_bounds, param)
+% Generate the :math:`\ell_2` bounds for synthetic data experiments
+%
+% Note
+% ----
+% See :cite:p:`Onose2017`, https://github.com/basp-group/SARA-PPD
+%
 
-
+%%
 R = length(y0);
 Nm = numel(cell2mat(y0));
-
 
 if ~exist('equal_bounds', 'var')
     equal_bounds = 0;
@@ -22,7 +23,7 @@ end
 if isempty(sigma_noise)
     % Gaussian i.i.d. noise
     normy0 = norm(cell2mat(y0));
-    sigma_noise = 10^(-input_snr/20) * normy0/sqrt(Nm);
+    sigma_noise = 10^(-input_snr / 20) * normy0 / sqrt(Nm);
     fprintf('\nComputing sigma_noise from input SNR ... \n');
     fprintf('\nsigma_noise = %f \n', sigma_noise);
 else
@@ -30,11 +31,10 @@ else
 %     fprintf('\nsigma_noise = %f \n', sigma_noise);
 end
 
-
 if strcmp(l2_ball_definition, 'value')
     % estimate L2 ball parameter
     epsilon = norm(param.val_eps_v);
-    epsilont = cell(R,1);
+    epsilont = cell(R, 1);
     for q = 1:R
         % this produces a global bound which is greater than the mean by
         % ~sqrt(mean(length(y{:})) (if equal length)
@@ -45,24 +45,24 @@ end
 if strcmp(l2_ball_definition, 'sigma')
     s1 = param.sigma_ball;
     % estimate L2 ball parameter
-    epsilon = sqrt(Nm + s1*sqrt(Nm)) * sigma_noise;
-    epsilont = cell(R,1);
+    epsilon = sqrt(Nm + s1 * sqrt(Nm)) * sigma_noise;
+    epsilont = cell(R, 1);
     for q = 1:R
         % this produces a global bound which is greater than the mean by
         % ~sqrt(mean(length(y{:})) (if equal length)
-        epsilont{q} = sqrt(size(y0{q}, 1) + s1*sqrt(size(y0{q}, 1))) * sigma_noise;
+        epsilont{q} = sqrt(size(y0{q}, 1) + s1 * sqrt(size(y0{q}, 1))) * sigma_noise;
     end
 end
 
 if strcmp(stopping_criterion, 'sigma')
     s2 = param.sigma_stop;
     % estimate L2 ball parameter
-    epsilons = sqrt(Nm + s2*sqrt(Nm)) * sigma_noise;
-    epsilonts = cell(R,1);
+    epsilons = sqrt(Nm + s2 * sqrt(Nm)) * sigma_noise;
+    epsilonts = cell(R, 1);
     for q = 1:R
         % this produces a global bound which is greater than the mean by
         % ~sqrt(mean(length(y{:})) (if equal length)
-        epsilonts{q} = sqrt(size(y0{q}, 1) + s2*sqrt(size(y0{q}, 1))) * sigma_noise;
+        epsilonts{q} = sqrt(size(y0{q}, 1) + s2 * sqrt(size(y0{q}, 1))) * sigma_noise;
     end
 end
 
@@ -70,7 +70,7 @@ if strcmp(l2_ball_definition, 'chi-percentile')
     p1 = param.chi_percentile_ball;
     % estimate L2 ball parameter
     epsilon = sqrt(chi2inv(p1, Nm)) * sigma_noise;
-    epsilont = cell(R,1);
+    epsilont = cell(R, 1);
     for q = 1:R
         % this produces a global bound which is greater
         epsilont{q} = sqrt(chi2inv(p1, size(y0{q}, 1))) * sigma_noise;
@@ -81,28 +81,27 @@ if strcmp(stopping_criterion, 'chi-percentile')
     p2 = param.chi_percentile_stop;
     % estimate L2 ball parameter
     epsilons = sqrt(chi2inv(p2, Nm)) * sigma_noise;
-    epsilonts = cell(R,1);
+    epsilonts = cell(R, 1);
     for q = 1:R
        % this produces a global bound which is greater
         epsilonts{q} = sqrt(chi2inv(p2, size(y0{q}, 1))) * sigma_noise;
     end
 end
 
-if strcmp(stopping_criterion, 'l2-ball-percentage' )
+if strcmp(stopping_criterion, 'l2-ball-percentage')
     % estimate L2 ball parameter
     sp = param.l2_ball_percentage_stop;
     epsilons = epsilon * sp;
-    epsilonts = cell(R,1);
+    epsilonts = cell(R, 1);
     for q = 1:R
        % this produces a global bound which is greater
         epsilonts{q} = epsilont{q} * sp;
     end
 end
 
-
 if equal_bounds
-    n1 = norm(cell2mat(epsilont))/epsilon;
-    n2 = norm(cell2mat(epsilonts))/epsilons;
+    n1 = norm(cell2mat(epsilont)) / epsilon;
+    n2 = norm(cell2mat(epsilonts)) / epsilons;
     for q = 1:R
         epsilont{q} = epsilont{q} / n1;
     end
@@ -113,4 +112,3 @@ if equal_bounds
 end
 
 end
-

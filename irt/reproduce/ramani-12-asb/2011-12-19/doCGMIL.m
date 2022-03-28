@@ -11,7 +11,7 @@ rhsn = sqrt(sum(abs(rhs(:)).^2));
 
 %% Compute Az
 Dz = Dinv .* z;
-RAdjz = ( params.R )' * z;
+RAdjz = (params.R)' * z;
 
 GRz = RAdjz / params.mEAWA; % Update solution
 
@@ -24,34 +24,34 @@ p = g;
 itrCG = 1; % CG iteration index
 
 %% CG Iterations
-while(itrCG <= params.MFISTA.nCG)
+while itrCG <= params.MFISTA.nCG
     % Do Ax on p
     Dz = Dinv .* p;
-    RAdjz = ( params.R )' * p;
-    
+    RAdjz = (params.R)' * p;
+
     GRz = RAdjz / params.mEAWA; % Update solution
 
     RGRz =  params.R * GRz;
     Az = Dz + RGRz;
 
     % Calculate update scaling factor
-    temp = sum(conj(p(:)).*Az(:));
-    alphaCG = rho_old/real(temp); %% Adapted to the complex setting <x,y> = sum(x.*y);
-    
+    temp = sum(conj(p(:)) .* Az(:));
+    alphaCG = rho_old / real(temp); %% Adapted to the complex setting <x,y> = sum(x.*y);
+
     % Update estimate and gradient
-    z = z + alphaCG*p;
-    g = g - alphaCG*Az;
+    z = z + alphaCG * p;
+    g = g - alphaCG * Az;
     rho_new = sum(abs(g(:)).^2);
-    
+
     % New residue
-    betaCG = rho_new/rho_old;
-    
+    betaCG = rho_new / rho_old;
+
     % Update Search Direction
-    p = g + betaCG*p;
-    
+    p = g + betaCG * p;
+
     % Book-keeping
     rho_old = rho_new;
     itrCG = itrCG + 1;
-    
+
 end
 rho = sqrt(rho_old);

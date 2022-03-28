@@ -1,17 +1,25 @@
 function [A, At] = op_nu_so_fft2(N, No, scale)
-% Oversampled ftt2 and scaled operator computed by a modified nufft function
+% Oversampled ftt2 and scaled operator computed by a modified NUFFT
+% function.
 %
-% in:
-% N[2]     - size of the reconstruction image
-% No[2]    - oversampled fft from which to recover the non uniform fft via
-% scale[:] - scale parameters precomputed by nufft_init
+% Parameters
+% ----------
+% N : int[2]
+%     Size of the reconstruction image.
+% No : int[2]
+%     Oversampled fft from which to recover the non uniform fft via kernel
+%     convolution.
+% Ns : int[2]
+%     Fft shift.
 %
-% out:
-% A[@]     - function handle for direct operator
-% At[@]    - function handle for adjoint operator
-%%
-%A. Onose, A. Dabbech, Y. Wiaux - An accelerated splitting algorithm for radio-interferometric %imaging: when natural and uniform weighting meet, MNRAS 2017, arXiv:1701.01748
-%https://github.com/basp-group/SARA-PPD
+% Returns
+% -------
+% A : function handle
+%     Function handle for direct operator.
+% At : function handle
+%     Function handle for adjoint operator.
+%
+
 %%
 A = @(x) so_fft2(x, No, scale);
 At = @(x) so_fft2_adj(x, N, No, scale);

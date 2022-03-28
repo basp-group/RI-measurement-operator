@@ -15,7 +15,7 @@ list = {
 'wls_pcg_test'
 'pwls_gca_test'
 'qpwls_pcg2_test'
-%'qpwls_art2_vs_sps' % very slow!
+% 'qpwls_art2_vs_sps' % very slow!
 };
 
-run_mfile_local(list)
+run_mfile_local(list);

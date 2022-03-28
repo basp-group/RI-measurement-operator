@@ -1,8 +1,26 @@
- function y = nufft_sinc(x)
-%function y = nufft_sinc(x)
-%|
-%| my version of "sinc" function, because matlab's sinc() is in a toolbox
-%|
+function y = nufft_sinc(x)
+% J. Fessler's version of "sinc" function, because matlab's ``sinc()`` is 
+% in a toolbox.
+%
+% Parameters
+% ----------
+% x : double[:, ...]
+%     Input array.
+%
+% Returns
+% -------
+% y : double[:, ...]
+%     Evaluation of ``sinc(x)``.
+%
+% Note
+% ----
+% Original code taken from :cite:p:`Fessler2003`, available at https://github.com/JeffFessler/mirt.
+%
+
+% Author: Jeff Fessler, University of Michigan
+%
+
+%%
 %| Copyright 2001-12-8, Jeff Fessler, University of Michigan
 
 if strcmp(x, 'test'), nufft_sinc_test, return, end

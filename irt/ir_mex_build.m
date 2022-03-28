@@ -12,7 +12,7 @@
 % instead of the Matlab command-line "mex" command
 % for compiling on Mac and Linux.
 
-ir_mex_build_mri
-ir_mex_build_table
+ir_mex_build_mri;
+ir_mex_build_table;
 
 % todo: ir_mex_build_penal

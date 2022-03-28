@@ -1,6 +1,6 @@
 function [rhoval, tE] = rho_Log(x, params)
 %
-% Evaluate the Logarithmic 'rho' in the paper 
+% Evaluate the Logarithmic 'rho' in the paper
 % "Highly Undersampled MRI Reconstruction" by Tryasko et al, IEEE TMI
 %
 % x      ->      Point at which rho needs to be evaluated
@@ -12,5 +12,5 @@ sigma = params.Prior.sigma;
 den = params.Prior.den;
 
 tS = tic;
-rhoval = log(x/sigma + 1)/den;
+rhoval = log(x / sigma + 1) / den;
 tE = toc(tS);

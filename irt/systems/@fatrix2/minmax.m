@@ -1,3 +1,3 @@
 function minmax(ob)
 
-minmax(struct(ob))
+minmax(struct(ob));

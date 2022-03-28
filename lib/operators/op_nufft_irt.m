@@ -1,23 +1,40 @@
 function [A, At, Gw, scale] = op_nufft_irt(p, N, Nn, No, Ns, kernel)
-% Create the nonuniform gridding matrix and fft operators
+% Create the nonuniform gridding matrix and fft operators (based on
+% ``nufft_init``).
 %
-% in:
-% p[2]    - nonuniformly distributed frequency location points
-% N[2]    - size of the reconstruction image
-% Nn[2]   - size of the kernels (number of neighbors considered on each direction)
-% No[2]   - oversampled fft from which to recover the non uniform fft via
-%           kernel convolution
-% Ns[2]   - fft shift
+% Parameters
+% ----------
+% p : double[:, 2]
+%     Non-uniformly distributed frequency location points.
+% N : int[2]
+%     Size of the reconstruction image.
+% Nn : int[2]
+%     Size of the kernels (number of neighbors considered on each
+%     direction).
+% No : int[2]
+%     Oversampled fft from which to recover the non uniform fft via kernel
+%     convolution.
+% Ns : int[2]
+%     Fft shift.
 %
-% out:
-% A[@]          - function handle for direct operator
-% At[@]         - function handle for adjoint operator
-% Gw[:][:]      - global convolution kernel matrix
-% scale[:][:]   - scale paremters for the oversampled FFT
-
+% Returns
+% -------
+% A : Function handle
+%     Function handle for direct operator.
+% At : function handle
+%     Function handle for adjoint operator.
+% Gw : double[:, :]
+%     Global convolution kernel matrix.
+% scale : double[:, :]
+%     Scale paremters for the oversampled FFT.
+% kernel : string
+%     Selected interpolator (among ``'minmax:kb'``, ``'minmax:tuned'`` and
+%     ``'kaiser'``, see :mat:func:`nufft.compute_interp_coeffs_extended`
+%     for associated kernel documentation). Recommended default is
+%     ``'minmax:kb'``.
+%
 
 %% compute the overall gridding matrix and its associated kernels
-
 st = nufft_init(p, N, Nn, No, Ns, kernel);
 scale = st.sn;
 
@@ -32,4 +49,3 @@ end
 Gw = st.p;
 
 end
-

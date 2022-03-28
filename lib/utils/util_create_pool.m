@@ -1,12 +1,15 @@
-function util_create_pool(NumWorkers, cores)
-%%
-%A. Onose, A. Dabbech, Y. Wiaux - An accelerated splitting algorithm for radio-interferometric %imaging: when natural and uniform weighting meet, MNRAS 2017, arXiv:1701.01748
-%https://github.com/basp-group/SARA-PPD
-%%
-% opens a new paralel pool with NumWorkers workers
-% if a similar pool already exists it keeps it
+function util_create_pool(NumWorkers)
+% Opens a new paralel pool with `NumWorkers` workers. If a similar pool
+% already exists, keeps the existing pool.
+%
+% Parameters
+% ----------
+% NumWorkers : int
+%     Numer of workers in the parallel pool.
+%
 
-global create_pool_name;
+%%
+global create_pool_name
 if isempty(create_pool_name)
     create_pool_name = 'local';
 end

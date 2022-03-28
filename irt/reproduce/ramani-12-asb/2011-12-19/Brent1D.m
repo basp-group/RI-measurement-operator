@@ -16,13 +16,13 @@ Brentb = abcf(3); % brentmaxlam*nv; //cx
 Brentbx = abcf(2); % brentlammid*nv; // bx : ax<bx<cx such that f(ax)>f(bx)<f(cx)
 measbx = abcf(5); % meas of the chosen method at bx
 
-Brentx = Brentbx; 
-Brentw = Brentbx; 
+Brentx = Brentbx;
+Brentw = Brentbx;
 Brentv = Brentbx;
 
 % Brent initialization (meas at bx, the mid point and the least meas so far)
-Brentfw = measbx; 
-Brentfv = measbx; 
+Brentfw = measbx;
+Brentfv = measbx;
 Brentfx = measbx;
 
 itrb = 0;
@@ -30,103 +30,103 @@ itrb = 0;
 disp(['             Itrb=' int2str(itrb) '; stepsize = ' num2str(Brentbx) '; measVAL = ' num2str(measbx)]);
 
 % Start BRENT ITERATIONS
-Brentxm = Brentx; 
-Brenttol2 = 0.0; 
+Brentxm = Brentx;
+Brenttol2 = 0.0;
 Brentd = 0.0;
-while((itrb<maxBitr) && (abs(Brentx-Brentxm)>=Brenttol2-0.5*(Brentb-Brenta))) % Main loop that tests for DONE here
+while (itrb < maxBitr) && (abs(Brentx - Brentxm) >= Brenttol2 - 0.5 * (Brentb - Brenta))  % Main loop that tests for DONE here
 
-        Brentxm = 0.5*(Brenta + Brentb);
-        Brenttol1 = Brenttol*abs(Brentx) + EPSL;
-        Brenttol2 = 2.0*Brenttol1;
+        Brentxm = 0.5 * (Brenta + Brentb);
+        Brenttol1 = Brenttol * abs(Brentx) + EPSL;
+        Brenttol2 = 2.0 * Brenttol1;
 
-        if(abs(Brente) > Brenttol1)
+        if abs(Brente) > Brenttol1
             % Construct a trial parabolic fit
-            Brentr = (Brentx - Brentw)*(Brentfx - Brentfv);
-            Brentq = (Brentx - Brentv)*(Brentfx - Brentfw);
-            Brentp = (Brentx - Brentv)*Brentq - (Brentx - Brentw)*Brentr;
+            Brentr = (Brentx - Brentw) * (Brentfx - Brentfv);
+            Brentq = (Brentx - Brentv) * (Brentfx - Brentfw);
+            Brentp = (Brentx - Brentv) * Brentq - (Brentx - Brentw) * Brentr;
 
-            Brentq = 2.0*(Brentq - Brentr);
-            
-            if(Brentq > 0.0) 
+            Brentq = 2.0 * (Brentq - Brentr);
+
+            if Brentq > 0.0
                 Brentp = -Brentp;
             end
 
-            Brentq = abs(Brentq); 
-            Brentetemp = Brente; 
+            Brentq = abs(Brentq);
+            Brentetemp = Brente;
             Brente = Brentd;
 
             % The condition below determine the acceptability of the parabolic fit.
-            if((abs(Brentp) >= abs(0.5*Brentq*Brentetemp)) || (Brentp <= Brentq*(Brenta - Brentx)) || Brentp >= Brentq*(Brentb - Brentx)) 
+            if (abs(Brentp) >= abs(0.5 * Brentq * Brentetemp)) || (Brentp <= Brentq * (Brenta - Brentx)) || Brentp >= Brentq * (Brentb - Brentx)
                 % Here we take the golden section step  into the larger of the two segments.
-                if(Brentx >= Brentxm)	
+                if Brentx >= Brentxm
                     Brente = Brenta - Brentx;
                 else
                     Brente = Brentb - Brentx;
                 end
-                Brentd = CGOLD*Brente;
+                Brentd = CGOLD * Brente;
             else % If good, take the parabolic step.
-                Brentd = Brentp/Brentq;
+                Brentd = Brentp / Brentq;
                 Brentu = Brentx + Brentd;
-                if((Brentu - Brenta < Brenttol2) || (Brentb - Brentu < Brenttol2))
-                    Brentd = Brenttol1*(Brentxm-Brentx)/abs(Brentxm-Brentx);
+                if (Brentu - Brenta < Brenttol2) || (Brentb - Brentu < Brenttol2)
+                    Brentd = Brenttol1 * (Brentxm - Brentx) / abs(Brentxm - Brentx);
                 end
             end
         else % If the trial parabolic fit was not good, use the Golden Ratio method
-            if(Brentx >= Brentxm)
+            if Brentx >= Brentxm
                 Brente = Brenta - Brentx;
             else
                 Brente = Brentb - Brentx;
             end
-            Brentd = CGOLD*Brente;
+            Brentd = CGOLD * Brente;
         end
 
-        if(abs(Brentd) >= Brenttol1)	
+        if abs(Brentd) >= Brenttol1
             Brentu = Brentx + Brentd;
         else
-            Brentu = Brentx + Brenttol1*Brentd/abs(Brentd);
+            Brentu = Brentx + Brenttol1 * Brentd / abs(Brentd);
         end
 
         % Compute the meas for the chosen step size Brentu
         t1 = clock;
-        
+
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         Brentfu = computemeasure(Brentu, params_temp);
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        
-        te = clock-t1;
-        te = te(1)*0 + te(2)*0 + te(3)*86400 + te(4)*3600 + te(5)*60 + te(6);
-        
+
+        te = clock - t1;
+        te = te(1) * 0 + te(2) * 0 + te(3) * 86400 + te(4) * 3600 + te(5) * 60 + te(6);
+
 %         disp('--------------------------------------------------------------------');
-        disp(['             Itrb=' int2str(itrb+1) '; stepsize = ' num2str(Brentu) '; measVAL = ' num2str(Brentfu) '; Time = ' num2str(te)]);
-        
+        disp(['             Itrb=' int2str(itrb + 1) '; stepsize = ' num2str(Brentu) '; measVAL = ' num2str(Brentfu) '; Time = ' num2str(te)]);
+
         % Now decide what to do with our function evaluation.
-        if(Brentfu <= Brentfx) % House keeping...
-                if(Brentu >= Brentx)	
+        if Brentfu <= Brentfx  % House keeping...
+                if Brentu >= Brentx
                     Brenta = Brentx;
                 else
                     Brentb = Brentx;
                 end
 
-                Brentv = Brentw;	
+                Brentv = Brentw;
                 Brentfv = Brentfw;
-                
+
                 Brentw = Brentx;
                 Brentfw = Brentfx;
-                
+
                 Brentx = Brentu;
                 Brentfx = Brentfu;
         else
-            if(Brentu < Brentx)	
+            if Brentu < Brentx
                 Brenta = Brentu;
             else
                 Brentb = Brentu;
             end
 
-            if((Brentfu <= Brentfw) || (Brentw == Brentx)) 
-                Brentv = Brentw;	Brentfv = Brentfw;
-                Brentw = Brentu;	Brentfw = Brentfu;
-            elseif((Brentfu <= Brentfv) || (Brentv == Brentx) || (Brentv == Brentw))
-                    Brentv = Brentu;	Brentfv = Brentfu;
+            if (Brentfu <= Brentfw) || (Brentw == Brentx)
+                Brentv = Brentw;    Brentfv = Brentfw;
+                Brentw = Brentu;    Brentfw = Brentfu;
+            elseif (Brentfu <= Brentfv) || (Brentv == Brentx) || (Brentv == Brentw)
+                    Brentv = Brentu;    Brentfv = Brentfu;
             end
         end
         itrb = itrb + 1;

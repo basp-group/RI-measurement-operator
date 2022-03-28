@@ -1,5 +1,5 @@
-function [UVW] = uvTrack(h, d, az, el, lat, dec, nstep) 
-%%code to simulate continuous uv coverage with tracking from
+function [UVW] = uvTrack(h, d, az, el, lat, dec, nstep)
+%% code to simulate continuous uv coverage with tracking from
 % http://www.astro.umd.edu/~cychen/MATLAB/ASTR410/uvAndBeams.html#5
 
 %% Calculate a uv track for a single antenna pair
@@ -13,7 +13,7 @@ function [UVW] = uvTrack(h, d, az, el, lat, dec, nstep)
 %   dec; source declination [rad]
 %   nstep; number of steps in calculation
 % Output
-%   matrix with u, v, w in columns. 
+%   matrix with u, v, w in columns.
 %
 % AH 2010.3.16
 
@@ -25,6 +25,5 @@ UVW = zeros(nstep, 3); % u, v, w columns
 %% Calculations
 for i = 1:nstep
 %     baseline2xyz(d, az, el, lat)
-    UVW(i,:) = (xyz2uvw(h(i), dec) * baseline2xyz(d, az, el, lat))';
+    UVW(i, :) = (xyz2uvw(h(i), dec) * baseline2xyz(d, az, el, lat))';
 end
-

@@ -1,5 +1,5 @@
  function [mag, ang] = mag_angle_real(x, cutoff)
-%function [mag, ang] = mag_angle_real(x, cutoff)
+% function [mag, ang] = mag_angle_real(x, cutoff)
 %
 % compute the "magnitude" and "phase" of a complex number
 % that is "almost" real.  so if the phase is "close" to +/- pi,
@@ -10,9 +10,9 @@
 %
 % 2003-10-17, Jeff Fessler, The University of Michigan
 
-if nargin < 1, ir_usage, end
+if nargin < 1; ir_usage; end
 if ~isvar('cutoff') || isempty(cutoff)
-	cutoff = 0.6*pi;	% this "close" to +/- pi
+    cutoff = 0.6 * pi;    % this "close" to +/- pi
 end
 
 mag = abs(x);

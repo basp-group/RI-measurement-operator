@@ -1,5 +1,5 @@
  function ob = ctranspose(ob)
-%function ob = ctranspose(ob)
+% function ob = ctranspose(ob)
 % "ctranspose" method for Fatrix class
 
 ob.is_transpose = ~ob.is_transpose;
