@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lib.utils &mdash; RI-measurement-operator 0-66-g4cfadfa documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="nufft package" href="../nufft.html" />
+    <link rel="prev" title="lib.operators" href="lib.operators.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RI-measurement-operator
+          </a>
+              <div class="version">
+                0-66-g4cfadfa
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation &amp; references</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../biblio.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="lib.html">lib package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lib.operators.html">lib.operators</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">lib.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nufft.html">nufft package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RI-measurement-operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="lib.html">lib package</a> &raquo;</li>
+      <li>lib.utils</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_lib/lib.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lib-utils">
+<h1>lib.utils<a class="headerlink" href="#lib-utils" title="Permalink to this headline"></a></h1>
+<p>Collection of various utility functions supporting the main functionalities of the library.</p>
+<span class="target" id="module-lib.utils"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="lib.utils.afclean">
+<span class="sig-prename descclassname"><span class="pre">lib.utils.</span></span><span class="sig-name descname"><span class="pre">afclean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fh</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.utils.afclean" title="Permalink to this definition"></a></dt>
+<dd><p>Tries to purge an anonymous function of all non-essential
+workspace data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fh</strong> (<em>function handle</em>) – Input function handle to be cleansed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>fh_clean</strong> – The same as fh, but with its workspace reduced to the essential
+variables.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>function handle</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fh_clean</span> <span class="o">=</span> <span class="n">afclean</span><span class="p">(</span><span class="n">fh</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Function retrieved from: Matt J (2021). Memory-efficient anonymous functions (<a class="reference external" href="https://www.mathworks.com/matlabcentral/fileexchange/45749-memory-efficient-anonymous-functions">https://www.mathworks.com/matlabcentral/fileexchange/45749-memory-efficient-anonymous-functions</a>),
+MATLAB Central File Exchange. Retrieved October 17, 2021.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>DISCLAIMERS (from the original author): The cleaning process will break
+anonymous functions that call nested functions or subfunctions.
+Unfortunately also, the implementation of AFCLEAN relies on a certain
+amount of undocumented MATLAB, in particular the FUNCTIONS command whose
+behavior in future releases of MATLAB, The MathWorks doesn’t guarantee.
+It also makes heavy use of EVAL. When the tool works, it seems to work
+well, but use at your own risk!</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.utils.solver_find_elipse_point">
+<span class="sig-prename descclassname"><span class="pre">lib.utils.</span></span><span class="sig-name descname"><span class="pre">solver_find_elipse_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">pU</span></em>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">T</span></em>, <em class="sig-param"><span class="pre">xsol</span></em>, <em class="sig-param"><span class="pre">v2</span></em>, <em class="sig-param"><span class="pre">W</span></em>, <em class="sig-param"><span class="pre">epsilont</span></em>, <em class="sig-param"><span class="pre">max_iterations</span></em>, <em class="sig-param"><span class="pre">min_iterations</span></em>, <em class="sig-param"><span class="pre">eps</span></em>, <em class="sig-param"><span class="pre">use_fb</span></em>, <em class="sig-param"><span class="pre">max_no_el</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.utils.solver_find_elipse_point" title="Permalink to this definition"></a></dt>
+<dd><p>Generate an initial point to initialize <code class="docutils literal notranslate"><span class="pre">solver_proj_elipse_fb</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>cell{:} of complex[:]</em>) – Input data. Each cell entry corresponds to a data block.</p></li>
+<li><p><strong>pU</strong> (<em>cell{:} of double[:]</em>) – Diagonal preconditioner (encoded as a vector) involved in the
+definition of the ellipsoid.</p></li>
+<li><p><strong>A</strong> (<em>anonymous function</em>) – Function handle representing the measurement operator.</p></li>
+<li><p><strong>T</strong> (<em>cell{:} of double[:]</em>) – Noise whitening diagonal matrices (encoded as vectors) associated
+with each data block. Each cell entry corresponds to a data block.</p></li>
+<li><p><strong>xsol</strong> (<em>double[:, :]</em>) – Inital image estimate.</p></li>
+<li><p><strong>v2</strong> (<em>cell{:} of complex[:]</em>) – Data-fidelity dual variables associated with each data block.</p></li>
+<li><p><strong>W</strong> (<em>cell{:} of bool[:]</em>) – Cell of boolean vector indicating the global position of each data
+point in the full Fourier space (undo blocking).</p></li>
+<li><p><strong>epsilont</strong> (<em>cell{:} of double</em>) – Radius of the ellispoid.</p></li>
+<li><p><strong>max_iterations</strong> (<em>int</em>) – Maximum number of iterations.</p></li>
+<li><p><strong>min_iterations</strong> (<em>int</em>) – Minimum number of iterations.</p></li>
+<li><p><strong>eps</strong> (<em>double</em>) – Stopping criterion tolerance (relative variation in norm between two
+consecutive iterates).</p></li>
+<li><p><strong>use_fb</strong> (<em>bool</em>) – Flag to use a forward-backward algorithm.</p></li>
+<li><p><strong>max_no_el</strong> (<em>int</em>) – Maximum number of elements per block (?).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>proj</strong> – Projection of the data <cite>y</cite> onto the ellipsoid considered.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>double[:]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Deprecated function, still used in <span id="id1">[<a class="reference internal" href="../biblio.html#id6" title="A. Onose, A. Dabbech, and Y. Wiaux. An accelerated splitting algorithm for radio-interferometric imaging: when natural and uniform weighting meet. Monthly Notices of the Royal Astronomical Society, 469(1):938–949, 2017.">Onose2017</a>]</span>,
+<a class="reference external" href="https://github.com/basp-group/SARA-PPD">https://github.com/basp-group/SARA-PPD</a>.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.utils.solver_proj_elipse_fb">
+<span class="sig-prename descclassname"><span class="pre">lib.utils.</span></span><span class="sig-name descname"><span class="pre">solver_proj_elipse_fb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">v2</span></em>, <em class="sig-param"><span class="pre">r2</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">U</span></em>, <em class="sig-param"><span class="pre">epsilont</span></em>, <em class="sig-param"><span class="pre">z0</span></em>, <em class="sig-param"><span class="pre">max_itr</span></em>, <em class="sig-param"><span class="pre">min_itr</span></em>, <em class="sig-param"><span class="pre">eps</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.utils.solver_proj_elipse_fb" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the projection of <cite>v2 + r2</cite> onto the <span class="math notranslate nohighlight">\(\ell_2\)</span> ball
+centered in <cite>y</cite>, of radius <cite>epsilont</cite> with respect to the norm
+induced by the diagonal preconditioner <cite>U</cite> with the forward-backward
+algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v2</strong> (<em>complex[:]</em>) – Part of the input point to be projected onto the ellipsoid.</p></li>
+<li><p><strong>r2</strong> (<em>complex[:]</em>) – Part of the input point to be projected onto the ellipsoid.</p></li>
+<li><p><strong>y</strong> (<em>complex[:]</em>) – Visibility vector, center of the <span class="math notranslate nohighlight">\(\ell_2\)</span> ball.</p></li>
+<li><p><strong>U</strong> (<em>double[:]</em>) – Diagonal preconditioning matrix (encoded as a vector).</p></li>
+<li><p><strong>epsilont</strong> (<em>double</em>) – Radius of the <span class="math notranslate nohighlight">\(\ell_2\)</span> ball.</p></li>
+<li><p><strong>z0</strong> (<em>complex[:]</em>) – Algorithm starting point.</p></li>
+<li><p><strong>max_itr</strong> (<em>int</em>) – Maximum number of iterations.</p></li>
+<li><p><strong>min_itr</strong> (<em>int</em>) – Minimum number of iterations.</p></li>
+<li><p><strong>eps</strong> (<em>double</em>) – Stopping criterion tolerance (relative variation in norm between two
+consecutive iterates).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>z</strong> (<em>complex[:]</em>) – Projection onto the ellipsoid.</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – Number of iterations required to converge.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.utils.util_create_pool">
+<span class="sig-prename descclassname"><span class="pre">lib.utils.</span></span><span class="sig-name descname"><span class="pre">util_create_pool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">NumWorkers</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.utils.util_create_pool" title="Permalink to this definition"></a></dt>
+<dd><p>Opens a new paralel pool with <cite>NumWorkers</cite> workers. If a similar pool
+already exists, keeps the existing pool.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>NumWorkers</strong> (<em>int</em>) – Numer of workers in the parallel pool.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.utils.util_divisor">
+<span class="sig-prename descclassname"><span class="pre">lib.utils.</span></span><span class="sig-name descname"><span class="pre">util_divisor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.utils.util_divisor" title="Permalink to this definition"></a></dt>
+<dd><p>Provides a list of integer divisors of a number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – Input integer value.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>d</strong> – Row vector of all distinct divisors of the positive integer <cite>n</cite>,
+including 1 and <cite>n</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int[1, :]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">divisor</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">];</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>This function uses the default <cite>factor()</cite> routine in Matlab and hence
+is limited to input values up to <span class="math notranslate nohighlight">\(2^{32}\)</span>. However if <cite>factor()</cite>
+routine does get updated for larger integers, this function will still
+work fine.
+Using <cite>factor()</cite> provides a significant speed improvement over manually
+seaching for the each divisor of <cite>n</cite>.</p></li>
+<li><p>Author: Yash Kochar ( <a class="reference external" href="mailto:yashkochar&#37;&#52;&#48;yahoo&#46;com">yashkochar<span>&#64;</span>yahoo<span>&#46;</span>com</a> )</p></li>
+<li><p>Last modified: 21st June 2009.</p></li>
+</ul>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">factor</span></code>, <code class="xref mat mat-obj docutils literal notranslate"><span class="pre">primes</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.utils.util_gen_L2_bounds">
+<span class="sig-prename descclassname"><span class="pre">lib.utils.</span></span><span class="sig-name descname"><span class="pre">util_gen_L2_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">y0</span></em>, <em class="sig-param"><span class="pre">input_snr</span></em>, <em class="sig-param"><span class="pre">sigma_noise</span></em>, <em class="sig-param"><span class="pre">l2_ball_definition</span></em>, <em class="sig-param"><span class="pre">stopping_criterion</span></em>, <em class="sig-param"><span class="pre">equal_bounds</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.utils.util_gen_L2_bounds" title="Permalink to this definition"></a></dt>
+<dd><p>Generate the <span class="math notranslate nohighlight">\(\ell_2\)</span> bounds for synthetic data experiments</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See <span id="id2">[<a class="reference internal" href="../biblio.html#id6" title="A. Onose, A. Dabbech, and Y. Wiaux. An accelerated splitting algorithm for radio-interferometric imaging: when natural and uniform weighting meet. Monthly Notices of the Royal Astronomical Society, 469(1):938–949, 2017.">Onose2017</a>]</span>, <a class="reference external" href="https://github.com/basp-group/SARA-PPD">https://github.com/basp-group/SARA-PPD</a></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.utils.util_gen_block_structure">
+<span class="sig-prename descclassname"><span class="pre">lib.utils.</span></span><span class="sig-name descname"><span class="pre">util_gen_block_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">uw</span></em>, <em class="sig-param"><span class="pre">vw</span></em>, <em class="sig-param"><span class="pre">aWw</span></em>, <em class="sig-param"><span class="pre">nWw</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.utils.util_gen_block_structure" title="Permalink to this definition"></a></dt>
+<dd><p>Generate data blocks for synthetic data experiments.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See <span id="id3">[<a class="reference internal" href="../biblio.html#id6" title="A. Onose, A. Dabbech, and Y. Wiaux. An accelerated splitting algorithm for radio-interferometric imaging: when natural and uniform weighting meet. Monthly Notices of the Royal Astronomical Society, 469(1):938–949, 2017.">Onose2017</a>]</span>, <a class="reference external" href="https://github.com/basp-group/SARA-PPD">https://github.com/basp-group/SARA-PPD</a></p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.utils.util_gen_preconditioning_matrix">
+<span class="sig-prename descclassname"><span class="pre">lib.utils.</span></span><span class="sig-name descname"><span class="pre">util_gen_preconditioning_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">u</span></em>, <em class="sig-param"><span class="pre">v</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.utils.util_gen_preconditioning_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>Generate the diagnoal preconditioning matrix (accounting for the sampling
+density in the Fourier domain, similarly to uniform weighting
+<span id="id4">[<a class="reference internal" href="../biblio.html#id6" title="A. Onose, A. Dabbech, and Y. Wiaux. An accelerated splitting algorithm for radio-interferometric imaging: when natural and uniform weighting meet. Monthly Notices of the Royal Astronomical Society, 469(1):938–949, 2017.">Onose2017</a>]</span>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>double[:]</em>) – u coordinate of the data point in the Fourier domain.</p></li>
+<li><p><strong>v</strong> (<em>double[:]</em>) – v coordinate of the data points in the Fourier domain.</p></li>
+<li><p><strong>param</strong> (<em>struct</em>) – List of parameters to specify weights generation (can be omitted by
+default).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>aW</strong> – Diagonal preconditioner (uniform weighting), encoded as a vector.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>double[:]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.utils.util_sort_find">
+<span class="sig-prename descclassname"><span class="pre">lib.utils.</span></span><span class="sig-name descname"><span class="pre">util_sort_find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">LowerBound</span></em>, <em class="sig-param"><span class="pre">UpperBound</span></em>, <em class="sig-param"><span class="pre">exactLower</span></em>, <em class="sig-param"><span class="pre">exactUpper</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.utils.util_sort_find" title="Permalink to this definition"></a></dt>
+<dd><p>Fast <span class="math notranslate nohighlight">\(O(\log_2(N))\)</span> computation of the range of indices of <cite>x</cite> that
+satify the upper and lower bound values using the fact that the <cite>x</cite>
+vector is sorted from low to high values. Computation is done via a
+binary search.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>double[:]</em>) – A vector of sorted values from low to high.</p></li>
+<li><p><strong>LowerBound</strong> (<em>double[:]</em>) – Lower boundary on the values of x in the search.</p></li>
+<li><p><strong>UpperBound</strong> (<em>double[:]</em>) – Upper boundary on the values of x in the search.</p></li>
+<li><p><strong>exactLower</strong> (<em>int</em>) – Bool to get values of x greater than LowerBound</p></li>
+<li><p><strong>exactUpper</strong> (<em>int</em>) – Bool to get values of x less than UpperBound</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>lower_index</strong> (<em>int</em>) – The smallest index such that <code class="docutils literal notranslate"><span class="pre">LowerBound&lt;=x(index)&lt;=UpperBound</span></code>.</p></li>
+<li><p><strong>upper_index</strong> (<em>int</em>) – The largest index such that <code class="docutils literal notranslate"><span class="pre">LowerBound&lt;=x(index)&lt;=UpperBound</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lib.operators.html" class="btn btn-neutral float-left" title="lib.operators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../nufft.html" class="btn btn-neutral float-right" title="nufft package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, P.-A. Thouvenin, A. Dabbech, M. Jiang, A. Jackson, Y. Wiaux, A. Abdulaziz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

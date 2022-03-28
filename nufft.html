@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nufft package &mdash; RI-measurement-operator 0-66-g4cfadfa documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="lib.utils" href="_lib/lib.utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> RI-measurement-operator
+          </a>
+              <div class="version">
+                0-66-g4cfadfa
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation &amp; references</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="biblio.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="_lib/lib.html">lib package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">nufft package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RI-measurement-operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>nufft package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/nufft.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="nufft-package">
+<h1>nufft package<a class="headerlink" href="#nufft-package" title="Permalink to this headline"></a></h1>
+<p>Core implementation of the non-uniform Fourier transform (NUFFT), based on <span id="id1">[<a class="reference internal" href="biblio.html#id5" title="Jeffrey A. Fessler and Bradley P. Sutton. Nonuniform fast Fourier transforms using min-max interpolation. IEEE Trans. Signal Process., 51(2):560–574, January 2003.">Fessler2003</a>]</span>.</p>
+<span class="target" id="module-nufft"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.compute_interp_coeffs">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">compute_interp_coeffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">om</span></em>, <em class="sig-param"><span class="pre">Nd</span></em>, <em class="sig-param"><span class="pre">Jd</span></em>, <em class="sig-param"><span class="pre">Kd</span></em>, <em class="sig-param"><span class="pre">n_shift</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.compute_interp_coeffs" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the interpolation coefficients involved in the direct NUFFT
+operator (adapted from original code associated with
+<span id="id2">[<a class="reference internal" href="biblio.html#id5" title="Jeffrey A. Fessler and Bradley P. Sutton. Nonuniform fast Fourier transforms using min-max interpolation. IEEE Trans. Signal Process., 51(2):560–574, January 2003.">Fessler2003</a>]</span>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>om</strong> (<em>double[:, d]</em>) – Non-uniform coordinates of the target of the data points in the
+<span class="math notranslate nohighlight">\(d\)</span>-dimensional Fourier domain.</p></li>
+<li><p><strong>Nd</strong> (<em>int[1, d]</em>) – Input tensor size along each dimension.</p></li>
+<li><p><strong>Jd</strong> (<em>int[1, d]</em>) – Size of the interpolation kernel along each dimension.</p></li>
+<li><p><strong>Kd</strong> (<em>int[1, d]</em>) – Size of the Fourier domain along each dimension.</p></li>
+<li><p><strong>n_shift</strong> (<em>int[1, d]</em>) – Phase-shift along each dimension in Fourier space (expressed in
+number of samples in the Fourier domain).</p></li>
+<li><p><strong>varargin</strong> (<em>{string} or {string, cell, cell}</em>) – User-defined type of kernel, to be selected among the options
+<code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code> (used by default), <code class="docutils literal notranslate"><span class="pre">'minmax:tuned'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'kaiser'</span></code>. Possible options are documented below.</p></li>
+<li><p><strong>ktype</strong> (<code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>) – Minmax interpolator with excellent KB scaling (<code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code> is
+recommended, and used by default).</p></li>
+<li><p><strong>ktype</strong> (<code class="docutils literal notranslate"><span class="pre">'minmax:tuned'</span></code>) – Minmax interpolator, somewhat numerically tuned.</p></li>
+<li><p><strong>ktype</strong> (<code class="docutils literal notranslate"><span class="pre">'kaiser'</span></code>) – Kaiser-bessel (KB) interpolator (using default minmax best <cite>alpha</cite>,
+<cite>m</cite>).</p></li>
+<li><p><strong>ktype, alpha, m</strong> (<code class="docutils literal notranslate"><span class="pre">'kaiser'</span></code>, double[:], double[:]) – Kaiser-bessel (KB) interpolator using the specified values for the
+parameters <cite>alpha</cite> and <cite>m</cite>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>st</strong> – Structure containing the NUFFT scaling coefficients (<code class="docutils literal notranslate"><span class="pre">st.sn</span></code>) and
+Auxiliary parameters to build the NUFFT interpolation matrix
+(<code class="docutils literal notranslate"><span class="pre">st.alpha</span></code>, <code class="docutils literal notranslate"><span class="pre">st.beta</span></code>, <code class="docutils literal notranslate"><span class="pre">st.uu</span></code>).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>struct</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.createG">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">createG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">om</span></em>, <em class="sig-param"><span class="pre">J</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">nshift</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.createG" title="Permalink to this definition"></a></dt>
+<dd><p>Create the gridding matrix <code class="docutils literal notranslate"><span class="pre">G</span></code> to perform the 2D NUFFT.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>om</strong> (<em>double[M, 2]</em>) – Normalized coordinates of the target of the data points in the
+<span class="math notranslate nohighlight">\(d\)</span>-dimensional Fourier domain (uv frequencies) (<code class="docutils literal notranslate"><span class="pre">M</span></code> data
+points).</p></li>
+<li><p><strong>J</strong> (<em>int[1, 2]</em>) – Size of the interpolation kernel along each dimension.</p></li>
+<li><p><strong>N</strong> (<em>int[1, 2]</em>) – Image size along each dimension.</p></li>
+<li><p><strong>K</strong> (<em>int[1, 2]</em>) – Size of the Fourier domain along each dimension.</p></li>
+<li><p><strong>nshift</strong> (<em>int[1, 2]</em>) – Phase-shift along each dimension in Fourier space (expressed in
+number of samples in the Fourier domain).</p></li>
+<li><p><strong>ktype</strong> (<em>string (varargin)</em>) – Selected interpolator (among <code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>, <code class="docutils literal notranslate"><span class="pre">'minmax:tuned'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'kaiser'</span></code>, see <code class="xref mat mat-func docutils literal notranslate"><span class="pre">nufft.compute_interp_coeffs_extended()</span></code>
+for associated kernel documentation). Recommended default is
+<code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>G</strong> (<em>sparse complex[M, prod(K)]</em>) – Sparse de-gridding interpolation matrix involed in the 2D NUFFT.</p></li>
+<li><p><strong>scale</strong> (<em>double[:, :] [N]</em>) – Scaling weights involed in the 2D NUFFT, of size <code class="docutils literal notranslate"><span class="pre">N</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.createG_calib">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">createG_calib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">D</span></em>, <em class="sig-param"><span class="pre">om</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">J</span></em>, <em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">nshift</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.createG_calib" title="Permalink to this definition"></a></dt>
+<dd><p>Create the gridding matrix <code class="docutils literal notranslate"><span class="pre">G</span></code> to perform the 2D NUFFT including DDE
+kernels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>D</strong> (<em>double[:, :]</em>) – DDEs kernels for a single time instant <code class="docutils literal notranslate"><span class="pre">[S2,</span> <span class="pre">na]</span></code>.</p></li>
+<li><p><strong>om</strong> (<em>double[M, 2]</em>) – Normalized coordinates of the target of the data points in the
+<span class="math notranslate nohighlight">\(d\)</span>-dimensional Fourier domain (uv frequencies).</p></li>
+<li><p><strong>N</strong> (<em>int[1, 2]</em>) – Image size along each dimension.</p></li>
+<li><p><strong>K</strong> (<em>int[1, 2]</em>) – Size of the Fourier domain along each dimension.</p></li>
+<li><p><strong>J</strong> (<em>int</em>) – Size of the square interpolation kernel along a single dimension.</p></li>
+<li><p><strong>S</strong> (<em>int</em>) – Size of the square DDE kernels (in the spatial Fourier domain) along
+a single dimension. In the following, <code class="docutils literal notranslate"><span class="pre">S2</span> <span class="pre">=</span> <span class="pre">S^2</span></code>.</p></li>
+<li><p><strong>nshift</strong> (<em>int[1, 2]</em>) – Phase-shift along each dimension in Fourier space (expressed in
+number of samples in the Fourier domain).</p></li>
+<li><p><strong>ktype</strong> (<em>string (varargin)</em>) – Selected interpolator (among <code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>, <code class="docutils literal notranslate"><span class="pre">'minmax:tuned'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'kaiser'</span></code>, see <code class="xref mat mat-func docutils literal notranslate"><span class="pre">nufft.compute_interp_coeffs_extended()</span></code>
+for associated kernel documentation). Recommended default is
+<code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>G</strong> (<em>sparse complex[M, prod(K)]</em>) – Sparse de-gridding interpolation matrix involed in the 2D NUFFT.</p></li>
+<li><p><strong>scale</strong> (<em>double[:, :] [N]</em>) – Scaling weights involed in the 2D NUFFT, of size <code class="docutils literal notranslate"><span class="pre">N</span></code>.</p></li>
+<li><p><strong>ll</strong> (<em>int[:]</em>) – Position of the nonzero values in each row of <code class="docutils literal notranslate"><span class="pre">G</span></code>.</p></li>
+<li><p><strong>v</strong> (<em>double[Q2, M]</em>) – convolutions between the DDE kernels (<code class="docutils literal notranslate"><span class="pre">Q2</span> <span class="pre">=</span> <span class="pre">(2</span> <span class="pre">*</span> <span class="pre">S</span> <span class="pre">-</span> <span class="pre">1)^2</span></code>).</p></li>
+<li><p><strong>V</strong> (<em>double[Q2, J2, M]</em>) – values contained in <code class="docutils literal notranslate"><span class="pre">G</span></code> (<code class="docutils literal notranslate"><span class="pre">J2</span> <span class="pre">=</span> <span class="pre">J^2</span></code>).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.kaiser_bessel">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">kaiser_bessel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">J</span></em>, <em class="sig-param"><span class="pre">alpha</span></em>, <em class="sig-param"><span class="pre">kb_m</span></em>, <em class="sig-param"><span class="pre">K_N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.kaiser_bessel" title="Permalink to this definition"></a></dt>
+<dd><p>Generalized Kaiser-Bessel function for <code class="docutils literal notranslate"><span class="pre">x</span></code> in support [-J/2,J/2]
+shape parameter “alpha” (default 2.34 J)
+order parameter “kb_m” (default 0)
+see (A1) in lewitt:90:mdi, JOSA-A, Oct. 1990</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>double[M, 1]</em>) – Arguments.</p></li>
+<li><p><strong>J</strong> (<em>int[:]</em>) – Number of neighbors.</p></li>
+<li><p><strong>alpha</strong> – Parameters of the interpolation kernel.</p></li>
+<li><p><strong>kb_m</strong> – Parameters of the interpolation kernel.</p></li>
+<li><p><strong>K_N</strong> – Parameters of the interpolation kernel.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>kb</strong> (<em>[M, 1]</em>) –      KB function values, if <code class="docutils literal notranslate"><span class="pre">x</span></code> is numbers, or <code class="docutils literal notranslate"><span class="pre">string</span></code> for
+<code class="docutils literal notranslate"><span class="pre">kernel(k,J)</span></code>,  if <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <code class="docutils literal notranslate"><span class="pre">string</span></code>, or inline function, if
+<code class="docutils literal notranslate"><span class="pre">x</span></code> is <code class="docutils literal notranslate"><span class="pre">inline</span></code>.</p></li>
+<li><p><em>alpha</em> – Parameters of the interpolation kernel.</p></li>
+<li><p><em>kb_m</em> – Parameters of the interpolation kernel.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.kaiser_bessel_ft">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">kaiser_bessel_ft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">u</span></em>, <em class="sig-param"><span class="pre">J</span></em>, <em class="sig-param"><span class="pre">alpha</span></em>, <em class="sig-param"><span class="pre">kb_m</span></em>, <em class="sig-param"><span class="pre">d</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.kaiser_bessel_ft" title="Permalink to this definition"></a></dt>
+<dd><p>Fourier transform of generalized Kaiser-Bessel function,
+in dimension <code class="docutils literal notranslate"><span class="pre">d</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> –      frequency arguments
+or ‘string’ to return function string
+or ‘handle’ to return function handle</p></li>
+<li><p><strong>J</strong> (<em>int</em>) – Default 6.</p></li>
+<li><p><strong>alpha</strong> (<em>double</em>) – Shape parameter. Default <code class="docutils literal notranslate"><span class="pre">2.34</span> <span class="pre">*</span> <span class="pre">J</span></code>.</p></li>
+<li><p><strong>kb_m</strong> (<em>int</em>) – Order parameter. Default 0.</p></li>
+<li><p><strong>d</strong> (<em>int</em>) – Number of dimensions considered. Default 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – Transform values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>complex[M, 1]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Original code taken from <span id="id3">[<a class="reference internal" href="biblio.html#id5" title="Jeffrey A. Fessler and Bradley P. Sutton. Nonuniform fast Fourier transforms using min-max interpolation. IEEE Trans. Signal Process., 51(2):560–574, January 2003.">Fessler2003</a>]</span>, available at <a class="reference external" href="https://github.com/JeffFessler/mirt">https://github.com/JeffFessler/mirt</a>. See (A3) in lewitt:90:mdi, JOSA-A, Oct. 1990.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.nufft_T">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">nufft_T</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">J</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">alpha</span></em>, <em class="sig-param"><span class="pre">beta</span></em>, <em class="sig-param"><span class="pre">use_true_diric</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.nufft_T" title="Permalink to this definition"></a></dt>
+<dd><p>Precompute the matrix <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">=</span> <span class="pre">[C'</span> <span class="pre">S</span> <span class="pre">S'</span> <span class="pre">C]\inv</span></code> used in NUFFT. This can be
+precomputed, being independent of frequency location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>int[:]</em>) – Signal length.</p></li>
+<li><p><strong>J</strong> (<em>int[:]</em>) – Number of neighbors.</p></li>
+<li><p><strong>K</strong> (<em>int[:]</em>) – FFT length.</p></li>
+<li><p><strong>tol</strong> (<em>double</em>) – Tolerance for smallest eigenvalue.</p></li>
+<li><p><strong>alpha</strong> (<em>double[L+1, 1]</em>) – Fourier coefficient vector for scaling.</p></li>
+<li><p><strong>beta</strong> (<em>double[:]</em>) – Scale <code class="docutils literal notranslate"><span class="pre">gamma</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">pi</span> <span class="pre">/</span> <span class="pre">K</span></code> by this for Fourier series.</p></li>
+<li><p><strong>use_true_diric</strong> (<em>bool</em>) – Use true Diric function (default is to use sinc approximation).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>T</strong> – Precomputed matrix.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>double[J, J]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.nufft_alpha_kb_fit">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">nufft_alpha_kb_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">J</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.nufft_alpha_kb_fit" title="Permalink to this definition"></a></dt>
+<dd><p>Return the alpha and beta corresponding to LS fit of L components
+to optimized Kaiser-Bessel scaling factors (<code class="docutils literal notranslate"><span class="pre">m=0</span></code>, <code class="docutils literal notranslate"><span class="pre">alpha=2.34*J</span></code>).
+This is the best method known by J. Fessler currently for choosing alpha.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>int[:]</em>) – Signal length.</p></li>
+<li><p><strong>J</strong> (<em>int[:]</em>) – Number of neighbors.</p></li>
+<li><p><strong>K</strong> (<em>int[:]</em>) – FFT length.</p></li>
+<li><p><strong>varargin</strong> (<em>option, [1]</em>) –      Specify the <code class="docutils literal notranslate"><span class="pre">Nmid</span></code> midpoint: <code class="docutils literal notranslate"><span class="pre">floor(N/2)</span></code> or default
+<code class="docutils literal notranslate"><span class="pre">(N-1)/2</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>alphas</strong> (<em>complex[:]</em>) – Parameters of the interpolation kernel.</p></li>
+<li><p><strong>beta</strong> (<em>double[:]</em>) – Parameters of the interpolation kernel.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Original code taken from <span id="id4">[<a class="reference internal" href="biblio.html#id5" title="Jeffrey A. Fessler and Bradley P. Sutton. Nonuniform fast Fourier transforms using min-max interpolation. IEEE Trans. Signal Process., 51(2):560–574, January 2003.">Fessler2003</a>]</span>, available at <a class="reference external" href="https://github.com/JeffFessler/mirt">https://github.com/JeffFessler/mirt</a>.</p>
+</div>
+</dd></dl>
+
+<dl class="mat script">
+<dt class="sig sig-object mat" id="nufft.nufft_coef">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">nufft_coef</span></span><a class="headerlink" href="#nufft.nufft_coef" title="Permalink to this definition"></a></dt>
+<dd><p>NUFFT interpolation coefficient vectors for a given kernel function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>om</strong> (<em>double[M, 1]</em>) – Digital frequency omega in radians.</p></li>
+<li><p><strong>J</strong> (<em>int</em>) – Number of neighbors used per frequency location.</p></li>
+<li><p><strong>K</strong> (<em>_type_</em>) – FFT size (should be &gt;= N, the signal length).</p></li>
+<li><p><strong>kernel</strong> (<em>function handle</em>) – Kernel function handle.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>coef</strong> (<em>double[J, M]</em>) – Coef. vector for each frequency.</p></li>
+<li><p><strong>arg</strong> (<em>double[J, M]</em>) – Kernel argument.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Original code taken from <span id="id5">[<a class="reference internal" href="biblio.html#id5" title="Jeffrey A. Fessler and Bradley P. Sutton. Nonuniform fast Fourier transforms using min-max interpolation. IEEE Trans. Signal Process., 51(2):560–574, January 2003.">Fessler2003</a>]</span>, available at <a class="reference external" href="https://github.com/JeffFessler/mirt">https://github.com/JeffFessler/mirt</a>.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.nufft_diric">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">nufft_diric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">k</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">use_true_diric</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.nufft_diric" title="Permalink to this definition"></a></dt>
+<dd><p>“Regular fourier” Dirichlet-function WITHOUT phase
+<code class="docutils literal notranslate"><span class="pre">nufft_diric(t)</span> <span class="pre">=</span> <span class="pre">sin(pi</span> <span class="pre">N</span> <span class="pre">t</span> <span class="pre">/</span> <span class="pre">K)</span> <span class="pre">/</span> <span class="pre">(</span> <span class="pre">N</span> <span class="pre">*</span> <span class="pre">sin(pi</span> <span class="pre">t</span> <span class="pre">/</span> <span class="pre">K)</span> <span class="pre">)</span>
+<span class="pre">\approx</span> <span class="pre">sinc(t</span> <span class="pre">/</span> <span class="pre">(K/N))</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> (<em>double[…]</em>) – Sample locations (unitless real numbers)</p></li>
+<li><p><strong>N</strong> (<em>int[…]</em>) – Signal length.</p></li>
+<li><p><strong>K</strong> (<em>int[…]</em>) – FFT length.</p></li>
+<li><p><strong>use_true_diric</strong> (<em>bool</em>) – Use true Diric function (default is to use sinc approximation).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>f</strong> – Corresponding function values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>double[…]</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Caution:
+- matlab’s version is different: <code class="docutils literal notranslate"><span class="pre">sin(N</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">/</span> <span class="pre">2)</span> <span class="pre">/</span> <span class="pre">(N</span> <span class="pre">*</span> <span class="pre">sin(x</span> <span class="pre">/</span> <span class="pre">2))</span></code>
+- <code class="docutils literal notranslate"><span class="pre">nufft_diric()</span></code> is <code class="docutils literal notranslate"><span class="pre">K</span></code>-periodic for odd <code class="docutils literal notranslate"><span class="pre">N</span></code> but <code class="docutils literal notranslate"><span class="pre">2K</span></code>-periodic
+for even <code class="docutils literal notranslate"><span class="pre">N</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Original code taken from <span id="id6">[<a class="reference internal" href="biblio.html#id5" title="Jeffrey A. Fessler and Bradley P. Sutton. Nonuniform fast Fourier transforms using min-max interpolation. IEEE Trans. Signal Process., 51(2):560–574, January 2003.">Fessler2003</a>]</span>, available at <a class="reference external" href="https://github.com/JeffFessler/mirt">https://github.com/JeffFessler/mirt</a>.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.nufft_offset">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">nufft_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">om</span></em>, <em class="sig-param"><span class="pre">J</span></em>, <em class="sig-param"><span class="pre">K</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.nufft_offset" title="Permalink to this definition"></a></dt>
+<dd><p>Offset for NUFFT.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>om</strong> (<em>double[M, 1]</em>) – omega (radians), typically in <span class="math notranslate nohighlight">\([-\pi, \pi)\)</span> (not essential!)</p></li>
+<li><p><strong>J</strong> (<em>int[1, d]</em>) – Number of neighbors used for NUFFT interpolation.</p></li>
+<li><p><strong>K</strong> (<em>int[1, d]</em>) – FFT size along each domension.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>k0</strong> – Prepared for <code class="docutils literal notranslate"><span class="pre">mod(k0</span> <span class="pre">+</span> <span class="pre">[1:J],</span> <span class="pre">K)</span></code> (<code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">1</span></code> for matlab).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int[M,1]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Original code taken from <span id="id7">[<a class="reference internal" href="biblio.html#id5" title="Jeffrey A. Fessler and Bradley P. Sutton. Nonuniform fast Fourier transforms using min-max interpolation. IEEE Trans. Signal Process., 51(2):560–574, January 2003.">Fessler2003</a>]</span>, available at <a class="reference external" href="https://github.com/JeffFessler/mirt">https://github.com/JeffFessler/mirt</a>.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.nufft_r">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">nufft_r</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">om</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">J</span></em>, <em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">alpha</span></em>, <em class="sig-param"><span class="pre">beta</span></em>, <em class="sig-param"><span class="pre">use_true_diric</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.nufft_r" title="Permalink to this definition"></a></dt>
+<dd><p>Make NUFFT <code class="docutils literal notranslate"><span class="pre">r</span></code> vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>om</strong> (<em>double[M, d]</em>) – Digital frequency omega in radians.</p></li>
+<li><p><strong>N</strong> (<em>int[1, d]</em>) – Signal length.</p></li>
+<li><p><strong>J</strong> (<em>int[1, d]</em>) – Number of neighbors used per frequency location.</p></li>
+<li><p><strong>K</strong> (<em>int[1, d]</em>) – FFT size (should be <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">N</span></code>)</p></li>
+<li><p><strong>alpha</strong> (<em>complex[0:L]</em>) – Fourier series coefficients of scaling factors.</p></li>
+<li><p><strong>beta</strong> (<em>double[:]</em>) – Scale <code class="docutils literal notranslate"><span class="pre">gamma=2pi./K</span></code> by this in Fourier series, typically is <code class="docutils literal notranslate"><span class="pre">K./N</span></code>
+<span id="id8">[<a class="reference internal" href="biblio.html#id5" title="Jeffrey A. Fessler and Bradley P. Sutton. Nonuniform fast Fourier transforms using min-max interpolation. IEEE Trans. Signal Process., 51(2):560–574, January 2003.">Fessler2003</a>]</span> or 0.5 (Liu)</p></li>
+<li><p><strong>use_true_diric</strong> (<em>bool</em>) – Optional flag for debugging purposes (defaults to false).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>rr</strong> (<em>double[J, M]</em>) – <code class="docutils literal notranslate"><span class="pre">r</span></code> vector for each frequency</p></li>
+<li><p><strong>arg</strong> (<em>double[J, M]</em>) – Dirac argument for <code class="docutils literal notranslate"><span class="pre">t=0</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Original code taken from <span id="id9">[<a class="reference internal" href="biblio.html#id5" title="Jeffrey A. Fessler and Bradley P. Sutton. Nonuniform fast Fourier transforms using min-max interpolation. IEEE Trans. Signal Process., 51(2):560–574, January 2003.">Fessler2003</a>]</span>, available at <a class="reference external" href="https://github.com/JeffFessler/mirt">https://github.com/JeffFessler/mirt</a>.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.nufft_scale">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">nufft_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Nd</span></em>, <em class="sig-param"><span class="pre">Kd</span></em>, <em class="sig-param"><span class="pre">alpha</span></em>, <em class="sig-param"><span class="pre">beta</span></em>, <em class="sig-param"><span class="pre">Nmid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.nufft_scale" title="Permalink to this definition"></a></dt>
+<dd><p>Compute scaling factors for NUFFT.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Nd</strong> (<em>int[1, d]</em>) – Input size (along each dimension).</p></li>
+<li><p><strong>Kd</strong> (<em>int[1, d]</em>) – Fourier size (along each dimension).</p></li>
+<li><p><strong>alpha</strong> (<em>cell{d, 1}</em>) – Parameters of the interpolation kernel.</p></li>
+<li><p><strong>beta</strong> (<em>cell{d, 1}</em>) – Parameters of the interpolation kernel.</p></li>
+<li><p><strong>Nmid</strong> (<em>int[1, d]</em>) – Midpoint: <code class="docutils literal notranslate"><span class="pre">floor(Nd/2)</span></code> or default <code class="docutils literal notranslate"><span class="pre">(Nd-1)/2</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sn</strong> – Scaling factors.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>double[Nd]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Original code taken from <span id="id10">[<a class="reference internal" href="biblio.html#id5" title="Jeffrey A. Fessler and Bradley P. Sutton. Nonuniform fast Fourier transforms using min-max interpolation. IEEE Trans. Signal Process., 51(2):560–574, January 2003.">Fessler2003</a>]</span>, available at <a class="reference external" href="https://github.com/JeffFessler/mirt">https://github.com/JeffFessler/mirt</a>.</p>
+</div>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="nufft.nufft_sinc">
+<span class="sig-prename descclassname"><span class="pre">nufft.</span></span><span class="sig-name descname"><span class="pre">nufft_sinc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nufft.nufft_sinc" title="Permalink to this definition"></a></dt>
+<dd><p>J. Fessler’s version of “sinc” function, because matlab’s <code class="docutils literal notranslate"><span class="pre">sinc()</span></code> is
+in a toolbox.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>double[:, …]</em>) – Input array.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – Evaluation of <code class="docutils literal notranslate"><span class="pre">sinc(x)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>double[:, …]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Original code taken from <span id="id11">[<a class="reference internal" href="biblio.html#id5" title="Jeffrey A. Fessler and Bradley P. Sutton. Nonuniform fast Fourier transforms using min-max interpolation. IEEE Trans. Signal Process., 51(2):560–574, January 2003.">Fessler2003</a>]</span>, available at <a class="reference external" href="https://github.com/JeffFessler/mirt">https://github.com/JeffFessler/mirt</a>.</p>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="_lib/lib.utils.html" class="btn btn-neutral float-left" title="lib.utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, P.-A. Thouvenin, A. Dabbech, M. Jiang, A. Jackson, Y. Wiaux, A. Abdulaziz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

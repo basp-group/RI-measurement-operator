@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lib.ddes_utils &mdash; RI-measurement-operator 0-66-g4cfadfa documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RI-measurement-operator
+          </a>
+              <div class="version">
+                0-66-g4cfadfa
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation &amp; references</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../biblio.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="lib.html">lib package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nufft.html">nufft package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RI-measurement-operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>lib.ddes_utils</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_lib/lib.ddes_utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lib-ddes-utils">
+<h1>lib.ddes_utils<a class="headerlink" href="#lib-ddes-utils" title="Permalink to this headline"></a></h1>
+<p>Helper functions to apply the non-uniform Fourier transform (NUFFT).</p>
+<span class="target" id="module-lib.ddes_utils"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="lib.ddes_utils.bisect">
+<span class="sig-prename descclassname"><span class="pre">lib.ddes_utils.</span></span><span class="sig-name descname"><span class="pre">bisect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">E_threshold</span></em>, <em class="sig-param"><span class="pre">tolerance</span></em>, <em class="sig-param"><span class="pre">abschirp</span></em>, <em class="sig-param"><span class="pre">L_norm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.ddes_utils.bisect" title="Permalink to this definition"></a></dt>
+<dd><p>calculates the threshold for keeping E_hreshold= percentile  of total
+energy of the chirp kernel, where abschirp is the absolute value of the
+row of the convoution kernel
+L_norm =1;</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.ddes_utils.get_details_wkernel">
+<span class="sig-prename descclassname"><span class="pre">lib.ddes_utils.</span></span><span class="sig-name descname"><span class="pre">get_details_wkernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">W</span></em>, <em class="sig-param"><span class="pre">FoV</span></em>, <em class="sig-param"><span class="pre">gImDims</span></em>, <em class="sig-param"><span class="pre">paddFourierFactor</span></em>, <em class="sig-param"><span class="pre">uvHalfBW</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.ddes_utils.get_details_wkernel" title="Permalink to this definition"></a></dt>
+<dd><p>————————————————————————-%
+Author: Arwa Dabbech.
+Last revised: [21/01/2022]
+————————————————————————-%</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.ddes_utils.get_wkernel">
+<span class="sig-prename descclassname"><span class="pre">lib.ddes_utils.</span></span><span class="sig-name descname"><span class="pre">get_wkernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">W</span></em>, <em class="sig-param"><span class="pre">nTerm</span></em>, <em class="sig-param"><span class="pre">PHASE</span></em>, <em class="sig-param"><span class="pre">levelC</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.ddes_utils.get_wkernel" title="Permalink to this definition"></a></dt>
+<dd><p>————————————————————————-%
+Code: Arwa Dabbech.
+Last revised: [21/01/2022]
+————————————————————————-%</p>
+<p>w-term in the image domain, aka chirp</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.ddes_utils.op_p_nufft_wproj_dde">
+<span class="sig-prename descclassname"><span class="pre">lib.ddes_utils.</span></span><span class="sig-name descname"><span class="pre">op_p_nufft_wproj_dde</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nufft</span></em>, <em class="sig-param"><span class="pre">p</span></em>, <em class="sig-param"><span class="pre">w</span></em>, <em class="sig-param"><span class="pre">nW</span></em>, <em class="sig-param"><span class="pre">wproj</span></em>, <em class="sig-param"><span class="pre">ddes</span></em>, <em class="sig-param"><span class="pre">kernel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.ddes_utils.op_p_nufft_wproj_dde" title="Permalink to this definition"></a></dt>
+<dd><p>Create the nonuniform gridding matrix and fft operators to be used for
+parallel processing</p>
+<p>in:
+p{:}[2] - nonuniformly distributed frequency location points for each</p>
+<blockquote>
+<div><p>cell member which will be treated in parallel</p>
+</div></blockquote>
+<p>N[2]    - size of the reconstruction image
+Nn[2]   - size of the kernels (number of neighbors considered on each direction)
+No[2]   - oversampled fft from which to recover the non uniform fft via</p>
+<blockquote>
+<div><p>kernel convolution</p>
+</div></blockquote>
+<p>Ns[2]   - fft shift</p>
+<p>out:
+A[&#64;]          - function handle for direct operator
+At[&#64;]         - function handle for adjoint operator
+G{:}[:][:]    - convolution kernel matrix (small) associated with each</p>
+<blockquote>
+<div><p>patch in the fourier plane</p>
+</div></blockquote>
+<p>W{:}          - mask of the values that contribute to the convolution
+ktype : string</p>
+<blockquote>
+<div><p>Selected interpolator (among <code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>, <code class="docutils literal notranslate"><span class="pre">'minmax:tuned'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'kaiser'</span></code>, see <code class="xref mat mat-func docutils literal notranslate"><span class="pre">nufft.compute_interp_coeffs_extended()</span></code>
+for associated kernel documentation). Recommended default is
+<code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.ddes_utils.sconv2_modified">
+<span class="sig-prename descclassname"><span class="pre">lib.ddes_utils.</span></span><span class="sig-name descname"><span class="pre">sconv2_modified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">shape</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.ddes_utils.sconv2_modified" title="Permalink to this definition"></a></dt>
+<dd><p>C = sconv2(A, B, shape)
+Like conv2 but suitable for convolution of sparse matrices
+Author: Bruno Luong &lt;<a class="reference external" href="mailto:brunoluong&#37;&#52;&#48;yahoo&#46;com">brunoluong<span>&#64;</span>yahoo<span>&#46;</span>com</a>&gt;
+Date creation: 15/April/2013
+See also: conv2</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.ddes_utils.shift_ind">
+<span class="sig-prename descclassname"><span class="pre">lib.ddes_utils.</span></span><span class="sig-name descname"><span class="pre">shift_ind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ind</span></em>, <em class="sig-param"><span class="pre">Nx</span></em>, <em class="sig-param"><span class="pre">Ny</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.ddes_utils.shift_ind" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.ddes_utils.update_G_ddes">
+<span class="sig-prename descclassname"><span class="pre">lib.ddes_utils.</span></span><span class="sig-name descname"><span class="pre">update_G_ddes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">GNUFFT</span></em>, <em class="sig-param"><span class="pre">W</span></em>, <em class="sig-param"><span class="pre">ddes</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.ddes_utils.update_G_ddes" title="Permalink to this definition"></a></dt>
+<dd><p>input
+GNUFFT: transpose of the de-gridding matrix
+W: w-coordinates
+ddes: available antenna gains for each row</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, P.-A. Thouvenin, A. Dabbech, M. Jiang, A. Jackson, Y. Wiaux, A. Abdulaziz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

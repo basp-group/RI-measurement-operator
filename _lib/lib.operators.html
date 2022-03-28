@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lib.operators &mdash; RI-measurement-operator 0-66-g4cfadfa documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="lib.utils" href="lib.utils.html" />
+    <link rel="prev" title="lib package" href="lib.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> RI-measurement-operator
+          </a>
+              <div class="version">
+                0-66-g4cfadfa
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation &amp; references</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../biblio.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="lib.html">lib package</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">lib.operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lib.utils.html">lib.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nufft.html">nufft package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RI-measurement-operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="lib.html">lib package</a> &raquo;</li>
+      <li>lib.operators</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_lib/lib.operators.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lib-operators">
+<h1>lib.operators<a class="headerlink" href="#lib-operators" title="Permalink to this headline"></a></h1>
+<p>Helper functions to apply the non-uniform Fourier transform (NUFFT).</p>
+<span class="target" id="module-lib.operators"></span><dl class="mat function">
+<dt class="sig sig-object mat" id="lib.operators.op_norm">
+<span class="sig-prename descclassname"><span class="pre">lib.operators.</span></span><span class="sig-name descname"><span class="pre">op_norm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">At</span></em>, <em class="sig-param"><span class="pre">im_size</span></em>, <em class="sig-param"><span class="pre">tol</span></em>, <em class="sig-param"><span class="pre">max_iter</span></em>, <em class="sig-param"><span class="pre">verbose</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.operators.op_norm" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the maximum eigenvalue of the compound operator <span class="math notranslate nohighlight">\(A^T A\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> (<em>function handle</em>) – Function handle for the direct operator.</p></li>
+<li><p><strong>At</strong> (<em>function handle</em>) – Function handle for the adjoint operator.</p></li>
+<li><p><strong>im_size</strong> (<em>int[2]</em>) – Size of the input image.</p></li>
+<li><p><strong>tol</strong> (<em>double</em>) – Tolerance for the stopping criterion (relative variation).</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em>) – Maximum number of iterations.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Activate verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>val</strong> (<em>double</em>) – Operator norm of <span class="math notranslate nohighlight">\(A^TA\)</span> at convergence.</p></li>
+<li><p><strong>rel_var</strong> (<em>double</em>) – Value of the relative variation criterion at convergence.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.operators.op_nu_so_fft2">
+<span class="sig-prename descclassname"><span class="pre">lib.operators.</span></span><span class="sig-name descname"><span class="pre">op_nu_so_fft2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">No</span></em>, <em class="sig-param"><span class="pre">scale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.operators.op_nu_so_fft2" title="Permalink to this definition"></a></dt>
+<dd><p>Oversampled ftt2 and scaled operator computed by a modified NUFFT
+function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>int[2]</em>) – Size of the reconstruction image.</p></li>
+<li><p><strong>No</strong> (<em>int[2]</em>) – Oversampled fft from which to recover the non uniform fft via kernel
+convolution.</p></li>
+<li><p><strong>Ns</strong> (<em>int[2]</em>) – Fft shift.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>A</strong> (<em>function handle</em>) – Function handle for direct operator.</p></li>
+<li><p><strong>At</strong> (<em>function handle</em>) – Function handle for adjoint operator.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.operators.op_nufft">
+<span class="sig-prename descclassname"><span class="pre">lib.operators.</span></span><span class="sig-name descname"><span class="pre">op_nufft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">p</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">Nn</span></em>, <em class="sig-param"><span class="pre">No</span></em>, <em class="sig-param"><span class="pre">Ns</span></em>, <em class="sig-param"><span class="pre">ktype</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.operators.op_nufft" title="Permalink to this definition"></a></dt>
+<dd><p>Create the nonuniform gridding matrix and fft operators (based on
+<code class="docutils literal notranslate"><span class="pre">createG</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> (<em>double[:, 2]</em>) – Non-uniformly distributed frequency location points.</p></li>
+<li><p><strong>N</strong> (<em>int[2]</em>) – Size of the reconstruction image.</p></li>
+<li><p><strong>Nn</strong> (<em>int[2]</em>) – Size of the kernels (number of neighbors considered on each
+direction).</p></li>
+<li><p><strong>No</strong> (<em>int[2]</em>) – Oversampled fft from which to recover the non uniform fft via kernel
+convolution.</p></li>
+<li><p><strong>Ns</strong> (<em>int[2]</em>) – FFFT shift.</p></li>
+<li><p><strong>ktype</strong> (<em>string</em>) – Selected interpolator (among <code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>, <code class="docutils literal notranslate"><span class="pre">'minmax:tuned'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'kaiser'</span></code>, see <code class="xref mat mat-func docutils literal notranslate"><span class="pre">nufft.compute_interp_coeffs_extended()</span></code>
+for associated kernel documentation). Recommended default is
+<code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>A</strong> (<em>Function handle</em>) – Function handle for direct operator.</p></li>
+<li><p><strong>At</strong> (<em>function handle</em>) – Function handle for adjoint operator.</p></li>
+<li><p><strong>Gw</strong> (<em>double[:, :]</em>) – Global convolution kernel matrix.</p></li>
+<li><p><strong>scale</strong> (<em>double[:, :]</em>) – Scale paremters for the oversampled FFT.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.operators.op_nufft_irt">
+<span class="sig-prename descclassname"><span class="pre">lib.operators.</span></span><span class="sig-name descname"><span class="pre">op_nufft_irt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">p</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">Nn</span></em>, <em class="sig-param"><span class="pre">No</span></em>, <em class="sig-param"><span class="pre">Ns</span></em>, <em class="sig-param"><span class="pre">kernel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.operators.op_nufft_irt" title="Permalink to this definition"></a></dt>
+<dd><p>Create the nonuniform gridding matrix and fft operators (based on
+<code class="docutils literal notranslate"><span class="pre">nufft_init</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> (<em>double[:, 2]</em>) – Non-uniformly distributed frequency location points.</p></li>
+<li><p><strong>N</strong> (<em>int[2]</em>) – Size of the reconstruction image.</p></li>
+<li><p><strong>Nn</strong> (<em>int[2]</em>) – Size of the kernels (number of neighbors considered on each
+direction).</p></li>
+<li><p><strong>No</strong> (<em>int[2]</em>) – Oversampled fft from which to recover the non uniform fft via kernel
+convolution.</p></li>
+<li><p><strong>Ns</strong> (<em>int[2]</em>) – Fft shift.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>A</strong> (<em>Function handle</em>) – Function handle for direct operator.</p></li>
+<li><p><strong>At</strong> (<em>function handle</em>) – Function handle for adjoint operator.</p></li>
+<li><p><strong>Gw</strong> (<em>double[:, :]</em>) – Global convolution kernel matrix.</p></li>
+<li><p><strong>scale</strong> (<em>double[:, :]</em>) – Scale paremters for the oversampled FFT.</p></li>
+<li><p><strong>kernel</strong> (<em>string</em>) – Selected interpolator (among <code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>, <code class="docutils literal notranslate"><span class="pre">'minmax:tuned'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'kaiser'</span></code>, see <code class="xref mat mat-func docutils literal notranslate"><span class="pre">nufft.compute_interp_coeffs_extended()</span></code>
+for associated kernel documentation). Recommended default is
+<code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.operators.op_p_nufft">
+<span class="sig-prename descclassname"><span class="pre">lib.operators.</span></span><span class="sig-name descname"><span class="pre">op_p_nufft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">p</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">Nn</span></em>, <em class="sig-param"><span class="pre">No</span></em>, <em class="sig-param"><span class="pre">Ns</span></em>, <em class="sig-param"><span class="pre">ww</span></em>, <em class="sig-param"><span class="pre">param</span></em>, <em class="sig-param"><span class="pre">ktype</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.operators.op_p_nufft" title="Permalink to this definition"></a></dt>
+<dd><p>Create the nonuniform gridding matrix and fft operators to be used for
+parallel processing (relying on <code class="docutils literal notranslate"><span class="pre">op_nufft_irt</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> (<em>cell{2, 1} of double[:]</em>) – Non-uniformly distributed frequency location points for each cell
+member which will be treated in parallel.</p></li>
+<li><p><strong>N</strong> (<em>int[2]</em>) – Size of the reconstruction image.</p></li>
+<li><p><strong>Nn</strong> (<em>int[2]</em>) – Size of the kernels (number of neighbors considered in each
+direction).</p></li>
+<li><p><strong>No</strong> (<em>int[2]</em>) – Oversampled fft from which to recover the non uniform fft via kernel
+convolution.</p></li>
+<li><p><strong>Ns</strong> (<em>int[2]</em>) – FFT shift.</p></li>
+<li><p><strong>ww</strong> (<em>cell{:} of bool[:]</em>) – Masks identifying data blocks.</p></li>
+<li><p><strong>param</strong> (<em>struct</em>) – Parameters to generate the NUFFT interpolation matrix.</p></li>
+<li><p><strong>ktype</strong> (<em>string</em>) – Selected interpolator (among <code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>, <code class="docutils literal notranslate"><span class="pre">'minmax:tuned'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'kaiser'</span></code>, see <code class="xref mat mat-func docutils literal notranslate"><span class="pre">nufft.compute_interp_coeffs_extended()</span></code>
+for associated kernel documentation). Recommended default is
+<code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>A</strong> (<em>function handle</em>) – Function handle for direct operator.</p></li>
+<li><p><strong>At</strong> (<em>function handle</em>) – Function handle for adjoint operator.</p></li>
+<li><p><strong>G</strong> (<em>cell{:} of complex[:, :]</em>) – Convolution kernel matrix (small) associated with patch in the
+Fourier plane.</p></li>
+<li><p><strong>W</strong> (<em>cell{:} of int[:]</em>) – Mask of the values that contribute to the convolution.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.operators.op_p_nufft_irt">
+<span class="sig-prename descclassname"><span class="pre">lib.operators.</span></span><span class="sig-name descname"><span class="pre">op_p_nufft_irt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">p</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">Nn</span></em>, <em class="sig-param"><span class="pre">No</span></em>, <em class="sig-param"><span class="pre">Ns</span></em>, <em class="sig-param"><span class="pre">ww</span></em>, <em class="sig-param"><span class="pre">kernel</span></em>, <em class="sig-param"><span class="pre">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.operators.op_p_nufft_irt" title="Permalink to this definition"></a></dt>
+<dd><p>Create the nonuniform gridding matrix and fft operators to be used for
+parallel processing (relying on <code class="docutils literal notranslate"><span class="pre">op_nufft_irt</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> (<em>cell{2, 1} of double[:]</em>) – Non-uniformly distributed frequency location points for each cell
+member which will be treated in parallel.</p></li>
+<li><p><strong>N</strong> (<em>int[2]</em>) – Size of the reconstruction image.</p></li>
+<li><p><strong>Nn</strong> (<em>int[2]</em>) – Size of the kernels (number of neighbors considered in each
+direction).</p></li>
+<li><p><strong>No</strong> (<em>int[2]</em>) – Oversampled fft from which to recover the non uniform fft via kernel
+convolution.</p></li>
+<li><p><strong>Ns</strong> (<em>int[2]</em>) – FFT shift.</p></li>
+<li><p><strong>ww</strong> (<em>cell{:} of bool[:]</em>) – Masks identifying data blocks.</p></li>
+<li><p><strong>kernel</strong> (<em>string</em>) – Selected interpolator (among <code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>, <code class="docutils literal notranslate"><span class="pre">'minmax:tuned'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'kaiser'</span></code>, see <code class="xref mat mat-func docutils literal notranslate"><span class="pre">nufft.compute_interp_coeffs_extended()</span></code>
+for associated kernel documentation). Recommended default is
+<code class="docutils literal notranslate"><span class="pre">'minmax:kb'</span></code>.</p></li>
+<li><p><strong>param</strong> (<em>struct</em>) – Parameters to generate the NUFFT interpolation matrix.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>A</strong> (<em>function handle</em>) – Function handle for direct operator.</p></li>
+<li><p><strong>At</strong> (<em>function handle</em>) – Function handle for adjoint operator.</p></li>
+<li><p><strong>G</strong> (<em>cell{:} of complex[:, :]</em>) – Convolution kernel matrix (small) associated with patch in the
+Fourier plane.</p></li>
+<li><p><strong>W</strong> (<em>cell{:} of int[:]</em>) – Mask of the values that contribute to the convolution.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.operators.so_fft2">
+<span class="sig-prename descclassname"><span class="pre">lib.operators.</span></span><span class="sig-name descname"><span class="pre">so_fft2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">No</span></em>, <em class="sig-param"><span class="pre">scale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.operators.so_fft2" title="Permalink to this definition"></a></dt>
+<dd><p>Computes and oversampled and scaled FFT2 with the scale factors
+precomputed from the <code class="docutils literal notranslate"><span class="pre">nufft_init</span></code> function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>double[:, :]</em>) – Input image.</p></li>
+<li><p><strong>No</strong> (<em>int[2]</em>) – Overscale size.</p></li>
+<li><p><strong>scale</strong> (<em>double[:, :]</em>) – Scale parameters precomputed by <code class="docutils literal notranslate"><span class="pre">nufft_init</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>X</strong> – 2D FFT coefficients.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>complex[:]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="lib.operators.so_fft2_adj">
+<span class="sig-prename descclassname"><span class="pre">lib.operators.</span></span><span class="sig-name descname"><span class="pre">so_fft2_adj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">No</span></em>, <em class="sig-param"><span class="pre">scale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lib.operators.so_fft2_adj" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the inverse scaled FTT2 involved in the adjoint NUFFT operator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>complex[:]</em>) – 2D fourier transform of the image.</p></li>
+<li><p><strong>N</strong> (<em>int[2]</em>) – Size of image.</p></li>
+<li><p><strong>No</strong> (<em>int[2]</em>) – Size of zero-padded image.</p></li>
+<li><p><strong>scale</strong> (<em>double[:, :]</em>) – Scale factor precomputed by <code class="docutils literal notranslate"><span class="pre">nufft_init</span></code>, used to cancel the
+scaling performed asscoiated with the convolution kernel to the non-
+uniform frequency domain.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x</strong> – Inverse scaled 2D FFT coefficients involved in the adjoint NUFFT
+operator.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>complex[:]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lib.html" class="btn btn-neutral float-left" title="lib package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lib.utils.html" class="btn btn-neutral float-right" title="lib.utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, P.-A. Thouvenin, A. Dabbech, M. Jiang, A. Jackson, Y. Wiaux, A. Abdulaziz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
