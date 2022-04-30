@@ -1,12 +1,24 @@
-# Measurement Operator
+# RI-measurement-operator
 
+![language](https://img.shields.io/badge/language-MATLAB-orange.svg)
 [![license](https://img.shields.io/badge/license-GPL--3.0-brightgreen.svg)](LICENSE)
 [![docs-page](https://img.shields.io/badge/docs-latest-blue)](https://basp-group.github.io/RI-measurement-operator/)
 <!-- [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit) -->
 
 ## Description
 
-This repository contains a collection of MATLAB functions to implement the measurement operator involved in radio-interferometry.
+``RI-measurement-operator`` is a radio-interferometry MATLAB library devoted to
+the implementation of the measurement operator. The proposed implementation can accommodate
+
+- `w`-correction [(Dabbech2018)](https://academic.oup.com/mnras/article/476/3/2853/4855950);
+- a compact Fourier model for the direction dependent effects (DDEs) [(Dabbech2021)](https://academic.oup.com/mnras/article-abstract/506/4/4855/6315336?redirectedFrom=fulltext).
+
+The ``RI-measurement-operator`` library is a core dependency of the [`Faceted-Hyper-SARA`](https://github.com/basp-group/Faceted-Hyper-SARA) wideband imaging library for radio-interferometry, associated with the following publications.
+
+>P.-A. Thouvenin, A. Abdulaziz, A. Dabbech, A. Repetti, Y. Wiaux, Parallel faceted imaging in radio interferometry via proximal splitting (Faceted HyperSARA): I. Algorithm and simulations, submitted, [preprint available online](https://arxiv.org/abs/2003.07358), Mar. 2022.  
+>
+>P.-A. Thouvenin, A. Dabbech, M. Jiang, J.-P. Thiran, A. Jackson, Y. Wiaux, 
+Parallel faceted imaging in radio interferometry via proximal splitting (Faceted HyperSARA): II. Real data proof-of-concept and code, submitted, Mar. 2022.
 
 **Contributors**: by alphabetical order, A. Dabbech, M. Jiang, A. Onose, P.-A. Thouvenin.
 
@@ -24,7 +36,7 @@ To get started with the library, take a look at the [documentation hosted online
 
 - The present repository contains a slightly modified version of the MATLAB NUFFT algorithm available [online](http://web.eecs.umich.edu/~fessler/irt/fessler.tgz) (`irt/` folder), and described in
 
-> J. A. Fessler and B. P. Sutton, Nonuniform Fast Fourier Transforms Using Min-Max Interpolation, *IEEE Trans. Image Process.*, vol. 51, n. 2, pp. 560--574, Feb. 2003.
+> J. A. Fessler and B. P. Sutton, Nonuniform Fast Fourier Transforms Using Min-Max Interpolation, *IEEE Trans. Image Process.*, vol. 51, n. 2, pp. 560-574, Feb. 2003.
 
 and also made available by the author on [github](https://github.com/JeffFessler/mirt). A lighter version of the non-uniform FFT available in `irt` (relying exclusively on the default parameters) is provided in `nufft/`.
 

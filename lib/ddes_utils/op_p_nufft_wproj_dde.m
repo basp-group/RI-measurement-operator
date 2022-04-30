@@ -34,11 +34,11 @@ elseif isempty(ddes); dde_flag = 0;
 else; dde_flag = 1;
 end
 
-if ~exist('wproj', 'var');  wproj.do = 0;
+if ~exist('wproj', 'var');  wproj.measop_flag_wproj = 0;
 end
 
-if ~isfield(wproj, 'do'); wproj_flag = 0;
-else; wproj_flag = wproj.do;
+if ~isfield(wproj, 'measop_flag_wproj'); wproj_flag = 0;
+else; wproj_flag = wproj.measop_flag_wproj;
 end
 
 if ~isfield(nufft, 'ktype')
