@@ -25,8 +25,8 @@ matlab_src_dir = os.path.abspath(os.path.join('..', '..'))
 # -- Project information -----------------------------------------------------
 
 project = 'RI-measurement-operator'
-copyright = "2021, P.-A. Thouvenin, A. Dabbech, M. Jiang, A. Jackson, Y. Wiaux"
-author = "P.-A. Thouvenin, A. Dabbech, M. Jiang, A. Jackson, Y. Wiaux"
+copyright = "2021, P.-A. Thouvenin, A. Dabbech, M. Jiang, A. Abdulaziz, A. Jackson, Y. Wiaux"
+author = "P.-A. Thouvenin, A. Dabbech, M. Jiang, A. Abdulaziz, A. Jackson, Y. Wiaux"
 
 # The full version, including alpha/beta/rc tags
 release = re.sub('^v', '', os.popen('git describe').read().strip())
