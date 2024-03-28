@@ -1,4 +1,4 @@
-function [u_ab, v_ab, na, antennas] = generate_uv_coverage(T, hrs, dl, cov_type, varargin)
+function [u_ab, v_ab, w_ab, na, antennas] = generate_uv_coverage(T, hrs, cov_type, varargin)
 
 % ----------------------------------------------------- %
 switch cov_type
@@ -45,27 +45,32 @@ dec = (pi / 180) * (40);                        % Cas A is 56.4
 lat = (pi / 180) * (38. + 59 ./ 60. + 48 ./ 3600.); % College Park
 % reference position of x0 in the x-y plane
 x0 = [mean(antenna_position(:, 1)), mean(antenna_position(:, 2))];
-[u, v, ~] = generate_uv_cov_antennas(antenna_position, x0, h, lat, dec, T); % [u, v, w], [T, na]
+[u, v, w] = generate_uv_cov_antennas(antenna_position, x0, h, lat, dec, T); % [u, v, w], [T, na]
 
 M = na * (na - 1) / 2;
 u_ab = zeros(T, M);
 v_ab = zeros(T, M);
+w_ab = zeros(T, M);
 q = 1;
 for a = 1:na - 1
     for b = a + 1:na
         u_ab(:, q) = u(:, a) - u(:, b); % u_alpha - u_beta
         v_ab(:, q) = v(:, a) - v(:, b); % v_alpha - v_beta
+        w_ab(:, q) = w(:, a) - w(:, b);
         q = q + 1;
     end
 end
 
-% Antenna positions (u_ab, v_ab)
-bmax = max(sqrt(u_ab(:).^2 + v_ab(:).^2));
-
-% setting imaging params
-% dl = pixel_size; % ask Arwa
-v_ab = v_ab.' * pi / (bmax * dl); % dl = 1.1
-u_ab = u_ab.' * pi / (bmax * dl);
+u_ab = u_ab(:);
+v_ab = v_ab(:);
+w_ab = w_ab(:);
+% % Antenna positions (u_ab, v_ab)
+% bmax = max(sqrt(u_ab(:).^2 + v_ab(:).^2));
+% 
+% % setting imaging params
+% % dl = pixel_size; % ask Arwa
+% v_ab = v_ab.' * pi / (bmax * dl); % dl = 1.1
+% u_ab = u_ab.' * pi / (bmax * dl);
 
 % generate corresponding antenna indices (couple)
 Ant_T = zeros(M, 2);

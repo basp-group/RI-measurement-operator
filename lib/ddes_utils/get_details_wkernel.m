@@ -1,11 +1,11 @@
-function [WcoorBin, PHASE, nterm] = get_details_wkernel(W, FoV, gImDims, paddFourierFactor, uvHalfBW)
+function [WcoorBin, PHASE, nterm] = get_details_wkernel(W, FoV, imSize, paddFourierFactor, uvHalfBW)
 %%-------------------------------------------------------------------------%
 % Author: Arwa Dabbech.
 % Last revised: [21/01/2022]
 % -------------------------------------------------------------------------%
 %%
 woversampling = 2;
-ImFourierDim = paddFourierFactor .* gImDims;
+ImFourierDim = paddFourierFactor .* imSize;
 eRatioWTermPrBsln = woversampling .* abs(sin(max(FoV)) .* W) ./ (uvHalfBW); % ratio between the wterm BW and the imaged BW
 eRatioLowerBound = 4 * max(1 ./ max(ImFourierDim)); % tiny -->no correction
 dimBINS = eRatioLowerBound:eRatioLowerBound:0.5;
@@ -31,8 +31,8 @@ if nnz(~WcoorBin)
 end
 dimBINS = dimBINS(1:max_bin);
 %% w kernel in the image domain
-NCurr(:, 1)  =  (floor(gImDims(1) .* dimBINS(:)) - mod(floor(gImDims(1) .* dimBINS(:)), 2));
-NCurr(:, 2)  =  (floor(gImDims(2) .* dimBINS(:)) - mod(floor(gImDims(2) .* dimBINS(:)), 2));
+NCurr(:, 1)  =  (floor(imSize(1) .* dimBINS(:)) - mod(floor(imSize(1) .* dimBINS(:)), 2));
+NCurr(:, 2)  =  (floor(imSize(2) .* dimBINS(:)) - mod(floor(imSize(2) .* dimBINS(:)), 2));
 NCurr = max(NCurr, [4 4]);
 nterm = cell(max_bin, 1);
 PHASE =  cell(max_bin, 1);

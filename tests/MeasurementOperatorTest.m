@@ -36,7 +36,7 @@ classdef MeasurementOperatorTest < matlab.unittest.TestCase
             hrs = 5;
 
             % generate test coverage
-            [u_ab, v_ab, na] = generate_uv_coverage(T, hrs, dl, cov_type);
+            [u_ab, v_ab, w_ab, na] = generate_uv_coverage(T, hrs, cov_type);
             om = [v_ab(:), u_ab(:)];
             M = na * (na - 1) / 2 * T;  % = numel(om(:, 1))
 
@@ -66,7 +66,7 @@ classdef MeasurementOperatorTest < matlab.unittest.TestCase
             hrs = 5;
 
             % generate test coverage
-            [u_ab, v_ab, na] = generate_uv_coverage(T, hrs, dl, cov_type);
+            [u_ab, v_ab, w_ab, na] = generate_uv_coverage(T, hrs, cov_type);
             om = [v_ab(:), u_ab(:)];
             M = T * na * (na - 1) / 2;  % = numel(om(:, 1))
 
