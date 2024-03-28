@@ -1,7 +1,7 @@
 # Requirements
 
-1. Casa https://github.com/ratt-ru/meqtrees/wiki
-2. Meqtrees https://github.com/ratt-ru/meqtrees
+1. Casa https://casacore.github.io/casacore/
+2. Meqtrees https://github.com/ratt-ru/meqtrees/wiki
 
 # Utilities
 
