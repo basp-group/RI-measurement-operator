@@ -1,13 +1,13 @@
 # Requirements
 
-1. Casacore https://github.com/casacore/casacore
+1. Casa https://github.com/ratt-ru/meqtrees/wiki
 2. Meqtrees https://github.com/ratt-ru/meqtrees
 
 # Utilities
 
 ## Fourier sampling pattern simulation
  
-Simulation of realistic Fourier sampling patterns from antenna configurations of radio telescopes (`/pyutils/observatories`), performed using the utility script  `sim_vla_ms.py`. The task should be performed in its parent directory  `pyutils/`
+Simulation of realistic Fourier sampling patterns from antenna configurations of radio telescopes (`/pyutils/observatories`), performed using the utility script `sim_vla_ms.py`. The task should be performed in its parent directory  `pyutils/`
 
 Random variations of the observation setting using VLA antenna configurations are supported. These variations can be also extended to other radio telescopes.
 
