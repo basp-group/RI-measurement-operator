@@ -30,8 +30,8 @@ The output files of the script are saved in three subdirectories:
 Multiple sampling patterns can be generated at once using the argument `-n`.
 
 From the terminal launch:
-```bash
-    python3 sim_vla_ms.py -n 1 
+``` python
+    python sim_vla_ms.py -n 1 
 ```
 ## Extraction of RI data 
 
@@ -55,19 +55,19 @@ Extracted `.mat` file is saved in `pyutils/data/`. The file encompasses the foll
 ### Example
 Extracting (monochromatic) data at the frequency channel  `0` corresponding to the target source with field ID `0`.
 
-The user must provide the name/path to the measurement set `$MS`. The following inputs are optional.
-```bash
-    $SRCNAME  # default `SRCNAME=""`; source nametag which defines the main directory of the extracted data. 
-    $FIELDID  # default `FIELDID=0`; field ID of the target source
+The user must provide the name/path to the measurement set `$MS`. The following inputs are optional:
+```python
+    $SRCNAME  # default `SRCNAME=""`; source nametag
+    $FIELDID  # default `FIELDID=0`; ID of the target source
     $FREQID   # default `FREQID=0`; ID of the channel to be extracted
 ```
 
 From the terminal launch:
-```bash
+``` python
    pyxis  MS=$MS SRCNAME=3c353 FIELDID=0 FREQID=0 ms2mat
 ```
 
-Data will be saved as .mat files in the sub-directory  `pyutils/data/`. The outcome is as follows
-```bash
+Data will be saved as .mat files in the sub-directory  `pyutils/data/`. The outcome is as follows:
+``` bash
    pyutils/data/3c353_data_ch_1.mat
 ```
