@@ -13,6 +13,8 @@ the implementation of the measurement operator. The proposed implementation can 
 - `w`-correction [(Dabbech2018)](https://academic.oup.com/mnras/article/476/3/2853/4855950);
 - a compact Fourier model for the direction dependent effects (DDEs) [(Dabbech2021)](https://academic.oup.com/mnras/article-abstract/506/4/4855/6315336?redirectedFrom=fulltext).
 
+Python-based utility scripts to generate realistic Fourier sampling patterns and extract RI data from a measurement set (MS) to `.mat` file are available in  `pyutils/`. Instructions are provided in `pyutils/Readme.md`.
+
 The ``RI-measurement-operator`` library is a core dependency of the [`Faceted-Hyper-SARA`](https://github.com/basp-group/Faceted-Hyper-SARA) wideband imaging library for radio-interferometry, associated with the following publications.
 
 >P.-A. Thouvenin, A. Abdulaziz, A. Dabbech, A. Repetti, Y. Wiaux, Parallel faceted imaging in radio interferometry via proximal splitting (Faceted HyperSARA): I. Algorithm and simulations, submitted, [preprint available online](https://arxiv.org/abs/2003.07358), Mar. 2022.  
@@ -20,7 +22,9 @@ The ``RI-measurement-operator`` library is a core dependency of the [`Faceted-Hy
 >P.-A. Thouvenin, A. Dabbech, M. Jiang, J.-P. Thiran, A. Jackson, Y. Wiaux, 
 Parallel faceted imaging in radio interferometry via proximal splitting (Faceted HyperSARA): II. Real data proof-of-concept and code, submitted, Mar. 2022.
 
+
 **Contributors**: by alphabetical order, A. Dabbech, M. Jiang, A. Onose, P.-A. Thouvenin.
+
 
 ## Installation
 
@@ -45,6 +49,15 @@ and also made available by the author on [github](https://github.com/JeffFessler
 > A. Dabbech, L. Wolz, L. Pratley, J. D. McEwen and Y. Wiaux, [The w-effect in interferometric imaging: from a fast sparse measurement operator to superresolution](http://dx.doi.org/10.1093/mnras/stx1775), *Mon. Not. Roy. Astron. Soc.*, 471(4):4300-4313, 2017.
 >
 > A. Onose, A. Dabbech and Y. Wiaux, [An accelerated splitting algorithm for radio-interferometric imaging: when natural and uniform weighting meet](http://dx.doi.org/10.1093/mnras/stx755), *Mon. Not. Roy. Astron. Soc.*, 469(1):938-949, 2017.
+
+## Examples
+
+Two examples of usage are provided: 
+
+1. `example_sim_measop.m` enables the simulation of the measurement operator and its adjoint from a Fourier sampling pattern.
+   The script takes an input `.mat` file containing the `u`, `v`, `w` coordinates (in meter) and `frequency` (in MHz). Alternatively, a _toy_ Fourier sampling pattern can be generated using `data/` utilities.
+2. `example_sim_ri_data.m` enables the simulation of radio-inteferometric data from a given ground truth image and a Fourier sampling pattern.
+   
 
 ## Contributions
 
