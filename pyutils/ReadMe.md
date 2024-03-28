@@ -1,13 +1,15 @@
 # Requirements
 
-1. Casa https://casacore.github.io/casacore/
+1. Casacore https://casacore.github.io/casacore/
 2. Meqtrees https://github.com/ratt-ru/meqtrees/wiki
 
 # Utilities
 
 ## Fourier sampling pattern simulation
  
-Simulation of realistic Fourier sampling patterns from antenna configurations of radio telescopes (`/pyutils/observatories`), performed using the utility script `sim_vla_ms.py`. The task should be performed in its parent directory  `pyutils/`
+Simulation of realistic Fourier sampling patterns from antenna configurations of radio telescopes (`/pyutils/observatories`), performed using the utility script `sim_vla_ms.py`. The script relies heavily on [simms](https://github.com/ratt-ru/simms), that is part of the software package [Meqtrees](https://github.com/ratt-ru/meqtrees/wiki).
+
+The task should be performed in its parent directory  `pyutils/`
 
 Random variations of the observation setting using VLA antenna configurations are supported. These variations can be also extended to other radio telescopes.
 
@@ -35,7 +37,10 @@ From the terminal launch:
 ```
 ## Extraction of RI data 
 
-Data extraction from a measurement set, performed using the utility script `pyxis_ms2mat.py`.  The task should be performed in its parent directory  `pyutils/`.
+Data extraction from a measurement set, performed using the utility script `pyxis_ms2mat.py`.
+The script relies heavily on [pyxis](https://github.com/ratt-ru/pyxis), that is part of the software package [Meqtrees](https://github.com/ratt-ru/meqtrees/wiki).
+
+The task should be performed in its parent directory  `pyutils/`.
  
 Extracted `.mat` file is saved in `pyutils/data/`. The file encompasses the following fields:
 
