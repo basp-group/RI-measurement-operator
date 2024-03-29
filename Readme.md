@@ -17,10 +17,10 @@ Python-based utility scripts to generate realistic Fourier sampling patterns and
 
 The ``RI-measurement-operator`` library is a core dependency of the [`Faceted-Hyper-SARA`](https://github.com/basp-group/Faceted-Hyper-SARA) wideband imaging library for radio-interferometry, associated with the following publications.
 
->P.-A. Thouvenin, A. Abdulaziz, A. Dabbech, A. Repetti, Y. Wiaux, Parallel faceted imaging in radio interferometry via proximal splitting (Faceted HyperSARA): I. Algorithm and simulations, submitted, [preprint available online](https://arxiv.org/abs/2003.07358), Mar. 2022.  
+>P.-A. Thouvenin, A. Abdulaziz, A. Dabbech, A. Repetti, Y. Wiaux, [Parallel faceted imaging in radio interferometry via proximal splitting (Faceted HyperSARA): I. Algorithm and simulations](https://academic.oup.com/mnras/article/521/1/1/6823714), *MNRAS*, 521(1), 1–19, 2023. 
 >
->P.-A. Thouvenin, A. Dabbech, M. Jiang, J.-P. Thiran, A. Jackson, Y. Wiaux, 
-Parallel faceted imaging in radio interferometry via proximal splitting (Faceted HyperSARA): II. Real data proof-of-concept and code, submitted, Mar. 2022.
+>P.-A. Thouvenin, A. Dabbech, M. Jiang, J.-P. Thiran, A. Jackson, Y. Wiaux,
+[Parallel faceted imaging in radio interferometry via proximal splitting (Faceted HyperSARA): II. Real data proof-of-concept and code](https://academic.oup.com/mnras/article/521/1/20/6823713?searchresult=1), *MNRAS*, 521(1), 20–34, 2023.
 
 
 **Contributors**: by alphabetical order, A. Dabbech, M. Jiang, A. Onose, P.-A. Thouvenin.
@@ -40,15 +40,15 @@ To get started with the library, take a look at the [documentation hosted online
 
 - The present repository contains a slightly modified version of the MATLAB NUFFT algorithm available [online](http://web.eecs.umich.edu/~fessler/irt/fessler.tgz) (`irt/` folder), and described in
 
-> J. A. Fessler and B. P. Sutton, Nonuniform Fast Fourier Transforms Using Min-Max Interpolation, *IEEE Trans. Image Process.*, vol. 51, n. 2, pp. 560-574, Feb. 2003.
+> J. A. Fessler and B. P. Sutton, Nonuniform Fast Fourier Transforms Using Min-Max Interpolation, *IEEE Trans. Image Process.*, 51(2), 560-574, 2003.
 
 and also made available by the author on [github](https://github.com/JeffFessler/mirt). A lighter version of the non-uniform FFT available in `irt` (relying exclusively on the default parameters) is provided in `nufft/`.
 
 - The repository also contains functions associated with the following publications
 
-> A. Dabbech, L. Wolz, L. Pratley, J. D. McEwen and Y. Wiaux, [The w-effect in interferometric imaging: from a fast sparse measurement operator to superresolution](http://dx.doi.org/10.1093/mnras/stx1775), *Mon. Not. Roy. Astron. Soc.*, 471(4):4300-4313, 2017.
+> A. Dabbech, L. Wolz, L. Pratley, J. D. McEwen and Y. Wiaux, [The w-effect in interferometric imaging: from a fast sparse measurement operator to superresolution](http://dx.doi.org/10.1093/mnras/stx1775), *MNRAS*, 471(4), 4300-4313, 2017.
 >
-> A. Onose, A. Dabbech and Y. Wiaux, [An accelerated splitting algorithm for radio-interferometric imaging: when natural and uniform weighting meet](http://dx.doi.org/10.1093/mnras/stx755), *Mon. Not. Roy. Astron. Soc.*, 469(1):938-949, 2017.
+> A. Onose, A. Dabbech and Y. Wiaux, [An accelerated splitting algorithm for radio-interferometric imaging: when natural and uniform weighting meet](http://dx.doi.org/10.1093/mnras/stx755), *MNRAS*, 469(1), 938-949, 2017.
 
 ## Examples
 
