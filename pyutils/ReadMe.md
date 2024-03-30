@@ -7,7 +7,7 @@
 
 ## Fourier sampling pattern simulation
  
-Simulation of realistic Fourier sampling patterns from antenna configurations of radio telescopes (`/pyutils/observatories`), performed using the utility script `sim_vla_ms.py`. The script relies heavily on [simms](https://github.com/ratt-ru/simms), that is part of the software package [Meqtrees](https://github.com/ratt-ru/meqtrees/wiki).
+Simulation of realistic Fourier sampling patterns from antenna configurations of radio telescopes (`pyutils/observatories`), performed using the utility script `sim_vla_ms.py`. The script relies heavily on [simms](https://github.com/ratt-ru/simms), that is part of the software package [Meqtrees](https://github.com/ratt-ru/meqtrees/wiki).
 
 The task should be performed in its parent directory  `pyutils/`
 
