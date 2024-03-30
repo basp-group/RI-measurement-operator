@@ -65,6 +65,6 @@ Two examples of usage are provided:
    --superresolution 1.5                     \ # Superrresolution facor, inferring the bandwidth of the imaged spatial Fourier domain
    --nufft "pynufft"                         \ # Nufft library to be used, choices are ['pynufft', 'tkbn']
    --noise_heuristic 1e5                     \ # Target dynamic range of the ground truth image used to infer the noise level (option 1)
-   --noise_isnr                              \ # Input signa-to-noise ratio to infer the noise level (option 2)
+   --noise_isnr  ""                          \ # Input signa-to-noise ratio to infer the noise level (option 2)
    --on_gpu                                    # run on GPU
     ```
