@@ -61,7 +61,7 @@ Two examples of usage are provided:
    From the terminal, run the command below:
    ``` Python
    python3  example_sim_ri_data.py \
-   --data_file  "data/3c353/3c353_data.mat"  \ # Path to the file containing u, v, w, frequency, and imweight (optional)
+   --data_file  "data/uvws.mat"  \ # Path to the file containing u, v, w, frequency, and imweight (optional)
    --gdth_file  "data/3c353/3c353.fits"      \ # Path to the ground truth file  (.fits)
    --superresolution 1.5                     \ # Superrresolution facor, inferring the bandwidth of the imaged spatial Fourier domain
    --nufft "pynufft"                         \ # Nufft library to be used, choices are ['pynufft', 'tkbn']
