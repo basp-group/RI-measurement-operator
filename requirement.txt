@@ -1,5 +1,3 @@
-pip
-sphinx
-sphinx_rtd_theme
-sphinxcontrib-bibtex
-sphinxcontrib-matlabdomain
+astropy==6.0.0
+torchkbnufft==1.4.0
+pynufft==0.3.2.8
