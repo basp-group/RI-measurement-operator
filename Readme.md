@@ -61,11 +61,11 @@ Two examples of usage are provided:
    From the terminal, run the command below:
    ``` Python
    python3  example_sim_ri_data.py \
-   --data_file  "data/uvws.mat".        \ # Path to the file containing u, v, w, frequency, and imweight (optional)
-   --gdth_file  "data/3c353.fits"        \ # Path to the ground truth file  (.fits)
-   --superresolution 1.5                  \ # Superrresolution facor, inferring the bandwidth of the imaged spatial Fourier domain
-   --nufft "pynufft"                          \ # Nufft library to be used, choices are ['pynufft', 'tkbn']
-   --noise_heuristic 1e5               \ # Target dynamic range of the ground truth image used to infer the noise level (option 1)
-   --noise_isnr  ""                        \ # Input signa-to-noise ratio to infer the noise level (option 2)
-   --on_gpu                                    # run on GPU
+   --data_file  "data/uvws.mat"    \ # Path to the file containing u, v, w, frequency, and imweight (optional)
+   --gdth_file  "data/3c353.fits"  \ # Path to the ground truth file  (.fits)
+   --superresolution 1.5           \ # Superrresolution facor, inferring the bandwidth of the imaged spatial Fourier domain
+   --nufft "pynufft"               \ # Nufft library to be used, choices are ['pynufft', 'tkbn']
+   --noise_heuristic 1e5           \ # Target dynamic range of the ground truth image used to infer the noise level (option 1)
+   --noise_isnr  ""                \ # Input signa-to-noise ratio to infer the noise level (option 2)
+   --on_gpu                          # run on GPU
     ```
