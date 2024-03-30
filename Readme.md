@@ -6,9 +6,10 @@
 
 ## Description
 
-This branch provides a Python implementation of the RI measurement operator. The current implementation does not accommodate `w`-correction.
+This branch provides a Python implementation of the RI measurement operator. The current implementation does not accommodate `w`-correction. Python version 3.10 or higher is required.
 
 Python-based utility scripts to generate realistic Fourier sampling patterns and extract RI data from a measurement set (MS) to `.mat` file are available in  `pyutils/`. Instructions are provided in `pyutils/Readme.md`.
+
 
 **Contributors**: by alphabetical order, T. Chu, A. Dabbech .
 
