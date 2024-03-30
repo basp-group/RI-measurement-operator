@@ -53,7 +53,7 @@ def main(args):
     # noise vector
     if args.noise_heuristic is not None:
         print('Generate noise (noise level commensurate of the target dynamic range)...')
-        targetDynamicRange = 255
+        targetDynamicRange = args.noise_heuristic
         # compute measop spectral norm to infer the noise heuristic
         measopSpectralNorm = measop.op_norm(tol=1e-6, max_iter=500)
         # noise standard deviation heuristic
@@ -61,13 +61,13 @@ def main(args):
         # noise realization(mean-0; std-tau)
         noise = tau * (np.random.randn(nmeas) + 1j * np.random.randn(nmeas)) / np.sqrt(2)
         # input signal to noise ratio
-        ISNR = 20 * np.log10(np.linalg.norm(vis) / np.linalg.norm(noise))
-        print(f'INFO: random Gaussian noise with input SNR: {ISNR:.3f} dB')
+        isnr = 20 * np.log10(np.linalg.norm(vis) / np.linalg.norm(noise))
+        print(f'INFO: random Gaussian noise with input SNR: {isnr:.3f} dB')
     elif args.noise_isnr is not None:
         print('generate noise from input SNR...')
-        ISNR = 40
+        isnr = args.noise_isnr
         # user-specified input signal to noise ratio
-        tau = np.linalg.norm(vis) / (10**(ISNR/20)) / np.sqrt( (nmeas + 2 * np.sqrt(nmeas)))
+        tau = np.linalg.norm(vis) / (10**(isnr/20)) / np.sqrt( (nmeas + 2 * np.sqrt(nmeas)))
         noise = tau * (np.random.randn(nmeas) + 1j * np.random.randn(nmeas)) / np.sqrt(2)
             
     # data
@@ -78,7 +78,7 @@ def main(args):
     print('Get back-projected data...')
     dirty = measop.At(y)
     
-    # disaply the non-normalized dirty image
+    # display the non-normalized dirty image
     plt.figure(figsize=(10, 10))
     plt.imshow(dirty.squeeze(), cmap='afmhot')
     plt.colorbar()

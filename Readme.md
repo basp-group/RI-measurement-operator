@@ -32,9 +32,6 @@ The code relies on external NUFFT Python libraries, both implementing the NUFFT 
 
 - pyNUFFT [(https://github.com/jyhmiinlin/pynufft)](https://github.com/jyhmiinlin/pynufft).
 
-
-The user has the possibility to select the NUFFT library of his choice.
-
 Install the packages using the command below:
 ``` bash
    pip install -r requirement.txt
@@ -52,7 +49,7 @@ Two examples of usage are provided:
    --data_file "data/uvw.mat"     \ # Path to the file containing u, v, w, frequency, and imweight (optional)
    --im_size 512 512              \ # target image dimension
    --superresolution 1.5          \ # Superrresolution facor, inferring the bandwidth of the imaged spatial Fourier domain
-   --nufft 'pynufft'              \ # Nufft library to be used, choices are ['pynufft', 'tkbn']
+   --nufft "pynufft"              \ # Nufft library to be used, choices are ['pynufft', 'tkbn']
    --on_gpu                         # run on GPU
    ```
 
@@ -66,7 +63,7 @@ Two examples of usage are provided:
    --data_file  "data/3c353/3c353_data.mat"  \ # Path to the file containing u, v, w, frequency, and imweight (optional)
    --gdth_file  "data/3c353/3c353.fits"      \ # Path to the ground truth file  (.fits)
    --superresolution 1.5                     \ # Superrresolution facor, inferring the bandwidth of the imaged spatial Fourier domain
-   --nufft 'pynufft'                         \ # Nufft library to be used, choices are ['pynufft', 'tkbn']
+   --nufft "pynufft"                         \ # Nufft library to be used, choices are ['pynufft', 'tkbn']
    --noise_heuristic 1e5                     \ # Target dynamic range of the ground truth image used to infer the noise level (option 1)
    --noise_isnr                              \ # Input signa-to-noise ratio to infer the noise level (option 2)
    --on_gpu                                    # run on GPU
