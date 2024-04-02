@@ -48,15 +48,16 @@ Two examples of usage are provided:
    ``` Python
    python3  example_sim_measop.py \
    --data_file "data/uvw.mat"     \ # Path to the file containing u, v, w, frequency, and imweight (optional)
-   --im_size 512 512              \ # target image dimension
+   --im_size 512 512              \ # Target image dimension
    --superresolution 1.5          \ # Superrresolution facor, inferring the bandwidth of the imaged spatial Fourier domain
    --nufft "pynufft"              \ # Nufft library to be used, choices are ['pynufft', 'tkbn']
-   --on_gpu                         # run on GPU
+   --on_gpu                       \ # Run on GPU
+   --dict_save_path "./results/"  \ # Path to save the simulated data file and dirty image, default: "./results/" 
    ```
 
 
 
-2. `example_sim_ri_data.pu` enables the simulation of radio-inteferometric data from a given ground truth image and a Fourier sampling pattern.
+2. `example_sim_ri_data.py` enables the simulation of radio-inteferometric data from a given ground truth image and a Fourier sampling pattern.
 
    From the terminal, run the command below:
    ``` Python
