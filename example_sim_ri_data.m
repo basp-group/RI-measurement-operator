@@ -8,7 +8,7 @@ addpath data;
 addpath nufft;
 addpath lib/operators;
 addpath lib/utils;
-
+addpath lib/ddes_utils;
 
 %% simulation setting: realistic / toy
 simtype = 'realistic'; % possible values: `realistic` ; `toy`
@@ -19,6 +19,9 @@ switch simtype
     case 'realistic'
         myuvwdatafile = 'tests/test.mat';
         frequency = load(myuvwdatafile,'frequency').frequency;
+        % data weighting enabled (for imaging e.g. Briggs)  
+        weighting_on = true; 
+
     case 'toy'
         % antenna configuration
         telescope = 'vlaa';
@@ -28,6 +31,8 @@ switch simtype
         obsTime = 4;
         % obs. frequency in MHz
         frequency  = 1e9;
+        % data weighting enabled (for imaging e.g. Briggs) 
+        weighting_on = false; 
 end
 %% ground truth image 
 fprintf("\nread ground truth image  .. ")
@@ -49,7 +54,7 @@ switch noiselevel
         targetDynamicRange = 255; 
     case 'inputsnr'
          % user-specified input signal to noise ratio
-        inputSNR = 40; % in dB
+        isnr = 40; % in dB
 end
 
 %% Fourier sampling pattern
@@ -64,6 +69,17 @@ switch simtype
         % for info 
         try nominalPixelSize = double(load(myuvwdatafile,'nominal_pixelsize').nominal_pixelsize);
         end
+
+        % imaging weights if available
+        if weighting_on
+            try nWimag = double(load(myuvwdatafile,'nWimag').nWimag);
+                nWimag = nWimag(:);
+                fprintf("\ninfo: imaging weights are found")
+            catch
+                weighting_on = false;
+            end
+        end
+
     case 'toy'       
         % generate sampling pattern (uv-coverage)
         fprintf("\nsimulate Fourier sampling pattern using %s .. ", telescope)
@@ -77,18 +93,16 @@ v = vmeter ./ (speedOfLight/frequency) ;
 w = wmeter ./ (speedOfLight/frequency) ;
 
 % maximum projected baseline (just for info)
-maxProjBaseline   = sqrt(max(u.^2+v.^2));
+maxProjBaseline  = sqrt(max(u.^2+v.^2));
 
 %% generate meas. op & its adjoint
 fprintf("\nbuild NUFFT measurement operator .. ")
 resolution_param.superresolution = superresolution; 
 % resolution_param.pixelSize = nominalPixelSize/superresolution; 
-
 [measop, adjoint_measop] = ops_raw_measop(u,v, w, imSize, resolution_param);
-
+ 
 %% model clean visibilities 
 fprintf("\nsimulate model visibilities .. ")
-
 vis = measop(gdthim);
 
 %number of data points
@@ -100,20 +114,41 @@ nmeas = numel(vis);
 switch noiselevel
     case 'drheuristic'
         fprintf("\ngenerate noise (noise level commensurate of the target dynamic range) .. ")
-        % compute measop spectral norm to infer the noise heuristic
-        measopSpectralNorm = op_norm(measop, @(y) real(adjoint_measop(y)), imSize, 1-6, 500, 0);
-        % noise standard deviation heuristic
-        tau  = sqrt(2 * measopSpectralNorm) / targetDynamicRange;
+       
+        if weighting_on 
+            % include weights in the measurement op.
+            measop_1 = @(x) (nWimag.*measop(x));
+            adjoint_measop_1 = @(x) (adjoint_measop(nWimag.*x));
+            measopSpectralNorm_1 = op_norm(measop_1, @(y) real(adjoint_measop_1(y)), imSize, 10^-4, 500, 0);
+
+            measop_2 = @(x) ((nWimag.^2) .* measop(x));
+            adjoint_measop_2 = @(x) (adjoint_measop((nWimag.^2).*x));
+            measopSpectralNorm_2 = op_norm(measop_2, @(y) real(adjoint_measop_2(y)), imSize, 10^-4, 500, 0);
+
+            % correction factor
+            eta_correction = sqrt(measopSpectralNorm_2/measopSpectralNorm_1);
+
+            % noise standard deviation heuristic
+            tau  = sqrt(2 * measopSpectralNorm_1) / targetDynamicRange /eta_correction;
+        else
+            % compute measop spectral norm to infer the noise heuristic
+            measopSpectralNorm = op_norm(measop, @(y) real(adjoint_measop(y)), imSize, 10^-4, 500, 0);
+            eta_correction = 1;
+            % noise standard deviation heuristic
+            tau  = sqrt(2 * measopSpectralNorm) / targetDynamicRange ;
+        end
+        
         % noise realization(mean-0; std-tau)
         noise = tau * (randn(nmeas,1) + 1i * randn(nmeas,1))./sqrt(2);
+
         % input signal to noise ratio
-        inputSNR = 20 *log10 (norm(vis)./norm(noise));
-        fprintf("\ninfo: random Gaussian noise with input SNR: %.3f db", inputSNR)
+        isnr = 20 *log10 (norm(vis)./norm(noise));
+        fprintf("\ninfo: random Gaussian noise with input SNR: %.3f db", isnr)
 
     case 'inputsnr'
         fprintf("\ngenerate noise from input SNR  .. ")
         % user-specified input signal to noise ratio
-        tau = norm(vis) / (10^(inputSNR/20)) /sqrt( (nmeas + 2*sqrt(nmeas)));
+        tau = norm(vis) / (10^(isnr/20)) /sqrt( (nmeas + 2*sqrt(nmeas)));
         noise = tau * (randn(nmeas,1) + 1i * randn(nmeas,1))./sqrt(2);
 end
 
@@ -121,25 +156,33 @@ end
 fprintf("\nsimulate data  .. ")
 y = vis + noise;
 
-
 %% back-projected data
-fprintf("\nget back-projected data  .. ")
-dirty = real( adjoint_measop(y) );
+fprintf("\nget (non-normalised) back-projected data  .. ")
+if weighting_on
+    dirty = real( adjoint_measop((nWimag.^2).*y) );
+    figure(2), imagesc(dirty), colorbar, title ('dirty image (weights applied)'), axis image,   axis off,
+else
+    dirty = real( adjoint_measop(y) );
+    figure(2), imagesc(dirty), colorbar, title ('dirty image'), axis image,   axis off,
+end
 
-% display
-figure(2), imagesc(dirty), colorbar, title ('(non-normalized) dirty image'), axis image,   axis off,
-fprintf('\nDone.')
-
-
-% %% compute RI normalization factor  (just for info)
-% dirac = sparse((imSize(1)/2)+1 , (imSize(2)/2)+1 , 1, imSize(1),imSize(2)) ;
-% psf = real(adjoint_measop(measop(full(dirac))));
-% ri_normalization = max(psf,[],'all');
-% 
 %% generate input data file for uSARA/AIRI/R2D2 imager  (just for info)
-% % whitening vector
-% nW = tau *ones(nmeas,1);
-% 
-% mkdir 'results'
-% % save mat file
-% save("./results/ngc6543a_toy_data.mat", "y", "nW", "u", "v","w","maxProjBaseline","frequency",'-v7.3')
+% whitening vector
+fprintf("\nsave data file  .. ")
+mkdir 'results'
+matfilename = "results/ngc6543a_data.mat" ;
+dirtyfilename = "results/ngc6543a_dirty.fits" ; 
+
+% save mat file
+nW = tau *ones(nmeas,1);
+save(matfilename, "y", "nW", "u", "v","w","maxProjBaseline","frequency",'-v7.3')
+% add imaging weights
+if weighting_on
+    save(matfilename,"nWimag",'-append')
+end
+
+% save (non-normalised) dirty image
+fitswrite(dirty, dirtyfilename)
+
+
+fprintf('\nDone.')

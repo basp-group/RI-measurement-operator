@@ -6,7 +6,7 @@ fprintf("*** Simulate radio data from a built-in astronomical image ***\n")
 addpath data;
 addpath nufft;
 addpath lib/operators;
-addpath lib/ddes_utils/
+addpath lib/ddes_utils;
 
 %% ground truth image & settings
 % image characteristics
@@ -51,7 +51,9 @@ w = wmeter ./ (speedOfLight/frequency) ;
 fprintf("\nbuild NUFFT measurement operator .. ")
 resolution_param.superresolution = superresolution; 
 % resolution_param.pixelSize = [];
+
 [measop, adjoint_measop] = ops_raw_measop(u, v, w, imSize, resolution_param);
+
 
 % %% compute RI normalization factor  (just for info)
 % dirac = sparse((imSize(1)/2)+1 , (imSize(2)/2)+1 , 1, imSize(1),imSize(2)) ;
