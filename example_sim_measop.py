@@ -22,7 +22,7 @@ def parse_args():
 
 def gen_measop(args):
     # read Fourier sampling pattern from specified data file 
-    uv = read_uv(args.data_file, args.superresolution, args.device, args.nufft)
+    uv = read_uv(args.data_file, args.superresolution, f'{args.dict_save_path}/{args.fname}_data.mat', args.device, args.nufft)
     # create measurement operator object based on the chosen nufft library
     match args.nufft:
         case 'tkbn':

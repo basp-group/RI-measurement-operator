@@ -1,8 +1,10 @@
 import argparse
 import torch
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from astropy.io import fits
+from scipy.io import savemat, loadmat
 
 from example_sim_measop import gen_measop
 
@@ -22,9 +24,14 @@ def parse_args():
                         help='Input signa-to-noise ratio')
     parser.add_argument('--on_gpu', action='store_true',
                         help='Utilise GPU')
+    parser.add_argument('--dict_save_path', type=str, default='./results/',
+                        help='Path to save the dictionary containing data')
     return parser.parse_args()
         
 def main(args):
+    if not os.path.exists(args.dict_save_path):
+        os.makedirs(args.dict_save_path)
+    args.fname = args.gdth_file.split('/')[-1].split('.')[0]
     # Example script to simulate RI data
     # ground truth image
     gdthim = fits.getdata(args.gdth_file)
@@ -86,8 +93,17 @@ def main(args):
     
     print('Done')
     
+    data_dict = loadmat(f'{args.dict_save_path}/{args.fname}_data.mat')
+    data_dict.update({'y': y.numpy(force=True) if 'torch' in str(type(y)) else y,
+                      'nW': tau * np.ones((1, nmeas))})
+    savemat(f'{args.dict_save_path}/{args.fname}_data.mat', data_dict)
+    
     # Compute RI normalization factor (just for info)
-    # ri_normalization = measop.PSF_peak()
+    ri_normalization = measop.PSF_peak()
+    dirty_normalized = dirty / ri_normalization
+    if 'torch' in str(type(dirty)):
+        dirty_normalized = dirty_normalized.numpy(force=True)
+    fits.writeto(f'{args.dict_save_path}/dirty_normalized.fits', dirty_normalized.squeeze(), overwrite=True)
     
     
 if __name__ == '__main__':

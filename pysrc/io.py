@@ -2,14 +2,14 @@ import numpy as np
 import torch
 from astropy.io import fits
 from scipy.constants import speed_of_light
-from scipy.io import loadmat
+from scipy.io import loadmat, savemat
 
 def read_fits_as_tensor(path):
     x = fits.getdata(path)
     x = torch.tensor(x.astype(np.float32)).unsqueeze(0).unsqueeze(0)
     return x
 
-def read_uv(uv_file_path, superresolution, device=torch.device('cpu'), nufft='pynufft'):
+def read_uv(uv_file_path, superresolution, dict_fname, device=torch.device('cpu'), nufft='pynufft'):
     """Read u, v and imweight from specified path.
 
     Parameters
@@ -31,10 +31,10 @@ def read_uv(uv_file_path, superresolution, device=torch.device('cpu'), nufft='py
     uv_file = loadmat(uv_file_path)
     frequency = uv_file['frequency'].squeeze()
     # convert uvw in units of the wavelength
-    umeter = uv_file['u'].squeeze() / (speed_of_light / frequency)
-    vmeter = uv_file['v'].squeeze() / (speed_of_light / frequency)
-    # wmeter = uv_file['w'].squeeze() / (speed_of_light / frequency)
-    uv = np.stack((-vmeter, umeter), axis=1).astype(np.float32).squeeze()
+    u = uv_file['u'].squeeze() / (speed_of_light / frequency)
+    v = uv_file['v'].squeeze() / (speed_of_light / frequency)
+    w = uv_file['w'].squeeze() / (speed_of_light / frequency)
+    uv = np.stack((-v, u), axis=1).astype(np.float32).squeeze()
     # maximum projected baseline (just for info)
     maxProjBaseline = np.max(np.sqrt(np.sum(uv**2, axis=np.argmin(uv.shape))))
     
@@ -49,8 +49,16 @@ def read_uv(uv_file_path, superresolution, device=torch.device('cpu'), nufft='py
     imaging_bandwidth = maxProjBaseline * superresolution
     uv = uv * np.pi / imaging_bandwidth
     
+    data_dict = {'u': u,
+                 'v': v,
+                 'w': w,
+                 'maxProjBaseline': maxProjBaseline,
+                 'frequency': frequency}
+    savemat(dict_fname, data_dict)
+    
     if nufft == 'tkbn':
         uv = torch.tensor(uv).unsqueeze(0).to(device)
         if uv.size(1) > uv.size(2):
             uv = uv.permute(0, 2, 1)
+            
     return uv
