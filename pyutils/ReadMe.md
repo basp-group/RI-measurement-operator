@@ -2,6 +2,7 @@
 
 1. Casacore https://casacore.github.io/casacore/
 2. Meqtrees https://github.com/ratt-ru/meqtrees/wiki
+3. WSClean  https://wsclean.readthedocs.io/en/latest/
 
 # Utilities
 
@@ -21,8 +22,9 @@ The output files of the script are saved in three subdirectories:
        "u"                     %  vector; `u`coordinate (in meter)
        "v"                     %  vector; `v` coordinate (in meter)
        "w"                     %  vector; `w` coordinate (in meter)
-       "frequency"             %  scalar;  channel frequency (in MHz)
+       "frequency"             %  scalar; channel frequency (in MHz)
        "nominal_pixelsize"     %  scalar; maximum pixel size (in arcsec), corresponding to nominal resolution of the observations
+       "nWimag"                %  vector; imaging weights (e.g. Briggs generated for a given imaging setting
 ```    
    - `pyutils/vla_sims/png/`: plots of the simulated uv-coverages  saved in `.png` file (for information only).
 
