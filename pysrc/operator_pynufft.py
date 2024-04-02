@@ -29,6 +29,7 @@ class operator_pynufft:
         self.torchdevice = device
         if 'cpu' in str(device):
             self.device = 'cpu'
+            print('Using CPU')
             self.NUFFT_obj = pynufft.NUFFT()
             self.fft2 = np.fft.fft2
             self.ifft2 = np.fft.ifft2
