@@ -29,7 +29,7 @@ effectiveBandwidthWterm = max(FoV) * max(abs(w));
 if effectiveBandwidthWterm > 4 * max(uvPixelSize) % hard coded limit of the w bandwidth
     fprintf('\ninfo:w-correction is enabled ..\n');
 else
-%     return;
+    return;
 end
 
 %% w-projection 
