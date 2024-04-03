@@ -54,6 +54,7 @@ def main(args):
         gdthim = gdthim.unsqueeze(0).unsqueeze(0)
 
     # model clean visibilities
+    print('Generate model visibilities .. ')
     vis = measop.A(gdthim)
     # number of data points
     nmeas = np.max(vis.shape)
@@ -65,7 +66,7 @@ def main(args):
         # compute measop spectral norm to infer the noise heuristic
         # eta_correction = 1 if nWimag is not in data file
         measop.set_uv_imweight(measop.uv, nWimag)
-        measopSpectralNorm, eta_correction = measop.op_norm(tol=1e-6, max_iter=500)
+        measopSpectralNorm, eta_correction = measop.op_norm(tol=1e-4, max_iter=500)
         measop.set_uv_imweight(measop.uv, None)
         # noise standard deviation heuristic
         tau = np.sqrt(2 * measopSpectralNorm) / targetDynamicRange / eta_correction

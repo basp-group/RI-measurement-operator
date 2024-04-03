@@ -53,7 +53,7 @@ class operator_tkbn:
         """
         self.uv = uv
         if imweight is None:
-            self.imweight = torch.ones(max(uv.shape), device=self.torchdevice)
+            self.imweight = torch.ones(max(uv.shape), device=self.device)
         else:
             self.imweight = imweight
             self.weighting_on = True
