@@ -72,7 +72,7 @@ imagingBandwidth = maxProjBaseline * superresolution;
 
 
 %% compute G matrix, associated scale parameter (gridding correction function), & Fourier operators
-[Ft, IFt, G, scale] = op_nufft([v, u].*(pi/imagingBandwidth), nufft_param.N, nufft_param.J, nufft_param.K, nufft_param.nshift);
+[Ft, IFt, G, scale] = op_nufft([-v, u].*(pi/imagingBandwidth), nufft_param.N, nufft_param.J, nufft_param.K, nufft_param.nshift);
 
 
 %% check w-correction via w-projection
