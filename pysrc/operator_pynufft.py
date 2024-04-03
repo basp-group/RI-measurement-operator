@@ -41,11 +41,12 @@ class operator_pynufft:
         self.uv = None
         self.imweight = None
         self.PSF_peak_val = None
+        self.weighting_on = False
         
     def validate_exact(self):
         assert self.uv is not None and self.imweight is not None, 'uv and imweight must be provided for exact measurement operator'
         
-    def set_uv_imweight(self, uv : np.ndarray, imweight : torch.tensor):
+    def set_uv_imweight(self, uv : np.ndarray, imweight):
         """Set the Fourier sampling pattern and weighting to be applied to the measurement. If the operator type is
         'sparse_matrix', the interpolation matrix will be computed.
         
@@ -53,11 +54,18 @@ class operator_pynufft:
         ----------
         uv : numpy.ndarray
             Fourier sampling pattern, shape (B, 2, N)
-        imweight : torch.Tensor
+        imweight : torch.Tensor or None
             Weighting to be applied to the measurement, shape (B, 1, N)
         """
         self.uv = uv
-        self.imweight = imweight
+        if imweight is None:
+            if 'cuda' in str(self.torchdevice):
+                self.imweight = torch.ones(max(uv.shape), device=self.torchdevice)
+            elif 'cpu' in str(self.torchdevice):
+                self.imweight = np.ones(max(uv.shape))
+        else:
+            self.imweight = imweight
+            self.weighting_on = True
         self.NUFFT_obj.plan(uv, self.im_size, self.grid_size, (7,7))
 
     def A(self, x, tau=0):
@@ -281,8 +289,22 @@ class operator_pynufft:
         if self.PSF_peak_val is None:
             self.PSF_peak_val = PSF_peak
         return PSF_peak
-
+    
     def op_norm(self, tol=1e-4, max_iter=500, verbose=0):
+        val1 = self.op_norm_cal(tol=tol, max_iter=max_iter, verbose=verbose)
+        if self.weighting_on:
+            val2 = self.op_norm2(tol=tol, max_iter=max_iter, verbose=verbose)
+            match self.device:
+                case 'gpu':
+                    eta_correction = torch.sqrt(val2 / val1)
+                case 'cpu':
+                    eta_correction = np.sqrt(val2 / val1)
+        else:
+            eta_correction = 1
+        return val1, eta_correction
+        
+
+    def op_norm_cal(self, tol=1e-4, max_iter=500, verbose=0):
         """Compute spectral norm of the operator.
 
         Parameters
@@ -326,3 +348,9 @@ class operator_pynufft:
             
         return val
         
+    def op_norm2(self, tol=1e-4, max_iter=500, verbose=0):
+        imweight_tmp = self.imweight
+        self.imweight = imweight_tmp**2
+        val2 = self.op_norm_cal(tol=tol, max_iter=max_iter, verbose=verbose)
+        self.imweight = imweight_tmp
+        return val2

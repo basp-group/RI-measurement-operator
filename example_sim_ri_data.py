@@ -35,9 +35,10 @@ def main(args):
     # Example script to simulate RI data
     # ground truth image
     gdthim = fits.getdata(args.gdth_file)
+    gdthim /= gdthim.max()
     plt.figure(figsize=(10, 10))
     # display the normalized ground truth image with peak pixel intensity = 1
-    plt.imshow(gdthim.squeeze()/ gdthim.max(), cmap='afmhot')
+    plt.imshow(gdthim.squeeze(), cmap='afmhot')
     plt.colorbar()
     plt.title('Ground truth image')
     args.im_size = gdthim.shape
@@ -45,13 +46,13 @@ def main(args):
     # create measurement operator object from specified arguments
     # measurement operator = measop.A
     # adjoint measurement operator = measop.At
-    measop = gen_measop(args)
+    measop, nWimag = gen_measop(args)
     
     if args.on_gpu or args.nufft == 'tkbn':
         gdthim = torch.tensor(gdthim.astype(np.float32))
     if args.nufft == 'tkbn':
         gdthim = gdthim.unsqueeze(0).unsqueeze(0)
-    
+
     # model clean visibilities
     vis = measop.A(gdthim)
     # number of data points
@@ -62,9 +63,12 @@ def main(args):
         print('Generate noise (noise level commensurate of the target dynamic range)...')
         targetDynamicRange = args.noise_heuristic
         # compute measop spectral norm to infer the noise heuristic
-        measopSpectralNorm = measop.op_norm(tol=1e-6, max_iter=500)
+        # eta_correction = 1 if nWimag is not in data file
+        measop.set_uv_imweight(measop.uv, nWimag)
+        measopSpectralNorm, eta_correction = measop.op_norm(tol=1e-6, max_iter=500)
+        measop.set_uv_imweight(measop.uv, None)
         # noise standard deviation heuristic
-        tau = np.sqrt(2 * measopSpectralNorm) / targetDynamicRange
+        tau = np.sqrt(2 * measopSpectralNorm) / targetDynamicRange / eta_correction
         # noise realization(mean-0; std-tau)
         noise = tau * (np.random.randn(nmeas) + 1j * np.random.randn(nmeas)) / np.sqrt(2)
         # input signal to noise ratio
@@ -83,19 +87,25 @@ def main(args):
     
     # back-projected data
     print('Get back-projected data...')
-    dirty = measop.At(y)
+    dirty = measop.At(y * nWimag**2)
     
     # display the non-normalized dirty image
     plt.figure(figsize=(10, 10))
     plt.imshow(dirty.squeeze(), cmap='afmhot')
     plt.colorbar()
-    plt.title('(Non-normalised) dirty image')
+    extra_str = '(weights applied)'
+    plt.title(f'(Non-normalised) dirty image {extra_str if measop.weighting_on else ""}')
     
     print('Done')
     
     data_dict = loadmat(f'{args.dict_save_path}/{args.fname}_data.mat')
+
+    
     data_dict.update({'y': y.numpy(force=True) if 'torch' in str(type(y)) else y,
-                      'nW': tau * np.ones((1, nmeas))})
+                      'nW': tau * np.ones((nmeas,1))})
+                      
+     #reshape vars
+    data_dict.update({'y':  np.reshape(y, (nmeas, 1))}   )
     savemat(f'{args.dict_save_path}/{args.fname}_data.mat', data_dict)
     
     # Compute RI normalization factor (just for info)
@@ -104,7 +114,6 @@ def main(args):
     if 'torch' in str(type(dirty)):
         dirty_normalized = dirty_normalized.numpy(force=True)
     fits.writeto(f'{args.dict_save_path}/dirty_normalized.fits', dirty_normalized.squeeze(), overwrite=True)
-    
     
 if __name__ == '__main__':
     args = parse_args()

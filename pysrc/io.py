@@ -18,6 +18,8 @@ def read_uv(uv_file_path, superresolution, dict_fname, device=torch.device('cpu'
         Path to the file containing u, v and imweight.
     superresolution : float
         Super resolution factor.
+    dict_fname : str
+        Path to save the dictionary containing data.
     device : torch.device, optional
         Device to be used, by default torch.device('cpu')
     nufft : str
@@ -30,6 +32,10 @@ def read_uv(uv_file_path, superresolution, dict_fname, device=torch.device('cpu'
     """
     uv_file = loadmat(uv_file_path)
     frequency = uv_file['frequency'].squeeze()
+    try:
+        nWimag = uv_file['nWimag'].squeeze()
+    except:
+        nWimag = None
     # convert uvw in units of the wavelength
     u = uv_file['u'].squeeze() / (speed_of_light / frequency)
     v = uv_file['v'].squeeze() / (speed_of_light / frequency)
@@ -49,11 +55,13 @@ def read_uv(uv_file_path, superresolution, dict_fname, device=torch.device('cpu'
     imaging_bandwidth = maxProjBaseline * superresolution
     uv = uv * np.pi / imaging_bandwidth
     
-    data_dict = {'u': u,
-                 'v': v,
-                 'w': w,
+    data_dict = {'u':    np.reshape(np.array(u), (len(u), 1)),
+                 'v': np.reshape(np.array(v), (len(v), 1)),
+                 'w': np.reshape(np.array(w), (len(w), 1)),
                  'maxProjBaseline': maxProjBaseline,
                  'frequency': frequency}
+    if nWimag is not None:
+        data_dict.update({'nWimag': np.reshape(np.array(nWimag), (len(nWimag), 1))})
     savemat(dict_fname, data_dict)
     
     if nufft == 'tkbn':
@@ -61,4 +69,4 @@ def read_uv(uv_file_path, superresolution, dict_fname, device=torch.device('cpu'
         if uv.size(1) > uv.size(2):
             uv = uv.permute(0, 2, 1)
             
-    return uv
+    return uv, nWimag

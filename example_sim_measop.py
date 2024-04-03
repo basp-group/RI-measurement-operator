@@ -22,21 +22,17 @@ def parse_args():
 
 def gen_measop(args):
     # read Fourier sampling pattern from specified data file 
-    uv = read_uv(args.data_file, args.superresolution, f'{args.dict_save_path}/{args.fname}_data.mat', args.device, args.nufft)
+    uv, nWimag = read_uv(args.data_file, args.superresolution, f'{args.dict_save_path}/{args.fname}_data.mat', args.device, args.nufft)
     # create measurement operator object based on the chosen nufft library
     match args.nufft:
         case 'tkbn':
             measop = operator_tkbn(im_size=args.im_size, op_type='table', op_acc='exact', device=args.device)
         case 'pynufft':
             measop = operator_pynufft(im_size=args.im_size, device=args.device)
-    if 'cuda' in str(args.device):
-        imweight = torch.ones(max(uv.shape), device=args.device)
-    elif 'cpu' in str(args.device):
-        imweight = np.ones(max(uv.shape))
         
     # set the Fourier sampling pattern in the measurement operator
-    measop.set_uv_imweight(uv, imweight)
-    return measop
+    measop.set_uv_imweight(uv, None)
+    return measop, nWimag
 
 if __name__ == '__main__':
     args = parse_args()

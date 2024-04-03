@@ -35,6 +35,7 @@ class operator_tkbn:
         self.uv = None
         self.imweight = None
         self.PSF_peak_val = None
+        self.weighting_on = False
         
     def validate_exact(self):
         assert self.uv is not None and self.imweight is not None, 'uv and imweight must be provided for exact measurement operator'
@@ -51,7 +52,11 @@ class operator_tkbn:
             Weighting to be applied to the measurement, shape (B, 1, N)
         """
         self.uv = uv
-        self.imweight = imweight
+        if imweight is None:
+            self.imweight = torch.ones(max(uv.shape), device=self.torchdevice)
+        else:
+            self.imweight = imweight
+            self.weighting_on = True
         if self.op_type == 'sparse_matrix':
             self.compute_interp_mat()
         else:
@@ -277,6 +282,16 @@ class operator_tkbn:
         return PSF_peak
 
     def op_norm(self, tol=1e-4, max_iter=500, verbose=0):
+        val1 = self.op_norm_cal(tol=tol, max_iter=max_iter, verbose=verbose)
+        if self.weighting_on:
+            val2 = self.op_norm2(tol=tol, max_iter=max_iter, verbose=verbose)
+            eta_correction = torch.sqrt(val2 / val1)
+        else:
+            eta_correction = 1
+        return val1, eta_correction
+        
+
+    def op_norm_cal(self, tol=1e-4, max_iter=500, verbose=0):
         """Compute spectral norm of the operator.
 
         Parameters
@@ -295,12 +310,14 @@ class operator_tkbn:
         """
         self.validate_exact()
         x = torch.randn(self.im_size).unsqueeze(0).unsqueeze(0).to(self.device)
-        x /= torch.linalg.norm(x)
+        norm_fn = torch.linalg.norm
+        abs_fn = torch.abs
+        x /= norm_fn(x)
         init_val = 1
         for k in range(max_iter):
             x = self.At(self.A(x))
-            val = torch.linalg.norm(x)
-            rel_var = torch.abs(val - init_val) / init_val
+            val = norm_fn(x)
+            rel_var = abs_fn(val - init_val) / init_val
             if verbose > 1:
                 print(f'Iter = {k}, norm = {val}')
             if rel_var < max(2e-6, tol):
@@ -312,3 +329,9 @@ class operator_tkbn:
             
         return val
         
+    def op_norm2(self, tol=1e-4, max_iter=500, verbose=0):
+        imweight_tmp = self.imweight
+        self.imweight = imweight_tmp**2
+        val2 = self.op_norm_cal(tol=tol, max_iter=max_iter, verbose=verbose)
+        self.imweight = imweight_tmp
+        return val2
