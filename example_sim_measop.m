@@ -56,6 +56,7 @@ resolution_param.superresolution = superresolution;
 
 
 % %% compute RI normalization factor  (just for info)
-% dirac = sparse((imSize(1)/2)+1 , (imSize(2)/2)+1 , 1, imSize(1),imSize(2)) ;
-% psf = real(adjoint_measop(measop(full(dirac))));
-% ri_normalization = max(psf,[],'all');
+dirac = sparse((imSize(1)/2)+1 , (imSize(2)/2)+1 , 1, imSize(1),imSize(2)) ;
+psf = real(adjoint_measop(measop(full(dirac))));
+ri_normalization = max(psf,[],'all');
+figure,imagesc(psf), axis image, colorbar, title('PSF');
