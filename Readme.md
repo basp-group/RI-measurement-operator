@@ -22,7 +22,7 @@ The ``RI-measurement-operator`` library is a core dependency of the [`Faceted-Hy
 >P.-A. Thouvenin, A. Dabbech, M. Jiang, J.-P. Thiran, A. Jackson, Y. Wiaux,
 [Parallel faceted imaging in radio interferometry via proximal splitting (Faceted HyperSARA): II. Real data proof-of-concept and code](https://academic.oup.com/mnras/article/521/1/20/6823713?searchresult=1), *MNRAS*, 521(1), 20–34, 2023.
 
-A rudimentary Python version is available in the branch `python`.
+A rudimentary Python implementation of the measurement operator is available in the branch `python`.
 
 **Contributors**: by alphabetical order, A. Dabbech, M. Jiang, A. Onose, P.-A. Thouvenin.
 
