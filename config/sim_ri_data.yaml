@@ -1,0 +1,8 @@
+data_file: ./data/uvw.mat
+gdth_file: ./data/3c353.fits
+superresolution: 1.5
+nufft: pynufft
+noise_heuristic: 1.e+5
+noise_isnr: 
+on_gpu: False
+dict_save_foldername: results

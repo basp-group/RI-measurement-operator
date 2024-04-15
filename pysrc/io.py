@@ -9,7 +9,7 @@ def read_fits_as_tensor(path):
     x = torch.tensor(x.astype(np.float32)).unsqueeze(0).unsqueeze(0)
     return x
 
-def read_uv(uv_file_path, superresolution, dict_fname, device=torch.device('cpu'), nufft='pynufft'):
+def read_uv(uv_file_path, superresolution, dict_save_path, device=torch.device('cpu'), nufft='pynufft', save_mat=True):
     """Read u, v and imweight from specified path.
 
     Parameters
@@ -18,7 +18,7 @@ def read_uv(uv_file_path, superresolution, dict_fname, device=torch.device('cpu'
         Path to the file containing u, v and imweight.
     superresolution : float
         Super resolution factor.
-    dict_fname : str
+    dict_save_path : str
         Path to save the dictionary containing data.
     device : torch.device, optional
         Device to be used, by default torch.device('cpu')
@@ -62,11 +62,12 @@ def read_uv(uv_file_path, superresolution, dict_fname, device=torch.device('cpu'
                  'frequency': frequency}
     if nWimag is not None:
         data_dict.update({'nWimag': np.reshape(np.array(nWimag), (len(nWimag), 1))})
-    savemat(dict_fname, data_dict)
+    if dict_save_path is not None:
+        savemat(dict_save_path, data_dict)
     
     if nufft == 'tkbn':
         uv = torch.tensor(uv).unsqueeze(0).to(device)
         if uv.size(1) > uv.size(2):
             uv = uv.permute(0, 2, 1)
             
-    return uv, nWimag
+    return uv, nWimag, data_dict
