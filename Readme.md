@@ -22,7 +22,7 @@ Clone the current repository
 git clone -b python  https://github.com/basp-group/RI-measurement-operator.git
 ```
 
-## Dependencies
+## Dependencies 
 
 The code relies on external NUFFT Python libraries, both implementing the NUFFT proposed by
 
@@ -33,10 +33,19 @@ The code relies on external NUFFT Python libraries, both implementing the NUFFT 
 
 - pyNUFFT [(https://github.com/jyhmiinlin/pynufft)](https://github.com/jyhmiinlin/pynufft).
 
-Install the packages using the command below:
+### Pip
+With the desired virtual environment activated, install the packages using the command below:
 ``` bash
-   pip install -r requirement.txt
+pip install -r requirements.txt
 ```
+
+### Conda
+Create a new conda environment and install the packages from the provided `requirements_conda.yml` file:
+```
+conda env create -f requirements_conda.yml 
+```
+If the conda command is not recognized and for more details regarding conda, read [conda_install.md](conda_install.md).
+
 ## Examples
 
 Two examples of usage are provided: 
@@ -46,27 +55,33 @@ Two examples of usage are provided:
 
    From the terminal, run the command below:
    ``` Python
-   python3  example_sim_measop.py \
-   --data_file "data/uvw.mat"     \ # Path to the file containing u, v, w, frequency, and imweight (optional)
-   --im_size 512 512              \ # Target image dimension
-   --superresolution 1.5          \ # Superrresolution facor, inferring the bandwidth of the imaged spatial Fourier domain
-   --nufft "pynufft"              \ # Nufft library to be used, choices are ['pynufft', 'tkbn']
-   --on_gpu                       \ # Run on GPU
-   --dict_save_path "./results/"  \ # Path to save the simulated data file and dirty image, default: "./results/" 
+   python  example_sim_measop.py --yaml_file config/sim_measop.yaml
    ```
-
+   The script will load the yaml file `config/sim_measop.yaml` with the following arguments:
+   ``` yaml
+      data_file         # (str) Path to the file containing u, v, w, frequency, and imweight (optional)
+      im_size_x         # (int) Target image dimension in the x direction
+      im_size_y         # (int) Target image dimension in the y direction
+      superresolution   # (float) Superrresolution facor, inferring the bandwidth of the imaged spatial Fourier domain
+      nufft             # (str) Nufft library to be used, choices are ['pynufft', 'tkbn']
+      on_gpu            # (bool) Run on GPU
+   ```
 
 
 2. `example_sim_ri_data.py` enables the simulation of radio-inteferometric data from a given ground truth image and a Fourier sampling pattern.
 
    From the terminal, run the command below:
    ``` Python
-   python3  example_sim_ri_data.py \
-   --data_file  "data/uvw.mat"    \ # Path to the file containing u, v, w, frequency, and imweight (optional)
-   --gdth_file  "data/3c353.fits"  \ # Path to the ground truth file  (.fits)
-   --superresolution 1.5           \ # Superrresolution facor, inferring the bandwidth of the imaged spatial Fourier domain
-   --nufft "pynufft"               \ # Nufft library to be used, choices are ['pynufft', 'tkbn']
-   --noise_heuristic 1e5           \ # Target dynamic range of the ground truth image used to infer the noise level (option 1)
-   --noise_isnr  ""                \ # Input signa-to-noise ratio to infer the noise level (option 2)
-   --on_gpu                          # run on GPU
+   python  example_sim_ri_data.py --yaml_file config/sim_ri_data.yaml
+   ```
+   The script will load the yaml file `config/sim_ri_data.yaml` with the following arguments:
+   ``` yaml
+   data_file            # (str) Path to the file containing u, v, w, frequency, and imweight (optional)
+   gdth_file            # (str) Path to the ground truth file  (.fits)
+   superresolution      # (float) Superrresolution facor, inferring the bandwidth of the imaged spatial Fourier domain
+   nufft                # (str) Nufft library to be used, choices are ['pynufft', 'tkbn']
+   noise_heuristic      # (float) Target dynamic range of the ground truth image used to infer the noise level (option 1)
+   noise_isnr           # (float) Input signa-to-noise ratio to infer the noise level (option 2)
+   on_gpu               # (bool) run on GPU
+   dict_save_foldername # (str) Path to the folder where the dictionary will be saved
     ```
