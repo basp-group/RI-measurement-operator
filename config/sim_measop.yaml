@@ -2,5 +2,5 @@ data_file: ./data/uvw.mat
 im_size_x: 512
 im_size_y: 512
 superresolution: 1.5
-nufft: tkbn
+nufft: pynufft
 on_gpu: False
