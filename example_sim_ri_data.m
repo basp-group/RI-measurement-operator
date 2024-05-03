@@ -15,13 +15,16 @@ simtype = 'realistic'; % possible values: `realistic` ; `toy`
 noiselevel = 'drheuristic'; % possible values: `drheuristic` ; `inputsnr`
 superresolution = 1.5; % ratio between imaged Fourier bandwidth and sampling bandwidth
 
+% imaging weights for imaging: robust (aka briggs) / uniform
+weighting_on = true;   
+weight_load =  false;
+weight_type = 'robust';
+weight_robustness = 0.0;
+
 switch simtype
     case 'realistic'
         myuvwdatafile = 'tests/test.mat';
         frequency = load(myuvwdatafile,'frequency').frequency;
-        % data weighting enabled (for imaging e.g. Briggs)  
-        weighting_on = true; 
-
     case 'toy'
         % antenna configuration
         telescope = 'vlaa';
@@ -31,8 +34,6 @@ switch simtype
         obsTime = 4;
         % obs. frequency in MHz
         frequency  = 1e9;
-        % data weighting enabled (for imaging e.g. Briggs) 
-        weighting_on = false; 
 end
 %% ground truth image 
 fprintf("\nread ground truth image  .. ")
@@ -70,16 +71,7 @@ switch simtype
         try nominalPixelSize = double(load(myuvwdatafile,'nominal_pixelsize').nominal_pixelsize);
         end
 
-        % imaging weights if available
-        if weighting_on
-            try nWimag = double(load(myuvwdatafile,'nWimag').nWimag);
-                nWimag = nWimag(:);
-                fprintf("\ninfo: imaging weights are found")
-            catch
-                weighting_on = false;
-            end
-        end
-
+     
     case 'toy'       
         % generate sampling pattern (uv-coverage)
         fprintf("\nsimulate Fourier sampling pattern using %s .. ", telescope)
