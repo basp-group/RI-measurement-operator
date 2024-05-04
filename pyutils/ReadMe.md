@@ -1,16 +1,9 @@
-# Requirements
-
-1. Casacore https://casacore.github.io/casacore/
-2. Meqtrees https://github.com/ratt-ru/meqtrees/wiki
-3. WSClean  https://wsclean.readthedocs.io/en/latest/
-
 # Utilities
 
 ## Fourier sampling pattern simulation
  
-Simulation of realistic Fourier sampling patterns from antenna configurations of radio telescopes (`pyutils/observatories`), performed using the utility script `sim_vla_ms.py`. The script relies heavily on [simms](https://github.com/ratt-ru/simms), that is part of the software package [Meqtrees](https://github.com/ratt-ru/meqtrees/wiki).
-
-The task should be performed in its parent directory  `pyutils/`
+Simulation of realistic Fourier sampling patterns from antenna configurations of radio telescopes (`pyutils/observatories`), performed using the utility script `sim_vla_ms.py`. 
+The task should be performed in its parent directory  `pyutils/`.
 
 Random variations of the observation setting using VLA antenna configurations are supported. These variations can be also extended to other radio telescopes.
 
@@ -24,14 +17,17 @@ The output files of the script are saved in three subdirectories:
        "w"                     %  vector; `w` coordinate (in meter)
        "frequency"             %  scalar; channel frequency (in MHz)
        "nominal_pixelsize"     %  scalar; maximum pixel size (in arcsec), corresponding to nominal resolution of the observations
-       "nWimag"                %  vector; imaging weights (e.g. Briggs generated for a given imaging setting
 ```    
    - `pyutils/vla_sims/png/`: plots of the simulated uv-coverages  saved in `.png` file (for information only).
 
  The script  `sim_vla_ms.py` is an example. The user is encouraged to tailor if needed.
 
+### Requirements
+1. Casa  https://casadocs.readthedocs.io/en/stable/index.html
+2. Simms https://github.com/ratt-ru/simms
+
 ### Example
-Multiple sampling patterns can be generated at once using the argument `-n`.
+Multiple sampling patterns can be generated combining VLA configurations A and C at once, using the argument `-n`.
 
 From the terminal launch:
 ``` python
@@ -39,8 +35,7 @@ From the terminal launch:
 ```
 ## Extraction of RI data 
 
-Data extraction from a measurement set, performed using the utility script `pyxis_ms2mat.py`.
-The script relies heavily on [pyxis](https://github.com/ratt-ru/pyxis), that is part of the software package [Meqtrees](https://github.com/ratt-ru/meqtrees/wiki).
+Data extraction from a measurement set, performed using the utility script `ms2mat.py`.
 
 The task should be performed in its parent directory  `pyutils/`.
  
@@ -57,21 +52,24 @@ Extracted `.mat` file is saved in `pyutils/data/`. The file encompasses the foll
    "maxProjBaseline"  %  scalar; maximum projected baseline (in units of the wavelength)
   ```    
 
- The script  `pyxis_ms2mat.py` is an example. The user is encouraged to tailor it if the measurement set is organised differently.
+The script  `ms2mat.py` is an example. The user is encouraged to tailor it if the measurement set is organised differently.
+
+### Requirement
+Python-casacore https://github.com/casacore/python-casacore
 
 ### Example
 Extracting (monochromatic) data at the frequency channel  `0` corresponding to the target source with field ID `0`.
 
-The user must provide the name/path to the measurement set `$MS`. The following inputs are optional:
-```python
-    $SRCNAME  # default `SRCNAME=""`; source nametag
-    $FIELDID  # default `FIELDID=0`; ID of the target source
-    $FREQID   # default `FREQID=0`; ID of the channel to be extracted
+The user must provide the name/path to the measurement set `--msfile`. The following inputs are optional.
+```bash
+--srcname  # default srcname="" : source nametag which defines the main directory of the extracted data. 
+--srcid    # default srcid=0 : field ID of the source of interest, 
+--freqid   # default freqid=0 : ID of the channnel to be extracted, 
 ```
 
 From the terminal launch:
-``` python
-   pyxis  MS=$MS SRCNAME=3c353 FIELDID=0 FREQID=0 ms2mat
+```bash
+python ms2mat.py --msfile=myms.ms --srcname=3c353 --srcid=0 --freqid=0  
 ```
 
 Data will be saved as .mat files in the sub-directory  `pyutils/data/`. The outcome is as follows:
