@@ -1,31 +1,33 @@
 function nWimag = util_gen_imaging_weights(u, v, nW2, N, param)
-% Generate the diagnoal preconditioning matrix (accounting for the sampling
-% density in the Fourier domain, similarly to uniform weighting
-% :cite:p:`Onose2017`).
 %
 % Parameters
 % ----------
 % u : double[:]
-%     u coordinate of the data point in the Fourier domain.
+%     u coordinate of the data point in the Fourier domain in radians.
 % v : double[:]
-%     v coordinate of the data points in the Fourier domain.
+%     v coordinate of the data points in the Fourier domain in radians.
 % nW2 : double[:]
 %     inverse of the variance.
+% N:  int[2]
+%      image dimension
 % param : struct
 %     List of parameters to specify weights generation (can be omitted by
-%     default). Fields: `weight_type`, `weight_robustness`.
+%     default). Fields: `weight_type` with values in {'uniform','robust', 'none'}, `weight_gridsize`, `weight_robustness` that is the Briggs param.
 %
 % Returns
 % -------
 % nWimag : double[:]
-%     Diagonal preconditioner (uniform weighting), encoded as a vector.
+%      weights inferred from the density of the sampling (uniform/Briggs).
 %
+% author: A. Dabbech
 
 %%
 if ~isfield(param, 'weight_type'); param.weight_type = 'uniform'; end
+if ~isfield(param, 'weight_gridsize'); param.weight_gridsize = 1; end
 if ~isfield(param, 'weight_robustness'); param.weight_robustness = 0.0; end
 
 nmeas = numel(u);
+N = param.weight_gridsize * N;
 
 % Initialize gridded weights matrix with zeros
 p = mod(floor((v(:)+pi)* N(1)/(2*pi)), N(1))  + 1; 
