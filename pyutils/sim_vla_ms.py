@@ -3,16 +3,15 @@
 # Author: A. Dabbech
 
 from simms import simms
-import os
-import sys
-import subprocess
-import argparse
+from casatools import table
+from casatasks import concat
 import numpy as np
 import scipy.io as sio
-import matplotlib.pyplot as plt
+import os
+import argparse
 import math
-from casatools import table
 import timeit
+import matplotlib.pyplot as plt
 
 # constants
 c = 299792458  # Speed of light
@@ -33,14 +32,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-n', '--npatterns', default=1)
 args = parser.parse_args()
 
-
 def main():
     # number of sampling patterns & MS tables to generate
     print('############# User-input:')
     npatterns = int(args.npatterns)
     print('Number of requested Fourier sampling patterns: %s' % npatterns)
-    # init ms table
-    tb = table()
     # generate sampling patterns aka uvw-coverages & related info
     for i in range(npatterns):
         start = timeit.default_timer()
@@ -63,7 +59,7 @@ def main():
 
         ## time specs
         dta_min = 5  # A config: min total observation time
-        dta = np.random.uniform(5, 5 + dta_min)  # A config: total observation time in [5,10]
+        dta = 10 #np.random.uniform(5, 5 + dta_min)  # A config: total observation time in [5,10]
         print("info: (param) obs. time with config A of freqs: %.2f h" % dta)
         dtc_min = 1  # C  config: min total observation time
         dtc = np.random.uniform() * 2 + dtc_min  # C config: total observation time in [1,3]
@@ -101,13 +97,6 @@ def main():
         # briggs weighting: robust param
         briggs = 0  # np.random.uniform(-1, 1)  # B
         print("info: (param) briggs weigting: %.2f" % briggs)
-        # image dimensions
-        Nx = 512  # (feel free to change)
-        Ny = 512  # (feel free to change)
-        print("info: (param) target image size: %s x %s" % (Nx,Ny))
-        # super-resolution factor (to infer pixel size)
-        sr_factor = 1.5  # typically  in [1.5, 2.5] (feel free to change)
-        print("info: (param) super-resolution x%.2f" % sr_factor)
 
         ## MS filenames
         # config A
@@ -132,6 +121,7 @@ def main():
         # Step 1: Generate both MSs
         # --------------------------------------
         print("CASA:start ----------------------------")
+        print('##### Create empty MS .. A config')
         # A config
         simms.create_empty_ms(msname=mymsfile_a, tel='vlaa', pos="%s/observatories/vlaa.itrf.txt" % mydir,
                               pos_type='ascii', coords="itrf",
@@ -139,157 +129,119 @@ def main():
                               ra=msra, dec=msdec, scan_length=[dta + 0.01], scan_lag=0,
                               stokes="XX YY", setlimits=True, optimise_start=True)
         # C config
+        print('##### Create empty MS .. C config')
         simms.create_empty_ms(msname=mymsfile_c, tel='vlac', pos="%s/observatories/vlaa.itrf.txt" % mydir,
                               pos_type='ascii', coords="itrf",
                               synthesis=dtc, dtime=dt_step, dfreq=msdfreq, freq0=msfreq0, nchan=[nfreqs],
                               ra=msra, dec=msdec, scan_length=[dtc + 0.01], scan_lag=0,
                               stokes="XX YY", setlimits=True, optimise_start=True)
 
-        # os.system('rm %s/*_uvw.mat' % msdir)  # delete tmp files
-
-        # concat MSs
-        concat_cmd = "concat(vis=['%s','%s'],concatvis='%s')" % (mymsfile_a, mymsfile_c, mymsfile)
-        print('concat ms using: "%s"' % concat_cmd)
-        os.system('casa -c "%s"' % concat_cmd)
+        print('##### Concat  MSs ..')
+        concat(vis=[mymsfile_a, mymsfile_c], concatvis=mymsfile)
         os.system('rm -rf %s' % mymsfile_a)  # delete vla-a MS
         os.system('rm -rf %s' % mymsfile_c)  # delete vla-c MS
         print("CASA:end ----------------------------")
-        print('##### Create empty MS: end')
-
-        print('##### Random flagging & data extraction: start')
         # --------------------------------------
         # Step 2: Apply (random) flags & extract (final) uvw
         # --------------------------------------
+        tb = table()
         tb.open(mymsfile, nomodify=False)
+        print("MS table columns:", *(tb.colnames()))
+        print('##### Random flagging & data extraction: start')
+
         # check number of scans
         scans = tb.getcol('SCAN_NUMBER')
         nscans = len(np.unique(scans))
         # get number of meas. per freq.
         nmeas = len(scans)
         print("info: number of scans %s" % nscans)
-        if nscans > 2:  # to be checked
-            tb.close()
-            raise Exception("Number of scans higher than expected ")
-        else:
-            # get uvw col
-            uvw = tb.getcol('UVW')
-            # apply rotation to the Fourier sampling pattern (aka uv-coverage)
-            uvw_rot = np.zeros(uvw.shape)
-            uvw_rot[0, :] = math.cos(math.radians(rot_theta)) * uvw[0, :] - math.sin(math.radians(rot_theta)) * uvw[1,
-                                                                                                                :]
-            uvw_rot[1, :] = math.sin(math.radians(rot_theta)) * uvw[0, :] + math.cos(math.radians(rot_theta)) * uvw[1,
-                                                                                                                :]
-            uvw_rot[2, :] = uvw[2, :]
-            uvw = []
-            # overwrite uvw col
-            tb.putcol('UVW', uvw_rot)
 
-            # get FLAG col (set to False everywhere)
-            flag = tb.getcol('FLAG')
-            ## init
-            u, v, w = [], [], []
-            ## apply random flagging at each frequency & get uvw
-            ref_freq = (freq_vect[nfreqs - 1] + freq_vect[0]) / 2
+        # get uvw col
+        uvw = tb.getcol('UVW')
+        # apply rotation to the Fourier sampling pattern (aka uv-coverage)
+        uvw_rot = np.zeros(uvw.shape)
+        uvw_rot[0,:] = math.cos(math.radians(rot_theta)) * uvw[0,:] - math.sin(math.radians(rot_theta)) * uvw[1,:]
+        uvw_rot[1,:] = math.sin(math.radians(rot_theta)) * uvw[0,:] + math.cos(math.radians(rot_theta)) * uvw[1,:]
+        uvw_rot[2,:] = uvw[2,:]
+        # overwrite uvw col
+        tb.putcol('UVW', uvw_rot)
 
-            for ifreq in range(len(freq_vect)):
-                flag_percentage = np.random.uniform() * flag_percentage_max
-                print("info: (param) freq %s: flagging percentage %.4f " % (ifreq, 100 * flag_percentage))
-                flagged_rows = (np.random.choice(np.linspace(0, nmeas - 1, num=nmeas),
-                                                 size=math.floor(nmeas * flag_percentage))).astype(int)
-                flag[:, ifreq, flagged_rows] = True
-                select_rows = (flag[0, ifreq, :] == False)
+        # get FLAG col (set to False everywhere)
+        flag = tb.getcol('FLAG')
+        ## init
+        u, v, w = [], [], []
+        ## apply random flagging at each frequency & get uvw
+        ref_freq = (freq_vect[nfreqs - 1] + freq_vect[0]) / 2
 
-                # freq ratio to be applied
-                ifreq_ratio = freq_vect[ifreq] / ref_freq
-                # get uvw after flagging (in meter)
-                u.extend(uvw_rot[0, select_rows] / ifreq_ratio)
-                v.extend(uvw_rot[1, select_rows] / ifreq_ratio)
-                w.extend(uvw_rot[2, select_rows] / ifreq_ratio)
-            print("info: initial number  meas. %s" % (nfreqs * nmeas))
-            print("info: number of meas. after flagging %s" % len(u))
-            # overwrite FLAG col & update MS
-            tb.putcol('FLAG', flag)  # update flag column in the MS
-            tb.close()
-            print('##### Random flagging & data extraction: end')
+        for ifreq in range(len(freq_vect)):
+            flag_percentage = np.random.uniform() * flag_percentage_max
+            print("info: (param) freq %s: flagging percentage %.4f " % (ifreq, 100 * flag_percentage))
+            flagged_rows = (np.random.choice(np.linspace(0, nmeas - 1, num=nmeas),
+                                             size=math.floor(nmeas * flag_percentage))).astype(int)
+            flag[:, ifreq, flagged_rows] = True
+            select_rows = (flag[0, ifreq, :] == False)
 
-            # reshape vars
-            u = np.reshape(np.array(u), (len(u), 1))
-            v = np.reshape(np.array(v), (len(u), 1))
-            w = np.reshape(np.array(w), (len(u), 1))
+            # freq ratio to be applied
+            ifreq_ratio = freq_vect[ifreq] / ref_freq
+            # get uvw after flagging (in meter)
+            u.extend(uvw_rot[0, select_rows] / ifreq_ratio)
+            v.extend(uvw_rot[1, select_rows] / ifreq_ratio)
+            w.extend(uvw_rot[2, select_rows] / ifreq_ratio)
 
+        print("info: initial number  meas. %s" % (nfreqs * nmeas))
+        print("info: number of meas. after flagging %s" % len(u))
+        # overwrite FLAG col & update MS
+        tb.putcol('FLAG', flag)  # update flag column in the MS
+        tb.close()
+        print('##### Random flagging & data extraction: end')
 
-            # info needed for pixelsize
-            wavelength = c / ref_freq
-            maxProjBaseline = (np.sqrt(max(u ** 2 + v ** 2))).astype(float) / wavelength
-            print('info: frequency: %f GHz ' % (ref_freq / 1e9))
-            print("info: max. projected baseline in units of the wavelength %s " % maxProjBaseline)
+        # reshape vars
+        u = np.reshape(np.array(u), (len(u), 1))
+        v = np.reshape(np.array(v), (len(u), 1))
+        w = np.reshape(np.array(w), (len(u), 1))
 
-            # ------------------------------
-            # Step 3: Generate imaging weights with WSClean
-            # ------------------------------
-            ## run wsclean
-            imaging_pixelsize = 1 / (2 * maxProjBaseline) * (180 / math.pi) * 3600 / sr_factor
-            print("info: imaging pixelsize %s asec (super resolution x%.2f)" % (imaging_pixelsize, sr_factor))
+        # info needed for pixelsize
+        wavelength = c / ref_freq
+        maxProjBaseline = (np.sqrt(max(u ** 2 + v ** 2))).astype(float) / wavelength
+        print('info: frequency: %f GHz ' % (ref_freq / 1e9))
+        print("info: max. projected baseline in units of the wavelength %s " % maxProjBaseline)
 
-            wsclean_cmd = "wsclean -size %s  %s -store-imaging-weights -weight briggs %s -scale %sasec -niter 1 -name %s  %s" % (
-                Nx, Ny, briggs, imaging_pixelsize[0], ext, mymsfile)
-            print("running wsclean to get briggs weights: %s" % wsclean_cmd)
-            print("WSClean:start ----------------------------")
-            os.system(wsclean_cmd)
-            # delete tmp files
-            os.system("rm  %s-*.fits"%ext)
-            print("WSClean:end ----------------------------")
+        # ------------------------------
+        # Step 3: Save uvw to .mat
+        # ------------------------------
+        # nominal pixelsize (superresolution x1): upper bound on the pixel size used during imaging
+        nominal_pixelsize = 1 / (2 * maxProjBaseline) * (180 / math.pi) * 3600
+        print("info: nominal pixelsize (i.e. super-resolution x1):  %f arcsec" % nominal_pixelsize)
 
-            # extract briggs weights
-            print("info: reading Briggs weights from MS")
-            tb.open(mymsfile)
-            imweights = tb.getcol('IMAGING_WEIGHT_SPECTRUM')  # get FLAG and set to True everywhere
-            tb.close()
-            nWimag = []
-            for ifreq in range(nfreqs):
-                select_rows = (flag[0, ifreq, :] == False)
-                nWimag.extend(imweights[0, ifreq, select_rows])
-            nWimag = np.reshape(np.array(np.sqrt(nWimag)), (len(nWimag), 1))
+        # uvw saved in units of meter
+        sampling_pattern_uvw = {'u': u, 'v': v, 'w': w, 'frequency': ref_freq,
+                                'nominal_pixelsize': nominal_pixelsize}
 
-            # ------------------------------
-            # Step 4: Save uvw to .mat
-            # ------------------------------
+        # final  mat file
+        uvwmatfile = uvdir + 'uvw_' + ext + '.mat'
+        print("info: saving .mat file: %s" % uvwmatfile)
+        sio.savemat(uvwmatfile, sampling_pattern_uvw)
 
-            # nominal pixelsize (superresolution x1): upper bound on the pixel size used during imaging
-            # wavelength = c / ref_freq
-            # maxProjBaseline = (np.sqrt(max(u ** 2 + v ** 2))).astype(float)/wavelength
-            nominal_pixelsize = 1 / (2 * maxProjBaseline) * (180 / math.pi) * 3600
-            print("info: nominal pixelsize (i.e. super-resolution x1):  %f arcsec" % nominal_pixelsize)
-
-            # uvw saved in units of meter
-            sampling_pattern_uvw = {'u': u, 'v': v, 'w': w, 'frequency': ref_freq,
-                                    'nominal_pixelsize': nominal_pixelsize, 'nWimag': nWimag}
-
-            # final  mat file
-            uvwmatfile = uvdir + 'uvw_' + ext + '.mat'
-            print("info: saving .mat file: %s" % uvwmatfile)
-            sio.savemat(uvwmatfile, sampling_pattern_uvw)
-
-            # additional plot of the uv-coverage (for info only)
-            plt.figure()
-            plt.scatter(u, v, color='red', s=0.01)
-            plt.scatter(-u, -v, color='blue', s=0.01)
-            plt.title("dt:" + str("%.1f" % (dta + dtc)) + ", ra:" + str("%.2f" % ra) + ", dec:" + str("%.2f" % dec_deg)
-                      + ', rot:' + str("%.1f" % rot_theta) + ', nfreqs:' + str("%.2f" % nfreqs) + ', freq ratio:' + str(
-                "%.2f" % freq_ratio))
-            plt.savefig(pngdir + 'uv_' + ext + '.png')
-            plt.close()
-            print(
-                "info: mat file created successfully, which includes these fields:  `u`,`v`,`w` (all in units of meter), `frequency` (MHz), `nominal_pixelsize` (arcsec), `nWimag` ")
-            print('##### file saved.')
+        # additional plot of the uv-coverage (for info only)
+        plt.figure()
+        plt.scatter(u, v, color='red', s=0.01)
+        plt.scatter(-u, -v, color='blue', s=0.01)
+        plt.title("dt:" + str("%.1f" % (dta + dtc)) + ", ra:" + str("%.2f" % ra) + ", dec:" + str("%.2f" % dec_deg)
+                  + ', rot:' + str("%.1f" % rot_theta) + ', nfreqs:' + str("%.2f" % nfreqs) + ', freq ratio:' + str(
+            "%.2f" % freq_ratio))
+        plt.savefig(pngdir + 'uv_' + ext + '.png')
+        plt.close()
+        print(
+            "info: mat file created successfully, which includes these fields:  `u`,`v`,`w` (all in units of meter), `frequency` (MHz), `nominal_pixelsize` (arcsec)")
+        print('##### File saved.')
 
     ## delete tmp dirs
     # os.system("rm -rf %s" % mymsfile)
 
     stop = timeit.default_timer()
 
-    print('Time to generate sampling patterns & files: %2.f ' % (stop - start))
-
+    print('Time to generate sampling patterns & files: %2.f sec ' % (stop - start))
+    print('##### END.')
 
 if __name__ == "__main__":
     main()
