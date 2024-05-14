@@ -25,6 +25,8 @@ if ~isfield(param, 'uniform_weight_sub_pixels'); param.uniform_weight_sub_pixels
 
 um = u;
 vm = v;
+um(v<0) = -um(v<0);
+vm(v<0) = -vm(v<0);
 
 aWw = ones(length(vm), 1);
 
