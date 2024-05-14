@@ -8,10 +8,11 @@
 ## Description
 
 ``RI-measurement-operator`` is a radio-interferometry MATLAB library devoted to
-the implementation of the measurement operator. The proposed implementation can accommodate
+the implementation of the measurement operator. The proposed implementation can accommodate:
 
-- `w`-correction [(Dabbech2018)](https://academic.oup.com/mnras/article/476/3/2853/4855950);
-- a compact Fourier model for the direction dependent effects (DDEs) [(Dabbech2021)](https://academic.oup.com/mnras/article-abstract/506/4/4855/6315336?redirectedFrom=fulltext).
+- data-weighting schemes: Briggs and uniform. 
+- `w`-correction VIA `w`-projection [(Dabbech2018)](https://academic.oup.com/mnras/article/476/3/2853/4855950);
+- a compact Fourier model for the direction dependent effects (DDEs) [(Dabbech2021)](https://academic.oup.com/mnras/article-abstract/506/4/4855/6315336?redirectedFrom=fulltext);
 
 Python-based utility scripts to generate realistic Fourier sampling patterns and extract RI data from a measurement set (MS) to `.mat` file are available in  `pyutils/`. Instructions are provided in `pyutils/Readme.md`.
 
