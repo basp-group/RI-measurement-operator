@@ -16,7 +16,7 @@ noiselevel = 'drheuristic'; % possible values: `drheuristic` ; `inputsnr`
 superresolution = 1.5; % ratio between imaged Fourier bandwidth and sampling bandwidth
 
 % optional functionalities
-weighting_on = true;  % enable imaging weights: robust (aka briggs) / uniform
+weighting_on = true;  % enable imaging weights: briggs (aka robust) / uniform
 weight_load = false;  % load weights from input .mat file
 wproj_on = false; % wprojection 
 
@@ -95,7 +95,7 @@ nufft_param.nshift = imSize / 2; % Fourier shift (matlab convention)
 nufft_param.ktype = 'minmax:kb'; % kernel type
 
 weighting_param.gen_weights =  weighting_on && (~weight_load);
-weighting_param.weight_type = 'robust';
+weighting_param.weight_type = 'briggs';
 weighting_param.weight_robustness = 0.0;
 
 wproj_param.enable_wproj = false;
