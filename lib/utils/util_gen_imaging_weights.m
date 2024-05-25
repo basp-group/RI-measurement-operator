@@ -19,7 +19,7 @@ function nWimag = util_gen_imaging_weights(u, v, nW, N, param)
 % nWimag : double[:]
 %      weights inferred from the density of the sampling (uniform/Briggs).
 %
-% author: A. Dabbech
+% author: A. Dabbech, updated [25/05/2024]
 
 %%
 if ~isfield(param, 'weight_type')
@@ -32,7 +32,9 @@ if ~isfield(param, 'weight_robustness')
     param.weight_robustness = 0.0;
 end
 
+% number of meas.
 nmeas = numel(u);
+
 % size of the grid
 N = floor(param.weight_gridsize*N);
 
@@ -42,7 +44,10 @@ v(v < 0) = -v(v < 0);
 
 % grid uv points
 q = floor((u + pi)*N(2)/2/pi);
-p = floor((v + pi)*N(2)/2/pi);
+p = floor((v + pi)*N(1)/2/pi);
+
+uvInd = sub2ind(N, p, q);
+clear p q;
 
 % Initialize gridded weights matrix with zeros
 gridded_weights = zeros(N);
@@ -52,34 +57,26 @@ nW2 = double(nW.^2);
 if isscalar(nW2)
     nW2 = (nW2) .* ones(nmeas, 1);
 end
+
 % get gridded weights
 for imeas = 1:nmeas
     switch param.weight_type
         case 'uniform'
-            gridded_weights(p(imeas), q(imeas)) = gridded_weights(p(imeas), q(imeas)) + 1;
+            gridded_weights(uvInd(imeas)) = gridded_weights(uvInd(imeas)) + 1;
         case 'briggs'
-            gridded_weights(p(imeas), q(imeas)) = gridded_weights(p(imeas), q(imeas)) + nW2(imeas);
+            gridded_weights(uvInd(imeas)) = gridded_weights(uvInd(imeas)) + nW2(imeas);
     end
-end
 
-% Compute robust scale factor
-switch param.weight_type
-    case 'briggs'
-        robust_scale = (sum(gridded_weights(:)) / sum(gridded_weights(:).^2)) * (5 * 10^(-param.weight_robustness)).^2;
 end
-
-% init
-nWimag = ones(nmeas, 1);
 
 % Apply weighting based on weighting_type
-for imeas = 1:nmeas
-    switch param.weight_type
-        case 'uniform'
-            nWimag(imeas) = 1 / sqrt(gridded_weights(p(imeas), q(imeas)));
-        case 'briggs'
-            nWimag(imeas) = 1 / sqrt(1+robust_scale*gridded_weights(p(imeas), q(imeas)));
-    end
+switch param.weight_type
+    case 'uniform'
+        nWimag = 1 ./ sqrt(gridded_weights(uvInd));
+    case 'briggs'
+        % Compute robust scale factor
+        robust_scale = (sum(gridded_weights, "all") / sum(gridded_weights.^2, "all")) * (5 * 10^(-param.weight_robustness)).^2;
+        nWimag = 1 ./ sqrt(1+robust_scale.*gridded_weights(uvInd));
 end
-
 
 end
