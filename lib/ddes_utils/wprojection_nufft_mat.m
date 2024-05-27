@@ -17,7 +17,7 @@ function G = wprojection_nufft_mat(G, w, nufft_param, wproj_param)
 imSize = nufft_param.N; % image size
 imFourierSize = nufft_param.K; % zero-padded image size
 nufftKernelNumel = prod(nufft_param.J); % nufft kernel support
-paddFourierFactor = unique(nufft_param.N ./ nufft_param.K ); % oversampling factor
+paddFourierFactor = unique(nufft_param.K ./ nufft_param.N ); % oversampling factor
 
 % FoV details
 FoV =  sin(wproj_param.pixelSize * imSize * pi / 180 / 3600) ; % Field of view
