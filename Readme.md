@@ -16,7 +16,7 @@ the implementation of the measurement operator. The proposed implementation can 
 
 Python-based utility scripts to generate realistic Fourier sampling patterns and extract RI data from a measurement set (MS) to `.mat` file are available in  `pyutils/`. Instructions are provided in `pyutils/Readme.md`.
 
-The ``RI-measurement-operator`` library is a core dependency of the [`Faceted-Hyper-SARA`](https://github.com/basp-group/Faceted-Hyper-SARA) wideband imaging library for radio-interferometry, associated with the following publications.
+The ``RI-measurement-operator`` library is a core dependency of the [`Faceted-HyperSARA`](https://github.com/basp-group/Faceted-HyperSARA) wideband imaging library for radio-interferometry, associated with the following publications.
 
 >P.-A. Thouvenin, A. Abdulaziz, A. Dabbech, A. Repetti, Y. Wiaux, [Parallel faceted imaging in radio interferometry via proximal splitting (Faceted HyperSARA): I. Algorithm and simulations](https://academic.oup.com/mnras/article/521/1/1/6823714), *MNRAS*, 521(1), 1–19, 2023. 
 >
