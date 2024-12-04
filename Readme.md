@@ -13,7 +13,7 @@ Python-based utility scripts to generate realistic Fourier sampling patterns and
 
 We also provide a tutorial in the format of a Jupyter Notebook as a quick start guide about how to run the scripts in this repository. It can also be viewed [here](https://github.com/basp-group-private/RI-measurement-operator/blob/python-publish/tutorial_ri_measurement_operator_python.ipynb) .
 
-We also provide a tutorial in the format of [Jupyter notebook](tutorial_ri_measurement_operator_python.ipynb) as a quick start guide about how to run the scripts in this repository, from setting up the environment to imaging RI measurements. It can also be viewed online [here]().
+We also provide a tutorial in the format of [Jupyter notebook](tutorial_ri_measurement_operator_python.ipynb) as a quick start guide about how to run the scripts in this repository, from setting up the environment to imaging RI measurements. It can also be viewed online [here](https://nbviewer.org/github/basp-group/RI-measurement-operator/blob/python/tutorial_ri_measurement_operator_python.ipynb).
 
 **Contributors**: by alphabetical order, T. Chu, A. Dabbech .
 
