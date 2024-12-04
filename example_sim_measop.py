@@ -1,39 +1,67 @@
+from pysrc.set_params import parse_args_meas_op
+from pysrc.utils.io import load_data_to_tensor
+
+from astropy.io import fits
 import torch
-import yaml
-import os
-import argparse
-import numpy as np
 
-from pysrc.io import read_uv
-from pysrc.operator_tkbn import operator_tkbn
-from pysrc.operator_pynufft import operator_pynufft
+def gen_meas_op(args, return_data: bool = False):
+    # read Fourier sampling pattern from specified data file
+    data = load_data_to_tensor(
+        uv_file_path=args.data_file,
+        super_resolution=args.super_resolution,
+        image_pixel_size=args.image_pixel_size,
+        data_weighting=args.data_weighting,
+        load_weight=args.load_weight,
+        img_size=args.img_size,
+        dtype=args.meas_dtype,
+        device=args.device,
+        verbose=args.verbose,
+    )
 
-def parse_args():
-    parser = argparse.ArgumentParser(description='Read uv and imweight files')
-    parser.add_argument('--yaml_file', type=str, default='./configs/measop.yaml',
-                    help='Path to the yaml file containing the arguments')
-    return parser.parse_args()
-
-def gen_measop(args):
-    with open(args.yaml_file, 'r') as file:
-        args.__dict__.update(yaml.load(file, Loader=yaml.FullLoader))
-    if not hasattr(args, 'im_size'):
-        args.im_size = (args.im_size_x, args.im_size_y)
-        args.dict_save_path = None
-    args.device = torch.device('cuda') if args.on_gpu and torch.cuda.is_available() else torch.device('cpu')
-    # read Fourier sampling pattern from specified data file 
-    uv, nWimag, data_dict = read_uv(args.data_file, args.superresolution, args.dict_save_path, args.device, args.nufft)
     # create measurement operator object based on the chosen nufft library
-    match args.nufft:
-        case 'tkbn':
-            measop = operator_tkbn(im_size=args.im_size, op_type='table', op_acc='exact', device=args.device)
-        case 'pynufft':
-            measop = operator_pynufft(im_size=args.im_size, device=args.device)
-        
-    # set the Fourier sampling pattern in the measurement operator
-    measop.set_uv_imweight(uv, None)
-    return measop, nWimag, data_dict
+    match args.nufft_pkg:
+        case "finufft":
+            from pysrc.measOperator.meas_op_nufft_pytorch_finufft import MeasOpPytorchFinufft
 
-if __name__ == '__main__':
-    args = parse_args()
-    measop, _, _ = gen_measop(args)
+            Operator = MeasOpPytorchFinufft
+        case "tkbn":
+            from pysrc.measOperator.meas_op_nufft_tkbn import MeasOpTkbNUFFT
+
+            Operator = MeasOpTkbNUFFT
+        case "pynufft":
+            from pysrc.measOperator.meas_op_nufft_pynufft import MeasOpPynufft
+
+            Operator = MeasOpPynufft
+    meas_op = Operator(
+        u=data["u"],
+        v=data["v"],
+        img_size=args.img_size,
+        real_flag=args.real_flag,
+        grid_size=args.nufft_grid_size,
+        kernel_dim=args.nufft_kernel_dim,
+        mode=args.nufft_mode,
+        device=args.device,
+        dtype=args.meas_dtype,
+    )
+
+    # set the Fourier sampling pattern in the measurement operator
+    if args.verbose:
+        print("INFO: Setting Fourier sampling pattern in the measurement operator...")
+    if return_data:
+        return meas_op, data
+    else:
+        return meas_op
+
+
+if __name__ == "__main__":
+    args = parse_args_meas_op()
+    meas_op = gen_meas_op(args)
+
+    # compute normalised PSF
+    dirac = torch.zeros(1, 1, *args.img_size, device=args.device, dtype=args.meas_dtype)
+    dirac[..., args.img_size[0] // 2, args.img_size[1] // 2] = 1
+    psf = meas_op.adjoint_op(meas_op.forward_op(dirac))
+    ri_normalisation = psf.max()
+    psf /= ri_normalisation
+    
+    fits.writeto("psf.fits", psf.squeeze().numpy(force=True), overwrite=True)
