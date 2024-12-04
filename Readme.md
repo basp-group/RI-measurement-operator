@@ -108,7 +108,7 @@ Two examples of usage are provided:
       meas_dtype                 # (str) Precision of the measurement operator, default to 'double' (64-bit), 'single' (32-bit) is also available
    ```
 
-   Note that the `--config` argument is a compulsory, all other arguments can be overwritten in command line by adding `--` followed by the argument name and its value.
+   Note that the `--config` argument is compulsory. Input parameters can be overwritten in command line by adding `--` followed by the argument name and its value.
 
 2. `example_sim_ri_data.py` enables the simulation of radio-inteferometric data from a given ground truth image and a Fourier sampling pattern.
 
@@ -138,4 +138,4 @@ Two examples of usage are provided:
    meas_dtype                       # (str) Precision of the measurement operator, default to 'double' (64-bit), 'single' (32-bit) is also available
    ```
 
-   Note that the `--config` argument is a compulsory, all other arguments can be overwritten in command line by adding `--` followed by the argument name and its value.
+   Note that the `--config` argument is compulsory. Input parameters can be overwritten in command line by adding `--` followed by the argument name and its value.
