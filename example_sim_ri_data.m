@@ -168,12 +168,13 @@ fprintf("\nget data vector .. ")
 y = vis + noise;
 
 %% back-projected data
+nW =  ones(nmeas,1)./tau; % natural weights
 fprintf("\nget (non-normalised) back-projected data  .. ")
 if weighting_on
-    dirty = real( adjoint_measop((nWimag.^2).*y) );
+    dirty = real( adjoint_measop(((nW.*nWimag).^2).*y) );
     figure, imagesc(dirty), colorbar, title ('dirty image (weights applied)'), axis image,   axis off,
 else
-    dirty = real( adjoint_measop(y) );
+    dirty = real(adjoint_measop((nW.^2).* y) );
     figure, imagesc(dirty), colorbar, title ('dirty image'), axis image,   axis off,
 end
 
@@ -185,7 +186,7 @@ matfilename = "results/3c353_data.mat" ;
 dirtyfilename = "results/3c353_dirty.fits" ; 
 
 % save mat file
-nW = tau *ones(nmeas,1);
+
 save(matfilename, "y", "nW", "u", "v","w","maxProjBaseline","frequency",'-v7.3')
 
 % add imaging weights
